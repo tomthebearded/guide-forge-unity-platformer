@@ -169,10 +169,12 @@ public class PlayerHealth : MonoBehaviour
     public int LivesRemaining { get; private set; }
 
     // Raised whenever the count changes. [M10] PlayerAudio subscribes first,
-       // then [M11] the HUD.
+    // then [M11] the HUD.
     public event Action<int> LivesChanged;
 
-    // Raised when a life is lost but the run continues. PlayerRespawn listens.
+    // Raised on every life lost, the last one included — PlayerRespawn puts the
+    // player back at the checkpoint either way. [M11] splits the last life off
+    // into an event of its own.
     public event Action Died;
 
     private float invulnerableUntilTimeSeconds = float.NegativeInfinity;

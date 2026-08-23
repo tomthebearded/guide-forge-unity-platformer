@@ -8,6 +8,11 @@ baseline", it means the apex you measured in
 [M4 step 05](../MILESTONE_4_gravity-and-jumping/05_measure-the-jump.md) — not a number from this page. If you
 retuned in [step 05](05_reality-check.md), your own values replace the guide's throughout.
 
+**Every measured number this milestone gates on was read during the steps, while `JumpApexProbe` was still
+attached.** [Step 05](05_reality-check.md) deletes the probe, so this gate checks that you *have* those
+numbers and that the behaviour they described is still visible — it never asks you to measure an apex with
+the instrument removed.
+
 - [ ] **Movement has weight.** Holding **D** from rest → the square builds up to speed over roughly an eighth
       of a second; releasing → it coasts down over a similar interval; pressing the opposite direction →
       it decelerates through zero and turns, never snapping.
@@ -22,8 +27,11 @@ retuned in [step 05](05_reality-check.md), your own values replace the guide's t
       the square lands and stays. Restore `0.12` → it works again.
 - [ ] **One press, one jump — still.** However early or late a press is, it never produces two jumps, and
       pressing again in mid-air does nothing.
-- [ ] **Height is a decision.** A held jump reaches your baseline apex; a quick tap reaches clearly less than
-      70% of it, and tapping faster lowers it further.
+- [ ] **Height is a decision.** The *numbers* for this box were read at
+      [step 04](04_variable-jump-height.md), while the apex probe was still attached: a held jump printed your
+      M4 baseline, a quick tap printed under 70% of it. Confirm you recorded both, then confirm the effect is
+      still there by eye — a tap clears visibly less height than a hold, and tapping faster lowers it
+      further. (The probe is gone by now, which is why the measured half of this box belongs to step 04.)
 - [ ] **Falling is faster than rising** on every jump.
 - [ ] **You have played it for five minutes** and decided the movement is worth building on.
 - [ ] **The measuring tool is gone.** `Player` has no `Jump Apex Probe (Script)`, and
@@ -52,12 +60,15 @@ public class PlayerInputReader : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
 
-    // When Jump was last pressed, on the same clock as Time.time.
+    // When Jump was last pressed, stamped from Update on the frame clock.
     // Starts far in the past so that nothing is buffered at the first step.
     private float lastJumpPressedTimeSeconds = float.NegativeInfinity;
 
     // How long ago Jump was pressed. Large means "not recently".
-    public float TimeSinceJumpPressedSeconds => Time.time - lastJumpPressedTimeSeconds;
+    // Mathf.Max is not decoration: Time.time reports the frame clock in Update and
+    // the physics clock in FixedUpdate, and physics can be up to one step behind —
+    // so a fresh press would otherwise read as a negative age.
+    public float TimeSinceJumpPressedSeconds => Mathf.Max(0f, Time.time - lastJumpPressedTimeSeconds);
 
     // True for as long as the button is down — unlike the press timestamp above,
     // which records a single moment.
@@ -184,7 +195,7 @@ public class PlayerMotor : MonoBehaviour
 
         body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
 
-        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
         if (jumpIsBuffered && coyoteTimeRemainingSeconds > 0f)
         {

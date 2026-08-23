@@ -10,6 +10,11 @@ the `Player` action map **disabled** while it listens for a key, and the menu is
 already is. Putting it in the pause menu as well is a copy of the panel and a second wiring job; it is a good
 exercise once the first one works.
 
+> Build vs borrow — **build by hand.** This is ordinary uGUI: a panel, sliders, a toggle and buttons. There is
+> no options-screen package worth a dependency, and a UI toolkit you did not choose is a UI toolkit you cannot
+> restyle. Recorded in
+> [the decision log](../foundation/decision-log.md#d25--build-vs-borrow-the-options-ui-itself-sliders-the-rebind-buttons-states).
+
 This step builds the furniture and nothing else — no behaviour, no scripts. That is deliberate: UI layout is
 fiddly, and interleaving it with the interesting code turns a twenty-minute job into an hour of
 context-switching. By the end of it you have a panel that opens, closes, and does nothing at all.
@@ -42,9 +47,20 @@ context-switching. By the end of it you have a panel that opens, closes, and doe
 
 4. Select `OptionsPanel` and **untick the checkbox beside its name** so it starts hidden.
 
-5. Add an **`OptionsButton`** to the menu itself — outside the panel, beside `PlayButton` — reading `Options`.
+5. Under the `Canvas`, beside `OptionsPanel` and **not inside it**, right-click > **Create Empty** and rename
+   it **`OptionsController`**. Leave its checkbox **ticked** — this object must always be active.
 
-6. Wire the two buttons that only show and hide. On `OptionsButton`'s **On Click ()**, press **+**, drag
+   This is not tidiness, it is a Unity rule with teeth. **`Awake` and `Start` never run on a component whose
+   GameObject is inactive**, and you are about to switch `OptionsPanel` off. Anything that has to *apply* a
+   saved setting the moment the game launches — the volumes in [step 02](02_volume-sliders.md), the
+   fullscreen state in [step 03](03_display-settings.md) — therefore cannot live on the panel: a player who
+   never opens Options would get default volume every launch, whatever they saved. Those components go here;
+   the panel keeps only the furniture. A component on an active object may hold references to controls inside
+   an inactive one, which is what makes the split work.
+
+6. Add an **`OptionsButton`** to the menu itself — outside the panel, beside `PlayButton` — reading `Options`.
+
+7. Wire the two buttons that only show and hide. On `OptionsButton`'s **On Click ()**, press **+**, drag
    `OptionsPanel` into the object field, and choose **GameObject > SetActive (bool)** from the dropdown, then
    **tick** the checkbox that appears. On `BackButton`'s **On Click ()**, do the same with the checkbox left
    **unticked**.
@@ -53,7 +69,7 @@ context-switching. By the end of it you have a panel that opens, closes, and doe
    That is the group you skipped in
    [M11 step 02](../MILESTONE_11_scenes-menus-hud-persistence/02_more-scenes.md), and this is what it is for.
 
-7. Save the scene and press **Play** from `Menu`. **Options** opens the panel; **Back** closes it; **Play**
+8. Save the scene and press **Play** from `Menu`. **Options** opens the panel; **Back** closes it; **Play**
    still starts the game.
 
 ## Done when (this step)
@@ -61,7 +77,8 @@ context-switching. By the end of it you have a panel that opens, closes, and doe
 - [ ] **Options** opens a panel containing a title, three sliders with labels, a fullscreen toggle, four
       rebind buttons, a reset button and a back button.
 - [ ] **Back** closes the panel and returns to the menu.
-- [ ] The panel is hidden when the scene starts.
+- [ ] The panel is hidden when the scene starts, and `OptionsController` sits beside it — outside it — with
+      its checkbox still ticked.
 - [ ] Dragging the sliders moves them and does nothing else — no sound changes yet.
 - [ ] The Console shows no red entries.
 

@@ -29,6 +29,7 @@ wrote down.
 - Acceleration through `Mathf.MoveTowards`, and separate ground and air rates — taught in [step 01](01_acceleration.md); values in [../foundation/conventions.md](../foundation/conventions.md).
 - Coyote time — taught in [step 02](02_coyote-time.md); recorded in [../foundation/glossary.md](../foundation/glossary.md#coyote-time).
 - Jump buffering, and why the M4 latch becomes a timestamp — taught in [step 03](03_jump-buffer.md); recorded in [../foundation/glossary.md](../foundation/glossary.md#jump-buffering).
+- `Time.time` is the frame clock in `Update` and the physics clock in `FixedUpdate`, which is why the buffer clamps its age — taught in [step 03](03_jump-buffer.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d27--the-jump-buffer-clamps-its-age-at-zero-because-timetime-is-two-clocks).
 - Variable jump height as a gravity multiplier rather than a velocity cut — taught in [step 04](04_variable-jump-height.md); recorded in [../foundation/glossary.md](../foundation/glossary.md#variable-jump-height).
 - The whole feel layer is hand-written, not borrowed — recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d10--build-vs-borrow-the-feel-layer-coyote-time-jump-buffering-variable-jump-height-acceleration).
 

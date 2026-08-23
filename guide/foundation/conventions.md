@@ -104,8 +104,10 @@ action that sets them, not under a heading of their own.
   captured in `Update` and consumed in the next `FixedUpdate` — which is *why* jump buffering exists at all.
 - **Tuning lives in `[SerializeField]` fields with unit-bearing names** (`moveSpeedUnitsPerSecond`,
   `coyoteTimeSeconds`), tuned in the Inspector, never as a magic number in the body of a method.
-- **One responsibility per component**: `PlayerMotor` (physics), `PlayerInputReader` (input),
-  `PlayerStateMachine` (dash/wall states), `Health`, `Collectible`, `Checkpoint`, `LevelTimer`, `GameHud`.
+- **One responsibility per component**: `PlayerMotor` (physics, including the `PlayerMovementState` machine
+  that owns the dash and wall states), `PlayerInputReader` (input), `PlayerStats` (coins), `PlayerHealth`
+  (lives and i-frames), `Collectible`, `Checkpoint`, `LevelTimer`, `HudView`, `GameSession` (run totals
+  across scenes), `AudioOptions` / `DisplaySettings` / `RebindButton` (the options screen).
 - **Objects talk through C# `event`/`UnityEvent`**, not `GameObject.Find` and not singletons — with one
   deliberate, named exception (`GameSession`, which survives scene loads) introduced with its trade-off stated.
 
@@ -116,6 +118,7 @@ number for the same thing (rule 3.5).
 | Value | Number | First set in |
 |---|---|---|
 | `moveSpeedUnitsPerSecond` | **7** | M3 |
+| `moveSpeedUnitsPerSecond` on M2's throwaway `ConstantMover` | **3** (a different component, deleted in M3 — not the value above) | M2 |
 | `groundAccelerationUnitsPerSecondSquared` | **60** | M5 |
 | `airAccelerationUnitsPerSecondSquared` | **35** | M5 |
 | `Physics2D` gravity Y | **−9.81** (project default, untouched) | M4 |

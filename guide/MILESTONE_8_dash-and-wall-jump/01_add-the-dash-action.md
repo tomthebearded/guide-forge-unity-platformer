@@ -1,4 +1,4 @@
-# M8 · Step 01 of 05 — Add the Dash action
+# M8 · Step 01 of 06 — Add the Dash action
 > Nav: — · [Overview](00_overview.md) · [Turn the motor into a state machine →](02_movement-state-machine.md)
 
 **Before you start:** M7's gate passed. This is the first time you edit `InputSystem_Actions` — until now you

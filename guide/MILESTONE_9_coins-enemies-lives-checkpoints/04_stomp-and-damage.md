@@ -51,7 +51,9 @@ overlap is reported every physics step, and fifty steps a second is fifty hits.
        // then [M11] the HUD.
        public event Action<int> LivesChanged;
 
-       // Raised when a life is lost but the run continues. Step 05 respawns on it.
+       // Raised on every life lost, the last one included — PlayerRespawn (step 05)
+       // puts the player back at the checkpoint either way. [M11] splits the last
+       // life off into an event of its own.
        public event Action Died;
 
        private float invulnerableUntilTimeSeconds = float.NegativeInfinity;

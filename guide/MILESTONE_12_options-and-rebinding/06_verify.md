@@ -9,8 +9,10 @@ Observed in **Play Mode in the Editor**, starting from the **`Menu`** scene, wit
 - [ ] **Each of the three volumes works, and works separately.** Master changes everything; Music changes only
       the music; Effects changes only the game's sounds. Each one changes **smoothly across the whole slider's
       travel**, not just at its end, and zero is silence with no Console error.
-- [ ] **Volumes persist.** Leave Play Mode and return: the sliders are where you left them and the volume is
-      already applied before you open the panel.
+- [ ] **Volumes persist, without the panel.** Turn them down, leave Play Mode, and return. Go straight into
+      `Level01` **without opening Options once**: the game is already quiet. Open the panel and the sliders
+      are where you left them. (A component on the switched-off `OptionsPanel` would fail this box — which is
+      why the option scripts live on `OptionsController`.)
 - [ ] **The volumes reach the game**, not just the menu: starting `Level01` keeps them.
 - [ ] **The fullscreen toggle stores its state.** Clicking it prints `fullscreen = True` / `False`; leaving
       Play Mode and returning shows the same state. *(The window itself changing is a build-only effect,
@@ -39,14 +41,14 @@ _This checkpoint renders the complete contents of every guide-authored file crea
 milestone (listed below). Pre-existing files this milestone only added to are shown as their added region
 under "Pre-existing files modified", not reproduced whole. Files not listed were not touched this milestone._
 
-### `Assets/_Project/Scripts/AudioSettings.cs`
+### `Assets/_Project/Scripts/AudioOptions.cs`
 ```csharp
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 // Connects three sliders to three exposed mixer parameters, and remembers them.
-public class AudioSettings : MonoBehaviour
+public class AudioOptions : MonoBehaviour
 {
     // Load-bearing: these must match the exposed parameter names in GameMixer.
     private const string MasterParameter = "MasterVolumeDb";
@@ -93,7 +95,16 @@ public class AudioSettings : MonoBehaviour
     private void Set(string parameterName, string preferenceKey, float value01)
     {
         mixer.SetFloat(parameterName, LinearToDecibels(value01));
+
+        // SetFloat only updates PlayerPrefs in memory, which is what you want
+        // here: this runs on every frame of a drag.
         PlayerPrefs.SetFloat(preferenceKey, value01);
+    }
+
+    // Leaving the menu — to a level, or by quitting — is when the values reach
+    // the disk. One write per visit instead of one per frame of a drag.
+    private void OnDisable()
+    {
         PlayerPrefs.Save();
     }
 
@@ -333,9 +344,10 @@ public class ResetBindingsButton : MonoBehaviour
 | GameObject | Component | Field | Exact value |
 |---|---|---|---|
 | `OptionsPanel` | — | active at start | **unticked** |
-| `OptionsPanel` | `Audio Settings (Script)` | Mixer / three sliders | `GameMixer` / `MasterRow`, `MusicRow`, `SfxRow` |
-| `OptionsPanel` | `Display Settings (Script)` | Fullscreen Toggle | `FullscreenToggle` |
-| `OptionsPanel` | `Reset Bindings Button (Script)` | Rebind Buttons | size `5`, the five rebind buttons |
+| `OptionsController` | — | active at start | **ticked** — `Start` must run without the panel being opened |
+| `OptionsController` | `Audio Options (Script)` | Mixer / three sliders | `GameMixer` / `MasterRow`, `MusicRow`, `SfxRow` |
+| `OptionsController` | `Display Settings (Script)` | Fullscreen Toggle | `FullscreenToggle` |
+| `OptionsController` | `Reset Bindings Button (Script)` | Rebind Buttons | size `5`, the five rebind buttons |
 | `MasterRow`, `MusicRow`, `SfxRow` | `Slider` | Min / Max / Whole Numbers | `0` / `1` / unticked |
 | `RebindMoveLeftButton` | `Rebind Button (Script)` | Action Path / Binding Index / Composite Part Name | `Player/Move` / `0` / `left` |
 | `RebindMoveRightButton` | `Rebind Button (Script)` | same | `Player/Move` / `0` / `right` |
@@ -344,7 +356,7 @@ public class ResetBindingsButton : MonoBehaviour
 | `RebindDashButton` | `Rebind Button (Script)` | same | `Player/Dash` / `0` / *(empty)* |
 | every rebind button | `Rebind Button (Script)` | Label | its own child `Text (TMP)` |
 | `OptionsButton` / `BackButton` | `Button` | On Click | `OptionsPanel` → `GameObject.SetActive` ticked / unticked |
-| `ResetBindingsButton` | `Button` | On Click | `OptionsPanel` → `ResetBindingsButton.ResetAll ()` |
+| `ResetBindingsButton` | `Button` | On Click | `OptionsController` → `ResetBindingsButton.ResetAll ()` |
 | `Main Camera` | `Audio Source` | Clip / Output / Loop / Play On Awake | menu music / `Music` group / ticked / ticked |
 
 ### Pre-existing files modified

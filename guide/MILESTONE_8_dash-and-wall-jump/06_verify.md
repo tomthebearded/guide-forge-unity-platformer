@@ -11,14 +11,19 @@ Observed in **Play Mode in the Editor**, `Level01` open, Game view focused.
 - [ ] **The dash is flat and cannot be spammed.** Dashing off a ledge crosses in a straight line with no
       fall until it ends; a second press within the **0.6-second** cooldown does nothing, and after it, works.
 - [ ] **The dash exits at running speed**, not flying.
-- [ ] **The wall slide needs all three conditions.** Airborne, pressing into a `Ground`-layer wall, and
-      falling → a steady slide at about 2.5 units per second. Release the direction, land, or rise instead of
-      falling → no slide.
+- [ ] **The wall slide needs all three conditions, and holds its rate.** Airborne, pressing into a
+      `Ground`-layer wall, and falling → a slide whose speed you **read rather than judge**: with the slide
+      running, `Player` → `Rigidbody 2D` → **Info** → **Speed** settles at about `2.5` and stays there,
+      instead of climbing the way a free fall does. Release the direction, land, or rise instead of falling →
+      no slide.
 - [ ] **A one-way ledge is not a wall.** Pressing into the side of `OneWayLedge` produces no slide.
 - [ ] **The wall-jump leaves the wall.** Pressing **Space** while sliding → an arc up and away, on both
       sides, *while still holding the direction into the wall*.
-- [ ] **The control lock is doing that.** For roughly 0.15 s after a wall-jump, horizontal input does not
-      steer; then it does. Dash still fires during that window.
+- [ ] **The control lock is doing that.** Immediately after a wall-jump, holding the direction back *into*
+      the wall does **not** stop the player leaving it; keep holding and a moment later the player is pulled
+      back towards the wall — that is the window closing. Set **Wall Jump Control Lock Seconds** to `0` and
+      the very first press pulls it straight back; restore `0.15` and the arc survives again. Dash fires
+      during the window either way.
 - [ ] **States are exclusive.** The player never dashes and wall-slides at once, and cannot climb a flat wall
       by mashing jump without re-entering the slide.
 - [ ] **Nothing earlier regressed.** Acceleration, coyote time, jump buffering, variable jump height, the
@@ -59,12 +64,15 @@ public class PlayerInputReader : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
 
-    // When Jump was last pressed, on the same clock as Time.time.
+    // When Jump was last pressed, stamped from Update on the frame clock.
     // Starts far in the past so that nothing is buffered at the first step.
     private float lastJumpPressedTimeSeconds = float.NegativeInfinity;
 
     // How long ago Jump was pressed. Large means "not recently".
-    public float TimeSinceJumpPressedSeconds => Time.time - lastJumpPressedTimeSeconds;
+    // Mathf.Max is not decoration: Time.time reports the frame clock in Update and
+    // the physics clock in FixedUpdate, and physics can be up to one step behind —
+    // so a fresh press would otherwise read as a negative age.
+    public float TimeSinceJumpPressedSeconds => Mathf.Max(0f, Time.time - lastJumpPressedTimeSeconds);
 
     // True for as long as the button is down — unlike the press timestamp above,
     // which records a single moment.
@@ -300,7 +308,7 @@ public class PlayerMotor : MonoBehaviour
             body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
         }
 
-        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
         if (jumpIsBuffered && coyoteTimeRemainingSeconds > 0f)
         {
@@ -367,7 +375,7 @@ public class PlayerMotor : MonoBehaviour
         float clampedFallSpeed = Mathf.Max(body.linearVelocity.y, -wallSlideSpeedUnitsPerSecond);
         body.linearVelocity = new Vector2(0f, clampedFallSpeed);
 
-        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
         if (jumpIsBuffered)
         {

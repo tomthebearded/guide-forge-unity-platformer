@@ -60,10 +60,13 @@ the fall multiplier. Arguing with them is the exercise.
    building. If it does not, no amount of tilemap or enemy work will fix it — go back to step 01 and tune
    until it does.
 
-6. When you are done tuning, remove the measuring tool. Select `Player`, and on the `Jump Apex Probe
-   (Script)` component use **⋮ > Remove Component**. Then delete
-   `Assets/_Project/Scripts/JumpApexProbe.cs` in the Project panel. It has done its job: from here you tune by
-   feel, and instrumentation left in the project is instrumentation that rots.
+6. When you are done tuning, remove the measuring tool — **last**, and only once
+   [step 04](04_variable-jump-height.md)'s two apex readings (held, tapped) are written down. The milestone
+   gate refers back to those numbers rather than asking you to measure again, so losing them means replaying
+   step 04. Then select `Player`, and on the `Jump Apex Probe (Script)` component use
+   **⋮ > Remove Component**; delete `Assets/_Project/Scripts/JumpApexProbe.cs` in the Project panel. It has
+   done its job: from here you tune by feel, and instrumentation left in the project is instrumentation that
+   rots.
 
 7. Save the scene and commit.
 
@@ -71,6 +74,7 @@ the fall multiplier. Arguing with them is the exercise.
 - [ ] You have played for five uninterrupted minutes and can answer all five questions in action 2.
 - [ ] Any value you changed is reflected both in the Inspector **and** in
       [`../foundation/conventions.md`](../foundation/conventions.md)'s tuning table.
+- [ ] Step 04's held-jump and tapped-jump apex readings are written down somewhere you can still find them.
 - [ ] `Player` no longer has a `Jump Apex Probe (Script)` component, and
       `Assets/_Project/Scripts/JumpApexProbe.cs` no longer exists.
 - [ ] The Console shows no red entries; the project compiles.

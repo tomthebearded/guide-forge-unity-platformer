@@ -31,9 +31,12 @@ Kenney's **CC0** packs — full verified table + check date: **[foundation/stack
 
 ## Updates
 
+- 2026-08-23 — Second audit: 3 blockers and 14 warnings, all fixed. The jump buffer, M5's milestone gate and
+  two "break it and watch it fail" recipes were the blockers. Still open: the gate numbers derived from the
+  physics rather than measured in the Editor.
 - 2026-08-22 — Audited and fixed: 11 findings closed. One open blocker — the eight "break it and watch
   it fail" recipes have not been run in the Editor yet, and neither have the measured gate values.
-- 2026-08-22 — Whole guide drafted: 13 milestones, 77 steps, 13 verify gates.
+- 2026-08-22 — Whole guide drafted: 13 milestones, 64 steps and 13 verify gates (77 step files).
 - 2026-08-22 — Guide created with GuideForge v1.18.0.
 
 ## How a step is built

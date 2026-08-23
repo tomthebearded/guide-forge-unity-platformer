@@ -243,3 +243,27 @@
 - **Why:** it is the platform's own build pipeline.
 - **Rules out / trade-off:** learning a window that Unity 6 renamed, so older tutorials call it something else.
 - **Revisit if:** never, for this project. Swapping it on a guide someone is already following is an amendment, not an edit — `/amend-guide`.
+
+## D27 — The jump buffer clamps its age at zero, because `Time.time` is two clocks
+- **Date:** 2026-08-23
+- **Source:** audit finding (GuideForge v1.18.0). Lands in **M5**, carried by **M8** and **M10**.
+- **Decision:** `PlayerInputReader.TimeSinceJumpPressedSeconds` returns `Mathf.Max(0f, Time.time - lastJumpPressedTimeSeconds)`, and `PlayerMotor` tests it with `<` rather than `<=`.
+- **Why:** the press is stamped in `Update` (frame clock) and the age is read from `FixedUpdate`, where Unity substitutes the physics clock. The two can be a physics step apart, so the raw subtraction can go negative — which made a *correct* build fire a jump with **Jump Buffer Seconds** set to `0`, and so made M5's own break recipe and milestone gate unreliable. Clamping at zero plus a strict `<` makes a window of zero mean zero.
+- **Rules out / trade-off:** one line the reader has to be told about rather than deduce; in exchange the gate is exact instead of probabilistic.
+- **Revisit if:** the buffer becomes a countdown drained in `FixedUpdate` (the coyote-timer shape), which sidesteps the two clocks entirely at the cost of the timestamp lesson.
+
+## D28 — Volume settings flush to disk on panel close, not on every slider frame
+- **Date:** 2026-08-23
+- **Source:** audit finding (GuideForge v1.18.0). Lands in **M12**.
+- **Decision:** `AudioOptions.Set` calls `PlayerPrefs.SetFloat` only; `PlayerPrefs.Save()` moves to `OnDisable`.
+- **Why:** `Slider.onValueChanged` fires on every frame of a drag, so the original code performed a disk write per frame. The rebind path keeps its immediate `Save()` because a rebind is a single rare event — the two cases differ, and the guide now says why.
+- **Rules out / trade-off:** a hard crash mid-drag loses that visit's volume changes. Acceptable for a setting the player can re-drag in two seconds.
+- **Revisit if:** the options panel stops being a panel that closes (an always-on HUD slider would need a debounce instead).
+
+## D29 — The options component is `AudioOptions`, not `AudioSettings`
+- **Date:** 2026-08-23
+- **Source:** audit finding (GuideForge v1.18.0). Lands in **M12**.
+- **Decision:** name the volume component **`AudioOptions`**.
+- **Why:** `UnityEngine.AudioSettings` already exists. A user class of the same name in the global namespace silently wins over it everywhere in the project, leaving the engine's type reachable only fully qualified. Renaming costs nothing and removes a trap the reader would meet much later.
+- **Rules out / trade-off:** none.
+- **Revisit if:** never.

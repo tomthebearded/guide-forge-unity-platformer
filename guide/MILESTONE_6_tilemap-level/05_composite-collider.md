@@ -52,10 +52,15 @@ one that tells the engine this outline can be baked and forgotten.
 7. Save the scene and press **Play**. The player lands on the painted floor, runs along it, and jumps between
    the ledges.
 
-8. Now run the experiment that proves the composite is doing something. In Play Mode or out of it, **untick
-   Used By Composite** on the `Tilemap Collider 2D` and run the length of the floor at full speed a few times:
-   the player catches or stutters on cell boundaries — most noticeably after landing, and worst where a ledge
-   meets the floor. **Tick it again** and the same run is smooth. Leave it ticked, and save the scene.
+8. Now run the experiment that proves the composite is doing something. **Untick Used By Composite** on the
+   `Tilemap Collider 2D` and look at the Scene view: the single outline breaks back into one green box per
+   painted cell. That is the geometry the composite was merging, and it is the half of this you can always
+   see. Then run the length of the floor at full speed a few times. On many machines the player now catches
+   or stutters on a cell boundary, most noticeably after landing; on others it stays smooth, because whether
+   a seam bites depends on the speed, the collider size and where the physics step happens to land. **The
+   seam is a risk you have removed, not a bug you have to reproduce** — so gate on the outline, and treat the
+   stutter as a bonus if you feel it. Tick **Used By Composite** again, confirm the one outline returns,
+   leave it ticked, and save the scene.
 
 ## Done when (this step)
 - [ ] `GroundTilemap` carries `Tilemap Collider 2D` (**Used By Composite** ticked), `Rigidbody 2D`
@@ -65,8 +70,8 @@ one that tells the engine this outline can be baked and forgotten.
 - [ ] Pressing **Play** → the player lands on the painted floor and can run its full length at speed **without
       catching, stuttering or stopping** on any cell boundary.
 - [ ] The player can jump from the floor onto every ledge you painted, and back down.
-- [ ] With **Used By Composite** unticked, the same full-speed run visibly catches on seams; re-ticking it
-      restores the smooth run.
+- [ ] Unticking **Used By Composite** puts one green box per painted cell back in the Scene view; re-ticking
+      it collapses them into the single outline again.
 - [ ] The Console shows no red entries.
 
 ## Suggested commit

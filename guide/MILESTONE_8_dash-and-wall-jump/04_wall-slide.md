@@ -149,7 +149,8 @@ snagging on a wall halfway up.
 ## Done when (this step)
 - [ ] Selecting `Player` shows two thin yellow boxes at its left and right sides in the Scene view.
 - [ ] `Player Motor (Script)` → **Wall Layers** reads `Ground`.
-- [ ] Jumping into a wall while holding the direction into it → the fall slows visibly to a steady slide.
+- [ ] Jumping into a wall while holding the direction into it → the fall slows to a steady slide, and
+      `Player` → `Rigidbody 2D` → **Info** → **Speed** settles at about `2.5` rather than climbing.
 - [ ] Releasing the direction, or touching the ground, ends the slide immediately and the player falls
       normally.
 - [ ] Rising *up* past a wall while holding into it does **not** trigger the slide — it only starts once the

@@ -119,16 +119,16 @@ Without clearing the string, the next launch loads the overrides straight back a
    public void RefreshLabel()
    ```
 
-   Now fix the three call sites inside the same file so the project compiles: in `OnEnable`, in
-   `StartRebind`'s completion path (`FinishRebind`), replace each `ShowCurrentBinding();` with
-   `RefreshLabel();`. There are exactly two calls to change.
+   Now fix the two call sites inside the same file so the project compiles — one in `OnEnable`, one in
+   `FinishRebind` — replacing each `ShowCurrentBinding();` with `RefreshLabel();`. There are exactly two, and
+   the compiler names both if you miss one.
 
-5. Save, let Unity compile. In the `Menu` scene, select **`OptionsPanel`**, drag `ResetBindingsButton.cs` onto
-   it, and set its **Rebind Buttons** array **Size** to `5`, filling the five slots with the five rebind
-   button objects from the Hierarchy.
+5. Save, let Unity compile. In the `Menu` scene, select **`OptionsController`** — scripts live there, the
+   panel keeps the furniture — drag `ResetBindingsButton.cs` onto it, and set its **Rebind Buttons** array
+   **Size** to `5`, filling the five slots with the five rebind button objects from inside `OptionsPanel`.
 
 6. Wire the button: `ResetBindingsButton`'s **On Click ()** → **ResetBindingsButton > ResetAll ()**, with
-   `OptionsPanel` in the object field.
+   `OptionsController` in the object field.
 
 7. Save the scene and test the whole cycle:
    - Play from `Menu`, open **Options**, rebind **Jump** to **J**, and confirm it works in the level.

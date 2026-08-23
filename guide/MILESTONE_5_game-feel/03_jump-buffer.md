@@ -21,6 +21,13 @@ M4's latch is nearly there — it already holds the press until a physics step c
 buffer needs both facts, so the latch becomes a **timestamp**: you record when Jump was last pressed, and
 the motor asks how long ago that was.
 
+One Unity detail decides whether that arithmetic is right. **`Time.time` is not one clock.** Read in
+`Update` it gives the frame's time; read in `FixedUpdate` Unity substitutes the *physics* time, and physics
+can be running up to one step behind the frame. You stamp the press in `Update` and read the age in
+`FixedUpdate`, so the subtraction can come out **negative** — a press that looks like it happened in the
+future. Clamping the age at zero is what keeps "is this press younger than the window?" meaning what it
+says, and it is why setting the window to `0` really does switch buffering off in action 8.
+
 This is a change to a public member that `PlayerMotor` already calls, so both files change in this one step —
 leaving them out of step would mean a project that does not compile.
 
@@ -31,12 +38,15 @@ leaving them out of step would mean a project that does not compile.
 
    ```csharp
    // Assets/_Project/Scripts/PlayerInputReader.cs — replacing the JumpRequested property
-   // When Jump was last pressed, on the same clock as Time.time.
+   // When Jump was last pressed, stamped from Update on the frame clock.
    // Starts far in the past so that nothing is buffered at the first step.
    private float lastJumpPressedTimeSeconds = float.NegativeInfinity;
 
    // How long ago Jump was pressed. Large means "not recently".
-   public float TimeSinceJumpPressedSeconds => Time.time - lastJumpPressedTimeSeconds;
+   // Mathf.Max is not decoration: Time.time reports the frame clock in Update and
+   // the physics clock in FixedUpdate, and physics can be up to one step behind —
+   // so a fresh press would otherwise read as a negative age.
+   public float TimeSinceJumpPressedSeconds => Mathf.Max(0f, Time.time - lastJumpPressedTimeSeconds);
    ```
 
    `=>` on a property is C#'s expression-bodied syntax: the value is recomputed each time it is read, rather
@@ -75,7 +85,7 @@ leaving them out of step would mean a project that does not compile.
 
    ```csharp
    // Assets/_Project/Scripts/PlayerMotor.cs — replacing the jump block and the ConsumeJumpRequest() line
-   bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+   bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
    if (jumpIsBuffered && coyoteTimeRemainingSeconds > 0f)
    {
@@ -97,8 +107,9 @@ leaving them out of step would mean a project that does not compile.
    landing. The square now takes off the instant it touches down — the press waited for the ground.
 
 8. Prove the window is doing it. Stop, set **Jump Buffer Seconds** to `0`, play, and press Space slightly
-   early again: the press is discarded and the square lands and stays put, exactly as in M4. Stop, restore
-   `0.12`, save the scene.
+   early again: the press is discarded and the square lands and stays put, exactly as in M4. That is exact
+   rather than approximate — the age is clamped at zero and the test is `<`, so a window of zero can never be
+   satisfied. Stop, restore `0.12`, save the scene.
 
 9. Check the failure this could have introduced: press **Space** once, land, and wait. The square must **not**
    bounce a second time — the press was consumed by the jump that used it.

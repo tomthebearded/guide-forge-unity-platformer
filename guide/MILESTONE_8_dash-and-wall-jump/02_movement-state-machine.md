@@ -1,4 +1,4 @@
-# M8 · Step 02 of 05 — Turn the motor into a state machine
+# M8 · Step 02 of 06 — Turn the motor into a state machine
 > Nav: [← Add the Dash action](01_add-the-dash-action.md) · [Overview](00_overview.md) · [Dash →](03_dash.md)
 
 **Before you start:** [step 01](01_add-the-dash-action.md) finished — the `Dash` action exists and the asset
@@ -20,6 +20,12 @@ are bugs waiting for a player to find them.
 > New concept — **state machine**: a structure in which an object is in exactly **one** named state at a time,
 > with explicit transitions between them. The illegal combinations stop being possible rather than being
 > guarded against.
+
+> Build vs borrow — **build by hand.** Unity ships a state machine, but the Animator's one drives *animation*,
+> not physics, and no free C# FSM package cleared this guide's bar (maintained, free, and not hiding the
+> mechanism). A `switch` over an `enum` is three lines of structure you can read in one go; reach for a
+> package only when the states grow transition guards and entry/exit hooks. Recorded in
+> [the decision log](../foundation/decision-log.md#d15--build-vs-borrow-the-movement-state-machine-grounded--airborne--dashing--wall-sliding).
 
 Here the states are `Normal`, `Dashing` and `WallSliding`. A player who is dashing is *not* also wall-sliding,
 because the field can only hold one value. Each state gets its own method, and a transition is one assignment.
@@ -105,7 +111,7 @@ changed* — and with somewhere for [step 03](03_dash.md) and [step 04](04_wall-
 
        body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
 
-       bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+       bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
        if (jumpIsBuffered && coyoteTimeRemainingSeconds > 0f)
        {

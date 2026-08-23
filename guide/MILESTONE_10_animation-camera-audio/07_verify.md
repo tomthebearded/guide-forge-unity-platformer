@@ -395,7 +395,7 @@ public class PlayerMotor : MonoBehaviour
             body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
         }
 
-        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
         if (jumpIsBuffered && coyoteTimeRemainingSeconds > 0f)
         {
@@ -465,7 +465,7 @@ public class PlayerMotor : MonoBehaviour
         float clampedFallSpeed = Mathf.Max(body.linearVelocity.y, -wallSlideSpeedUnitsPerSecond);
         body.linearVelocity = new Vector2(0f, clampedFallSpeed);
 
-        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
         if (jumpIsBuffered)
         {

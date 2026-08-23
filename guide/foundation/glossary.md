@@ -103,7 +103,7 @@ The container every object in a Unity scene is. It does nothing by itself: what 
 An extension that replaces large files in Git history with lightweight pointers and keeps the real content in a side store, so clones stay fast. Configure it *before* the first commit.
 
 ### gizmo
-A shape Unity draws in the Scene view for the developer's benefit only, never in the game. `OnDrawGizmosSelected` draws while the object is selected.
+A shape Unity draws in the Scene view for your benefit only, never in the game. `OnDrawGizmosSelected` draws while the object is selected.
 
 ### Grid
 The parent component that defines the cell size and layout its child Tilemaps share. With Cell Size `1, 1, 0`, one cell is one world unit.

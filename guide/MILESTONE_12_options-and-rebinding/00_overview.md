@@ -26,7 +26,9 @@ M11's gate passed: the whole loop runs from menu to win screen, pause works, and
 6. [Verify](06_verify.md)
 
 ## Design / decisions folded in
+- A hidden panel cannot run `Start`, so the option scripts live on an always-active `OptionsController` while the panel keeps only the furniture — taught in [step 01](01_options-panel.md).
 - Decibels versus a linear slider — taught in [step 02](02_volume-sliders.md); recorded in [../foundation/glossary.md](../foundation/glossary.md#decibel).
+- When a setting reaches the disk: per drag frame is wrong, per visit is right — taught in [step 02](02_volume-sliders.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d28--volume-settings-flush-to-disk-on-panel-close-not-on-every-slider-frame).
 - Interactive rebinding as a borrowed operation with a lifecycle — taught in [step 04](04_rebinding.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d23--build-vs-borrow-interactive-key-and-button-rebinding).
 - Binding overrides as a layer on top of the asset, serialized to JSON — taught in [step 05](05_persist-rebinds.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d24--build-vs-borrow-persisting-rebinds-across-launches).
 - Why the options UI itself is hand-written — recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d25--build-vs-borrow-the-options-ui-itself-sliders-the-rebind-buttons-states).

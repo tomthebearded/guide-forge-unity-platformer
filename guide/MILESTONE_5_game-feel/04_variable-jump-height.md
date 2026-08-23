@@ -110,10 +110,15 @@ multiplier only touches the way down.
      of the baseline depending on how fast you let go.
    - Either way, the fall back down is visibly quicker than the rise.
 
+9. **Write both numbers down**, beside your M4 baseline: the held-jump apex and the tapped-jump apex. The
+   probe is deleted at the end of [step 05](05_reality-check.md), and the milestone gate reads these two
+   figures back rather than asking you to measure them again.
+
 ## Done when (this step)
 - [ ] A held jump prints the same apex you measured in M4, to within a few hundredths.
 - [ ] A quick tap prints an apex **clearly lower** than the baseline — under 70% of it — and tapping faster
       lowers it further.
+- [ ] Both figures are written down somewhere outside the Console.
 - [ ] The descent is visibly faster than the ascent on every jump.
 - [ ] Setting **Low Jump Gravity Multiplier** to `1` makes tap and hold produce the same height again;
       restoring `2.2` restores the difference.

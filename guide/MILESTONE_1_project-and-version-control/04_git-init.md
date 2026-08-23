@@ -5,6 +5,9 @@
 `git --version` in a terminal prints a version number. You need a terminal open **at the `cavern-dash`
 folder**; every command in this step and the next runs from there.
 
+**This step and [step 05](05_git-lfs.md) share one commit.** Step 05 makes it, once Git LFS is configured —
+which is why this step has no `Suggested commit` section.
+
 ## Glossary for this step
 > New here: **[.meta file](../foundation/glossary.md#meta-file)** (defined in *Why / design*).
 

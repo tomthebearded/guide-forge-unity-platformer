@@ -78,9 +78,12 @@ rate; if it were missing, it would read wildly different numbers at 60 and 15 fr
 6. Press **Play** and watch the **Console**. Three lines appear, one per second. Read the **third** one: `x/t`
    reads `3.0` and `frame` reads roughly `17` ms.
 
-   The first line can read slightly low. Unity's very first frame is long — it is still starting the game —
-   and that one long frame drags the average down until a couple of seconds have passed. That is also why the
-   report starts at one second rather than zero.
+   Read the **third** line rather than the first because of the `frame` column, not the `x/t` one:
+   `Application.targetFrameRate` takes a moment to take hold, and the startup frames are long. `x/t` needs no
+   settling at all — the position accumulates `speed × Time.deltaTime` and `Time.time` accumulates those same
+   `Time.deltaTime` values, so their ratio *is* the speed you set, on every line. A line that reads anything
+   else means the multiplication is missing. (The report starts at one second so the very first, long
+   interval does not dominate the `frame` reading.)
 
 7. Stop Play Mode. Set **Target Frame Rate For Testing** to `15` **while stopped**, so the value is saved.
    Press **Play** again and read the third Console line: `frame` now reads roughly `67` ms — four times

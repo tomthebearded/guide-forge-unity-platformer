@@ -452,11 +452,14 @@ no earlier step established gets its own step; it is never buried in a preamble.
   baseline rather than against a figure derived on paper. Where continuous maths and the fixed 0.02 s
   timestep disagree — as they do for the jump apex — the guide states both and gates on the measured one.
 - **Gates proven by breaking them** (rule 6.5), planned here with their blast radius: **M5** — set
-  `coyoteTimeSeconds` to `0` and confirm the ledge jump stops working, then restore it; **M6** — remove the
-  `CompositeCollider2D` and confirm the player catches on tile seams; **M9** — disable the checkpoint component
-  and confirm death sends the player back to the level start; **M12** — delete the
-  `cavernDash.bindingOverrides` key from `PlayerPrefs` and confirm the next launch comes up on the default
-  bindings, then rebind and relaunch to confirm it comes back.
+  `coyoteTimeSeconds` to `0` and confirm the ledge jump stops working, then restore it; **M6** — untick
+  **Used By Composite** and confirm the merged outline breaks back into one collider per painted cell (the
+  seam stutter this prevents is machine-dependent, so the *outline* is what the gate reads); **M9** —
+  disable the checkpoint component and confirm death sends the player back to the level start; **M12** —
+  delete the `cavernDash.bindingOverrides` key from `PlayerPrefs` and confirm the next launch comes up on
+  the default bindings, then rebind and relaunch to confirm it comes back.
+  **Every break recipe must name a failure the reader can see deterministically**: where the failure depends
+  on the machine, the gate reads the mechanism (a collider count, a stored key) rather than a felt symptom.
 - **Where a gate names a set, it sweeps the set** (rule 6.6): "every animation transition fires" enumerates
   idle→run→jump→fall→dash; "both devices work" is tested on keyboard **and** gamepad; "the level plays" means
   every coin in the level is reachable, checked one by one at the M12 gate.

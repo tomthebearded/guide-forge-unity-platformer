@@ -20,8 +20,9 @@ Observed in **Play Mode in the Editor**, `Level01` open, Game view focused.
       outline around the whole shape.
 - [ ] **No seams.** Running the full length of the floor at top speed, several times, the player never
       catches, stutters or stops on a cell boundary.
-- [ ] **The composite is what does it.** Unticking **Used By Composite** makes the same run visibly catch on
-      seams; re-ticking it restores the smooth run.
+- [ ] **The composite is what does it.** Unticking **Used By Composite** returns the Scene view to one green
+      box per painted cell; re-ticking it restores the single outline. (Whether you can *feel* a seam while
+      it is unticked varies by machine — the outline is the part that always shows.)
 - [ ] **The ground check sees the tilemap.** `GroundTilemap`'s Layer reads `Ground`, and the player can jump
       from anywhere on the painted floor — including from the top of every ledge.
 - [ ] **The temporary scaffolding is gone.** There is no `Ground` object in the Hierarchy.

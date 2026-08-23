@@ -39,7 +39,7 @@ build one somewhere else.
 
    ```csharp
    // Assets/_Project/Scripts/PlayerMotor.cs — end of TickWallSlidingState()
-   bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds <= jumpBufferSeconds;
+   bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
    if (jumpIsBuffered)
    {
@@ -103,15 +103,18 @@ build one somewhere else.
    the player leaves the wall in a clean arc away from it — even though you are still holding towards it.
    Land, jump back, and do it again from the other side: it mirrors.
 
-7. Try the two things that would show the lock is wrong. Immediately after a wall-jump, press the direction
-   *away* from the wall: for about a sixth of a second nothing changes, then control returns smoothly. And
-   press dash during that window: it fires — the lock governs steering, not the moveset.
+7. Prove the lock is what does it, on a difference you can see rather than time. Wall-jump and immediately
+   hold the direction back *into* the wall: the player leaves anyway, and only gets pulled back once the
+   window closes. Now stop, set **Wall Jump Control Lock Seconds** to `0`, and repeat: the player is dragged
+   straight back onto the wall and the arc collapses. Restore `0.15`. Then press dash inside the window: it
+   fires — the lock governs steering, not the moveset.
 
 ## Done when (this step)
 - [ ] Sliding on a wall and pressing **Space** → the player leaves the wall upward and outward, in an arc,
       while you are still holding the direction into the wall.
 - [ ] The same works on walls on both sides, mirrored.
-- [ ] For about 0.15 seconds after the wall-jump, horizontal input does not steer; then it does.
+- [ ] Holding the direction back into the wall right after the wall-jump does not stop the player leaving;
+      with **Wall Jump Control Lock Seconds** at `0` the same press drags it straight back. Restore `0.15`.
 - [ ] A jump pressed a fraction *before* reaching the wall still fires on contact — the M5 buffer applies.
 - [ ] The ground jump, coyote time, the dash, the moving platform and the one-way ledge all still behave.
 - [ ] The player cannot chain wall-jumps up a single flat wall without re-entering the slide first — each

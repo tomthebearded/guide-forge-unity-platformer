@@ -42,9 +42,10 @@ fail here for a correct implementation. So this step's gate reads the **stored v
            bool wantsFullscreen = savedValue == 1;
 
            Screen.fullScreen = wantsFullscreen;
+
            // WithoutNotify sets the control without firing its listener — the same
-       // reason the sliders use SetValueWithoutNotify.
-       fullscreenToggle.SetIsOnWithoutNotify(wantsFullscreen);
+           // reason the sliders use SetValueWithoutNotify.
+           fullscreenToggle.SetIsOnWithoutNotify(wantsFullscreen);
 
            fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
        }
@@ -62,8 +63,11 @@ fail here for a correct implementation. So this step's gate reads the **stored v
    }
    ```
 
-2. Save, let Unity compile. In `Menu`, select **`OptionsPanel`**, drag `DisplaySettings.cs` onto it, and set
-   its **Fullscreen Toggle** field to the `FullscreenToggle` object.
+2. Save, let Unity compile. In `Menu`, select **`OptionsController`** — the always-active object, for the
+   same reason as [step 02](02_volume-sliders.md): the stored choice has to be applied at launch, and `Start`
+   never runs on the switched-off panel. Drag `DisplaySettings.cs` onto it, then set its **Fullscreen Toggle**
+   field by dragging the `FullscreenToggle` object in from inside `OptionsPanel` — an active component may
+   hold a reference into an inactive object.
 
 3. Save the scene and press **Play** from `Menu`. Open **Options** and click the toggle: the Console prints
    `fullscreen = True`, then `fullscreen = False` when you click it again.

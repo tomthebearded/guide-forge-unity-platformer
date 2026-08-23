@@ -13,9 +13,9 @@ Observed in **Play Mode in the Editor**, `Level01` open, Game view focused, Cons
       feet, overlapping the strip's top surface while resting and clear of it while airborne.
 - [ ] **Jump fires once per press, only from the ground.** Space → the square rises and lands. Space again
       mid-air → nothing. Space held down → one jump only. Space after running off the strip → nothing.
-- [ ] **The jump is repeatable and measured.** Six jumps from a standstill print six `apex = …` lines with
-      the **same** value to two decimals, between `2.20` and `2.60` units. Write that value down: M5 compares
-      against it.
+- [ ] **The jump is repeatable and measured.** Six jumps from a standstill print six `apex = …` lines that
+      agree to within `0.1` of each other, all between `2.20` and `2.60` units. Write that value down: M5
+      compares against it.
 - [ ] **Height scales with the square of the launch speed.** Setting **Jump Velocity Units Per Second** to `7`
       prints an apex near a quarter of your baseline; `14` restores it.
 - [ ] **Running still works.** Holding **D** or **A** moves at 7 units per second, and jumping while running

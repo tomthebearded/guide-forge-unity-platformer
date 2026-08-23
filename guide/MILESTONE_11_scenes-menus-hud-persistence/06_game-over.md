@@ -20,11 +20,15 @@ modal screens is exactly the sort of thing that ships.
 
 ## Do this
 
-1. In `Assets/_Project/Scripts/PlayerHealth.cs`, **ADD** this event declaration directly below the existing
-   `public event Action Died;` line and its comment:
+1. In `Assets/_Project/Scripts/PlayerHealth.cs`, **REPLACE** the `public event Action Died;` line together
+   with the three comment lines above it (they begin `// Raised on every life lost`), with this pair — the
+   corrected comment, and the new event that takes the last life off `Died`'s hands:
 
    ```csharp
-   // Assets/_Project/Scripts/PlayerHealth.cs — below the Died event
+   // Assets/_Project/Scripts/PlayerHealth.cs — replacing the Died comment and its event
+   // Raised when a life is lost and the run continues. PlayerRespawn listens.
+   public event Action Died;
+
    // Raised when the last life is gone. The run is finished; nothing respawns.
    public event Action RunEnded;
    ```

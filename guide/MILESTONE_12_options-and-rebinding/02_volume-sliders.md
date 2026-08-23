@@ -18,23 +18,26 @@ The conversion is `Mathf.Log10(value01) * 20`, and it has one hole: `Log10(0)` i
 mixer will not accept. So zero is special-cased to `-80 dB`, the mixer's own floor for silence.
 
 Each slider also writes a `PlayerPrefs` float, so the setting survives the game closing — the same store as
-the best time, and the keys are load-bearing:
+the best time. **When** it reaches the disk matters: `onValueChanged` fires on every frame of a drag, so the
+component keeps `PlayerPrefs.SetFloat` in the handler (cheap, in memory) and calls `PlayerPrefs.Save()` once
+in `OnDisable`, when the menu is left behind. One flush per visit instead of sixty a second. The keys are
+load-bearing:
 **`cavernDash.volume.master01`**, **`cavernDash.volume.music01`**, **`cavernDash.volume.sfx01`**. The `01`
 suffix records what is stored: the **linear 0–1 value**, not the decibels. Store the decibels and you have to
 convert backwards to place the slider handle.
 
 ## Do this
 
-1. Create a new MonoBehaviour script in `Assets/_Project/Scripts` named **`AudioSettings`**:
+1. Create a new MonoBehaviour script in `Assets/_Project/Scripts` named **`AudioOptions`**:
 
    ```csharp
-   // Assets/_Project/Scripts/AudioSettings.cs — the whole file
+   // Assets/_Project/Scripts/AudioOptions.cs — the whole file
    using UnityEngine;
    using UnityEngine.Audio;
    using UnityEngine.UI;
 
    // Connects three sliders to three exposed mixer parameters, and remembers them.
-   public class AudioSettings : MonoBehaviour
+   public class AudioOptions : MonoBehaviour
    {
        // Load-bearing: these must match the exposed parameter names in GameMixer.
        private const string MasterParameter = "MasterVolumeDb";
@@ -81,7 +84,16 @@ convert backwards to place the slider handle.
        private void Set(string parameterName, string preferenceKey, float value01)
        {
            mixer.SetFloat(parameterName, LinearToDecibels(value01));
+
+           // SetFloat only updates PlayerPrefs in memory, which is what you want
+           // here: this runs on every frame of a drag.
            PlayerPrefs.SetFloat(preferenceKey, value01);
+       }
+
+       // Leaving the menu — to a level, or by quitting — is when the values reach
+       // the disk. One write per visit instead of one per frame of a drag.
+       private void OnDisable()
+       {
            PlayerPrefs.Save();
        }
 
@@ -99,12 +111,15 @@ convert backwards to place the slider handle.
    }
    ```
 
-   The class is called `AudioSettings` and so is a Unity type in `UnityEngine`. Because this file does not
-   use Unity's one, the compiler is happy — but if you ever need both in one file, the fully qualified name
-   `UnityEngine.AudioSettings` is how you say which you mean.
+   The name avoids a trap. `UnityEngine` already contains a type called **`AudioSettings`**, and a class of
+   your own with that name would quietly win over it everywhere in your code — leaving Unity's version
+   reachable only as `UnityEngine.AudioSettings`. Naming yours `AudioOptions` costs nothing and keeps both
+   names meaning what they say.
 
-2. Save, let Unity compile. In the `Menu` scene, select the **`OptionsPanel`** and drag `AudioSettings.cs`
-   onto it.
+2. Save, let Unity compile. In the `Menu` scene, select **`OptionsController`** — the always-active object
+   from [step 01](01_options-panel.md), *not* `OptionsPanel` — and drag `AudioOptions.cs` onto it. On the
+   panel it would never reach `Start`, because the panel is switched off when the scene loads, and a player
+   who never opens Options would hear the default volume every launch.
 
 3. Fill its four fields: **Mixer** ← `GameMixer` (drag it from `Assets/_Project/Audio`), and the three slider
    fields ← `MasterRow`, `MusicRow`, `SfxRow` from the Hierarchy.
@@ -117,8 +132,10 @@ convert backwards to place the slider handle.
    music fades smoothly across the whole travel of the slider — not only at the very end. Drag **Master**: the
    same. Drag it to zero: silence.
 
-6. Prove it persists. With the music slider at about a quarter, stop Play Mode, then press Play again and open
-   Options: the slider is where you left it, and the music is quiet from the first frame.
+6. Prove it persists — and that it does not wait for the panel. With the music slider at about a quarter,
+   stop Play Mode, then press Play again and **do not open Options**: the menu music is already quiet from the
+   first frame. That is `OptionsController` running `Start` while `OptionsPanel` is still switched off. Now
+   open Options: the slider is sitting where you left it.
 
 7. Prove it reaches the game, not just the menu. Press **Play** to start `Level01`: the level's music and
    effects are at the volumes you set, because the mixer is a project asset and the values were applied to it.
@@ -129,8 +146,8 @@ convert backwards to place the slider handle.
 - [ ] Dragging **Master** changes everything; dragging **Effects** changes the game's sound effects but not
       the music.
 - [ ] A slider at `0` gives silence, with no Console error.
-- [ ] Leaving Play Mode and returning shows the sliders where you left them, with the volume already applied
-      before you open the panel.
+- [ ] Leaving Play Mode and returning applies the saved volume **without the panel ever being opened**, and
+      the sliders are where you left them once you do open it.
 - [ ] Starting a level carries the settings into it.
 - [ ] The Console shows no red entries; the project compiles.
 

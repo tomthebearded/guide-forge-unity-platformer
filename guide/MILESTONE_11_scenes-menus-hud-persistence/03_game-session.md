@@ -19,6 +19,11 @@ it small.
 > let it hold gameplay logic it becomes the place where everything hides. It holds two numbers and three
 > methods. Keep it that way.
 
+> Build vs borrow — **build by hand.** `DontDestroyOnLoad` is the borrowed part and it is all the engine
+> offers: what survives, who may write it, and how big it is allowed to get are yours to decide. Asset-based
+> "game manager" packages exist and all of them hand you a bigger object than a run needs. Recorded in
+> [the decision log](../foundation/decision-log.md#d21--build-vs-borrow-carrying-score-lives-and-time-across-scenes).
+
 It also creates itself on first use. That sounds like a trick, and it buys something concrete: you can press
 Play in `Level02` while working on it, and the game runs, instead of throwing a null reference because you did
 not come in through the menu.

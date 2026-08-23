@@ -82,9 +82,10 @@ page.
 3. Press **Play**, wait for the square to settle on the strip, then press **Space** once. When it lands, one
    line appears in the **Console**: `apex = 2.3x units` or similar.
 
-4. Jump five more times without moving. Every line prints the **same value**, to the second decimal. That
-   repeatability is the real result of this step: a jump that varies from press to press is a jump you cannot
-   tune.
+4. Jump five more times without moving. Every line prints the **same value to within a few hundredths** —
+   never more than `0.1` apart, because which physics step catches the peak varies slightly from jump to
+   jump. That repeatability is the real result of this step: a jump that varies by more than that from press
+   to press is a jump you cannot tune.
 
 5. Now make the number move, so you can trust that it is measuring and not reciting. Stop Play Mode, set
    **Jump Velocity Units Per Second** to `7` — half — and play again. The apex is roughly a *quarter* of
@@ -95,7 +96,7 @@ page.
 
 ## Done when (this step)
 - [ ] Landing after a jump prints exactly one `apex = …` line to the Console.
-- [ ] Six consecutive jumps from a standstill print the **same** value to two decimals.
+- [ ] Six consecutive jumps from a standstill print values that agree to within `0.1` of each other.
 - [ ] That value sits between `2.20` and `2.60` units — a little under the ideal `2.50`, for the
       fixed-timestep reason above.
 - [ ] Halving **Jump Velocity Units Per Second** to `7` prints an apex close to a quarter of your baseline;
