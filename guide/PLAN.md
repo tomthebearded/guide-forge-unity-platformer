@@ -214,7 +214,7 @@ and every speed in **units per second**; no value is ever quoted in pixels excep
 **Naming.**
 - Load-bearing (must match exactly): layer names **`Ground`**, **`Player`**, **`OneWay`**, **`Hazard`**;
   the input action names **`Move`**, **`Jump`**, **`Dash`** in the **`Player`** map of `InputSystem_Actions`;
-  the `PlayerPrefs` keys **`cavernDash.level01.bestTimeMs`** / **`cavernDash.level02.bestTimeMs`** /
+  the `PlayerPrefs` keys **`cavernDash.run.bestTimeMs`** /
   **`cavernDash.bindingOverrides`** / **`cavernDash.volume.master01`** / **`cavernDash.volume.music01`** /
   **`cavernDash.volume.sfx01`** / **`cavernDash.display.fullscreen`**; the AudioMixer exposed parameters
   **`MasterVolumeDb`**, **`MusicVolumeDb`**, **`SfxVolumeDb`**; scene names
@@ -284,7 +284,7 @@ they are as load-bearing as the C# and cannot be diffed from a code block.
 | **M1** | Project, Editor & version control | A Unity 6.3 project exists, opens, runs, and is a clean Git repository | — | The Universal 2D project opens on `6000.3.x`, Play Mode runs an empty scene, and `git status` is clean with `Library/` ignored, `.meta` files tracked and LFS active |
 | **M2** | First script & frame-rate-independent motion | A `MonoBehaviour` the reader wrote moves a sprite at a speed set in the Inspector | M1 | A white square glides right at exactly **3 units/s**, measured against tiles; changing the Inspector field changes the speed **without** re-entering Play Mode; the same distance is covered per second regardless of frame rate |
 | **M3** | Input & running (keyboard **and** gamepad) | A physics body runs left/right from either device and collides with solid ground | M2 | Holding A/D **and** pushing a gamepad stick both move the player at **7 units/s**; releasing stops it; the player rests on a ground collider instead of falling through |
-| **M4** | Gravity, jumping & the ground check | The player falls, lands, and jumps exactly once per press | M3 | The player falls at `gravityScale` **4**, lands on ground, and Space/gamepad-South launches it to an apex of **≈2.50 units**; a second press while airborne does nothing |
+| **M4** | Gravity, jumping & the ground check | The player falls, lands, and jumps exactly once per press | M3 | The player falls at `gravityScale` **4**, lands on ground, and Space/gamepad-South launches it to a **repeatable** apex the reader measures (**2.50 units** in continuous maths, **≈2.3–2.4** as sampled on the fixed timestep); a second press while airborne does nothing |
 | **M5** ⭐ *reality-check gate* | Game feel | The jump stops being technically correct and starts feeling good | M4 | A jump pressed up to **0.12 s before** landing still fires; a jump pressed up to **0.10 s after** walking off a ledge still fires; a tapped jump peaks **lower** than a held jump (two measured, different apex values); **then stop and actually play it for five minutes** |
 | **M6** | The level as a Tilemap | A hand-painted cavern the player runs through, with one collider | M5 | Kenney tiles import at PPU **18** with Point filtering; a painted Tilemap has a single `CompositeCollider2D`; the player runs the whole level without catching on seams between tiles |
 | **M7** | Moving & one-way platforms | Level geometry that moves and that you can pass through from below | M6 | The player jumps **up through** a one-way platform and lands on top of it; standing on a moving platform, the player travels with it and does not slide or jitter |
@@ -447,8 +447,10 @@ no earlier step established gets its own step; it is never buried in a preamble.
   cannot be judged by eye — apex height, dash distance, coyote window — the gate is read as a **number** the
   reader's own code prints to the Console or displays in the HUD, never as "it looks about right" (rules
   6.1, 6.3, 6.4).
-- **Measured, not asserted.** The apex (≈2.50 units), the dash distance (5 units) and the coyote window
-  (0.10 s) are values the drafting pass must **measure in the Editor** and then quote identically everywhere.
+- **Measured, not asserted.** The apex, the dash distance and the coyote window are values the reader
+  **measures with a probe the guide gives them**, and every later gate compares against that measured
+  baseline rather than against a figure derived on paper. Where continuous maths and the fixed 0.02 s
+  timestep disagree — as they do for the jump apex — the guide states both and gates on the measured one.
 - **Gates proven by breaking them** (rule 6.5), planned here with their blast radius: **M5** — set
   `coyoteTimeSeconds` to `0` and confirm the ledge jump stops working, then restore it; **M6** — remove the
   `CompositeCollider2D` and confirm the player catches on tile seams; **M9** — disable the checkpoint component
