@@ -47,7 +47,7 @@ built.
 4. In the same section, find **Run In Background** and **untick** it if it is ticked. A paused game that keeps
    simulating while you alt-tab is a surprise nobody wants from a single-player platformer.
 
-5. Save the project (**File > Save Project**) and check what changed on disk:
+5. Save the project (**File > Save Project**) and check what changed on disk, from the `cavern-dash` folder:
    ```
    git status --short
    ```
@@ -60,7 +60,8 @@ built.
 - [ ] An icon is set for the Windows/Mac/Linux platform, visible as a preview in the Icon section.
 - [ ] **Resolution and Presentation** reads `Windowed`, `1280` × `720`, resizable, with **Run In Background**
       unticked.
-- [ ] `git status --short` lists `ProjectSettings/ProjectSettings.asset` as modified.
+- [ ] `git status --short`, run from `cavern-dash`, lists `ProjectSettings/ProjectSettings.asset` as
+      modified.
 - [ ] Pressing Play still runs the game exactly as before — none of this affects the Editor.
 
 ## Suggested commit

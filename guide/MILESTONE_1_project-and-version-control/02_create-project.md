@@ -19,9 +19,16 @@ guide leans on: the Input System, 2D Tilemap, and TextMeshPro. This guide never 
 URP is scenery rather than a subject; you pick it because it is the default 2D path in Unity 6 and because
 choosing the old built-in pipeline would leave you on a route Unity is steadily retiring.
 
+**Where the folder goes matters, and it is not "wherever you keep code".** The guide and the game live in
+**one repository**: the folder you are reading this in already holds `guide/`, and the Unity project becomes
+its sibling — `cavern-dash/` beside `guide/`, one repository holding both. That is why
+[step 04](04_git-init.md) never runs `git init`: the repository already exists, and a second one nested inside
+it would only hide the project from the first.
+
 **The project folder name is load-bearing for nothing** — call it what you like. This guide calls it
-`cavern-dash`, and every path it quotes is relative to that folder, so a different name simply means reading
-`cavern-dash/Assets/…` as `<your-folder>/Assets/…`.
+`cavern-dash`, and every path it quotes is relative to the repository root, so a different name simply means
+reading `cavern-dash/Assets/…` as `<your-folder>/Assets/…` — in this guide's text and in Git's output alike,
+because from [step 04](04_git-init.md) onwards Git prints every path from that root.
 
 ## Do this
 
@@ -37,9 +44,10 @@ choosing the old built-in pipeline would leave you on a route Unity is steadily 
    Leave the **Connect to Unity Cloud** and **Use Unity Version Control** toggles **off**. This guide uses
    Git, which you set up in [step 04](04_git-init.md), and Unity Cloud plays no part in it.
 
-4. On the right, set **Project name** to `cavern-dash` and **Location** to wherever you keep code. Press
-   **Create project**. Unity writes the folder, imports every **asset** in the template, and opens the Editor —
-   the first import takes a few minutes.
+4. On the right, set **Project name** to `cavern-dash` and **Location** to **the repository folder — the one
+   that contains `guide/`**. Unity then creates `<repository>/cavern-dash/`, so the project lands beside the
+   guide rather than inside it. Press **Create project**. Unity writes the folder, imports every **asset** in
+   the template, and opens the Editor — the first import takes a few minutes.
 
    > New concept — **asset**: anything in your project's `Assets/` folder that Unity imports and can use — a
    > script, a sprite, a scene, a sound, a prefab, a settings file. "Importing" is Unity reading the source
@@ -64,6 +72,8 @@ choosing the old built-in pipeline would leave you on a route Unity is steadily 
 - [ ] The **Console** panel shows **no red error entries** after the import finishes. Yellow warnings are
       normal and can be ignored.
 - [ ] Your `cavern-dash` folder on disk contains `Assets`, `Packages`, `ProjectSettings` and `Library`.
+- [ ] `cavern-dash` sits **beside** `guide`: listing the repository folder shows both names at the same level,
+      and neither is inside the other.
 
 ## If it breaks
 - **"Universal 2D" is missing from the template list** → the Editor Version dropdown is still on an older

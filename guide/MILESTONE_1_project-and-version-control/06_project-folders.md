@@ -1,9 +1,10 @@
 # M1 · Step 06 of 07 — Lay out the project folders and name the scene
 > Nav: [← Track binary assets with Git LFS](05_git-lfs.md) · [Overview](00_overview.md) · [Verify →](07_verify.md)
 
-**Before you start:** [step 05](05_git-lfs.md) finished — one commit exists and `git status` is clean. Work in
-the **Unity Editor** for this step, not the terminal: Unity must be the one that moves and renames assets, so
-that it can update the `.meta` files at the same time.
+**Before you start:** [step 05](05_git-lfs.md) finished — the project's first commit exists and `git status` is
+clean. Work in the **Unity Editor** for this step, not the terminal: Unity must be the one that moves and
+renames assets, so that it can update the `.meta` files at the same time. The one terminal command at the end
+runs from the `cavern-dash` folder, like every other one in this guide.
 
 ## Why / design
 Everything you author goes in **`Assets/_Project/`** and everything you import from elsewhere goes in
@@ -47,7 +48,8 @@ It becomes **`Level01`** — a load-bearing name, matched exactly in [`../founda
 6. The now-empty `Assets/Scenes` folder that the template created is left over. Right-click it and choose
    **Delete**, then confirm. Unity removes the folder and its `.meta`.
 
-7. Save the scene with **Ctrl+S** / **Cmd+S**, then check what changed on disk:
+7. Save the scene with **Ctrl+S** / **Cmd+S**, then check what changed on disk — from the `cavern-dash`
+   folder, where `--short` writes its paths relative to where you are standing:
    ```
    git status --short
    ```
@@ -73,7 +75,7 @@ chore(project): add the _Project layout and rename the scene to Level01
 ## If it breaks
 - **The Console reports "The referenced script … is missing" after the move** → you moved the file outside
   Unity, so the `.meta` and the asset parted company. Undo the move, restore both files from your last commit
-  (`git checkout -- Assets`), and redo it by dragging inside the Project panel.
+  (`git checkout -- Assets`, run from `cavern-dash`), and redo it by dragging inside the Project panel.
 - **The renamed scene does not open on double-click** → you renamed the `.meta` instead of the asset. In the
   Project panel, Unity only ever shows you the asset; if you are seeing `.meta` files, you are looking at your
   file manager, not at Unity.

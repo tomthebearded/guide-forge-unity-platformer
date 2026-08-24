@@ -1,9 +1,9 @@
 # M1 · Step 04 of 07 — Put the project under Git
 > Nav: [← Find your way around the Editor](03_find-your-way-around.md) · [Overview](00_overview.md) · [Track binary assets with Git LFS →](05_git-lfs.md)
 
-**Before you start:** the project exists ([step 02](02_create-project.md)) and Git is installed — running
-`git --version` in a terminal prints a version number. You need a terminal open **at the `cavern-dash`
-folder**; every command in this step and the next runs from there.
+**Before you start:** the project exists ([step 02](02_create-project.md)) as `cavern-dash/` beside `guide/`,
+and Git is installed — running `git --version` in a terminal prints a version number. You need a terminal open
+**at the `cavern-dash` folder**; every command in this step and the next runs from there.
 
 **This step and [step 05](05_git-lfs.md) share one commit.** Step 05 makes it, once Git LFS is configured —
 which is why this step has no `Suggested commit` section.
@@ -12,7 +12,7 @@ which is why this step has no `Suggested commit` section.
 > New here: **[.meta file](../foundation/glossary.md#meta-file)** (defined in *Why / design*).
 
 ## Why / design
-Two facts about Unity decide everything in this step, and getting them wrong is expensive to undo.
+Three facts decide everything in this step, and getting them wrong is expensive to undo.
 
 **First: `Library/` must never be committed.** It is Unity's generated import cache — gigabytes of
 machine-specific data, rebuilt from `Assets/` on demand. Committing it makes the repository enormous and
@@ -26,20 +26,40 @@ in every scene silently breaks. `.meta` files look like noise. They are the oppo
 > New concept — **.meta file**: the sidecar file Unity writes beside every asset (`Player.cs` →
 > `Player.cs.meta`) holding its import settings and its permanent GUID. It belongs in version control, always.
 
+**Third: the repository already exists, and the ignore file goes inside `cavern-dash/`.** `guide/` is already
+under version control, and `cavern-dash/` is its sibling in that same repository — so there is no `git init`
+here, and nesting a second repository inside the first would hide the project from the one that matters.
+
+The ignore file's *location* is the part that is easy to get wrong. Unity's official list is written with
+**anchored** patterns — `/[Ll]ibrary/`, `/[Bb]uilds/` — and a leading slash makes a pattern *"relative to the
+directory level of the particular `.gitignore` file itself"*
+([gitignore documentation](https://git-scm.com/docs/gitignore)). Put that list at the repository root and
+`/[Ll]ibrary/` matches `<root>/Library/`, which does not exist: `cavern-dash/Library/` would sail straight
+into your history. Put it inside `cavern-dash/` and every pattern anchors where Unity meant it to, unedited.
+Git reads the deeper file in addition to the root one, with the deeper patterns winning.
+
 You do this now, before there is anything in the project worth losing, because a `.gitignore` added after the
 first commit does not remove what that commit already captured.
 
 ## Do this
 
-1. In your terminal, at the `cavern-dash` folder, confirm you are in the right place — the listing must show
-   `Assets`, `Packages` and `ProjectSettings`:
+1. In your terminal, at the `cavern-dash` folder, confirm two things at once — that Git works, and that you
+   are inside the guide's repository rather than nowhere:
    ```
    git --version
+   git rev-parse --show-toplevel
    ```
-   If this prints no version, stop and install Git from <https://git-scm.com/downloads> before continuing.
+   The first must print a version; if it does not, stop and install Git from
+   <https://git-scm.com/downloads> before continuing. The second must print the path of the folder that
+   **contains** `guide/` and `cavern-dash/` — not the `cavern-dash` folder itself. If it prints an error about
+   not being a repository, one of two things happened: either you created the project outside the repository
+   in [step 02](02_create-project.md), which you fix by moving the `cavern-dash` folder beside `guide`; or you
+   are working from a downloaded copy of the guide rather than a clone, which has no repository to be inside
+   at all — `git clone` it as [step 01](01_install-unity.md) says, and redo step 02 in the clone.
 
 2. Create a file named **`.gitignore`** in the `cavern-dash` folder — the same level as `Assets`, not inside
-   it. Its contents are Unity's official ignore list, maintained by GitHub at
+   it, and **not** at the repository root, for the anchoring reason above. Its contents are Unity's official
+   ignore list, maintained by GitHub at
    <https://github.com/github/gitignore/blob/main/Unity.gitignore>, plus one line for macOS's `.DS_Store`
    clutter. Type it as it stands; the bracket patterns like `/[Ll]ibrary/` match both capitalisations, which
    is deliberate.
@@ -122,10 +142,12 @@ first commit does not remove what that commit already captured.
    project files from your scripts every time it compiles — they are output, not source. And nothing here
    excludes `*.meta`: those are tracked, as they must be.
 
-3. Initialise the repository on a branch named `main`:
+3. **Do not run `git init`.** There is nothing to initialise: the repository is the one `guide/` already
+   lives in, and you are standing in it. Confirm which branch it is on:
    ```
-   git init -b main
+   git branch --show-current
    ```
+   It prints `main`. That is the branch every commit in this guide lands on.
 
 4. Ask Git whether it is ignoring the right things. This prints the ignored path when the path is ignored and
    prints nothing when it is not:
@@ -134,28 +156,51 @@ first commit does not remove what that commit already captured.
    ```
    It must print exactly `Library` and nothing else — proof that `Library/` is out and `Assets/` is in.
 
+5. Look at what Git now sees. Three things in these two commands are worth understanding once, because the
+   gates from here on use them. `--porcelain` prints paths **from the repository root**, so you read
+   `cavern-dash/Assets/…` even though you are standing inside `cavern-dash`. `-uall` lists untracked files
+   one by one instead of collapsing a whole new folder into a single `?? cavern-dash/` line. And the trailing
+   word is a **pathspec** — a folder to limit the answer to, resolved from where you are standing:
+   ```
+   git status --porcelain -uall Assets
+   git status --porcelain -uall Library
+   ```
+   The first prints a long list of `?? cavern-dash/Assets/…` lines. The second prints **nothing at all** —
+   that empty result is the pass, and it is the same claim as action 4 made from the other direction.
+
 **No commit yet.** Committing before Git LFS is configured would put the binary assets you import later into
 ordinary Git history, and moving them out afterwards means rewriting history. [Step 05](05_git-lfs.md) sets up
-LFS and then makes the first commit — including the `.gitignore` you just wrote.
+LFS and then makes the project's first commit — including the `.gitignore` you just wrote.
 
 ## Done when (this step)
+_Run all four from the `cavern-dash` folder._
+
 - [ ] `git check-ignore Library Assets` → prints `Library` on its own line, and nothing else.
-- [ ] `git status --porcelain` → prints a list of `?? ` lines that includes `?? Assets/`, `?? Packages/` and
-      `?? ProjectSettings/`, and **no line mentioning `Library`**.
-- [ ] The `cavern-dash` folder contains a `.git` directory (`git rev-parse --is-inside-work-tree` prints
-      `true`).
-- [ ] `git log --oneline` → prints an error saying the branch has no commits yet. That is the intended
-      state: this step deliberately ends before the first commit, and
-      [step 05](05_git-lfs.md) makes it once LFS is configured.
+- [ ] `git status --porcelain -uall Library` → prints **nothing at all** (an empty response is the pass).
+- [ ] `git status --porcelain -uall Assets` → prints many `?? cavern-dash/Assets/…` lines, so the project's
+      files are visible to Git and their paths are written from the repository root.
+- [ ] `cavern-dash` has **no repository of its own**: `git rev-parse --show-toplevel` prints the folder that
+      contains `guide/`, and `cavern-dash/.git` does not exist.
 
 ## If it breaks
 - **`git check-ignore Library` prints nothing** → the `.gitignore` landed in the wrong folder (usually inside
   `Assets/`) or your editor saved it as `.gitignore.txt`. It must sit beside `Assets`, named exactly
   `.gitignore`.
-- **`git status` lists thousands of `Library/…` entries** → same cause. Fix the file's location, then re-run;
-  nothing is committed yet, so there is nothing to undo.
-- **`git init -b main` fails with "unknown switch 'b'"** → your Git is older than 2.28. Run `git init`, then
-  `git branch -M main`.
+- **`git status` lists thousands of `cavern-dash/Library/…` entries** → same cause. Fix the file's location,
+  then re-run; nothing is committed yet, so there is nothing to undo.
+- **`git status --porcelain` prints one `?? cavern-dash/` line and nothing else** → that is Git collapsing an
+  entirely untracked folder, not a problem. Add `-uall` to see inside it, as the commands above do.
+- **`git status --short` shows `Assets/…` with no `cavern-dash/` in front** → also correct. `--short` writes
+  paths relative to the folder you are standing in; `--porcelain` writes them from the repository root. Read
+  each command's output in its own coordinates rather than assuming one of them is wrong.
+- **`git rev-parse --show-toplevel` prints the `cavern-dash` path itself** → a `git init` ran inside the
+  project folder and made a second, nested repository. Delete **that** nested `cavern-dash/.git` directory —
+  check twice that you are not deleting the repository root's own `.git` — and re-run. A repository nested
+  inside another is invisible to the outer one, so none of your work would ever be committed where you think
+  it is.
+- **`git branch --show-current` prints something other than `main`** → you are on another branch of the
+  guide's repository. Switch with `git switch main`, or carry on where you are and read `main` as your branch
+  name for the rest of the guide.
 
 ---
 > Nav: [← Find your way around the Editor](03_find-your-way-around.md) · [Overview](00_overview.md) · [Track binary assets with Git LFS →](05_git-lfs.md)

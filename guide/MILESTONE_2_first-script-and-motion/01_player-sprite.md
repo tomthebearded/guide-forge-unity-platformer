@@ -55,7 +55,8 @@ sets the scale.
 - [ ] The **Game** view shows a solid orange square roughly at the centre of the frame.
 - [ ] The `Player`'s Inspector shows `Transform` Position `0, 0, 0` and a `Sprite Renderer` whose `Sprite`
       field is not `None`.
-- [ ] `git status --short` → lists `M  Assets/_Project/Scenes/Level01.unity` (the scene changed, nothing else).
+- [ ] `git status --short`, run from `cavern-dash`, → lists `M  Assets/_Project/Scenes/Level01.unity` (the
+      scene changed, nothing else). `--short` writes its paths relative to the folder you run it in.
 
 ## Suggested commit
 ```

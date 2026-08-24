@@ -4,7 +4,7 @@
 # STATUS — Cavern Dash
 
 > _Generated with **GuideForge v1.18.0** on 2026-08-22._
-> _Last updated with **GuideForge v1.18.0** on 2026-08-23._
+> _Last updated with **GuideForge v1.18.0** on 2026-08-24._
 
 ## Frontier
 - **Current frontier:** M1 — not started (guide fully drafted, nothing executed).
@@ -18,7 +18,7 @@
 ## Milestone status
 | Milestone | Status | Verified on | Notes |
 |-----------|--------|-------------|-------|
-| M1 — Project, Editor & version control | ❌ | — | |
+| M1 — Project, Editor & version control | ❌ | — | Amended 2026-08-24 (D30): the project is a folder in this repository, not a repository of its own. Gates rewritten — re-verify when executed. |
 | M2 — First script & frame-rate-independent motion | ❌ | — | |
 | M3 — Input & running (keyboard and gamepad) | ❌ | — | |
 | M4 — Gravity, jumping & the ground check | ❌ | — | |
@@ -30,16 +30,40 @@
 | M10 — Animation, camera & audio | ❌ | — | |
 | M11 — Scenes, menus, HUD & persistence | ❌ | — | |
 | M12 — Options: volume, display & key rebinding | ❌ | — | |
-| M13 — Build & ship | ❌ | — | Gate is observed in the built player, not the Editor |
+| M13 — Build & ship | ❌ | — | Gate is observed in the built player, not the Editor. Amended 2026-08-24 (D30): README, licence and credits move to the repository root. |
 
 <!-- Status key: ✅ verified (Done-when passed by hand) · ⏳ in progress · ❌ not started -->
 
 ## Drift log
 | Date | Where | Guide said | Reality is | Action taken |
 |------|-------|-----------|-----------|--------------|
-| | | | | |
+| 2026-08-24 | M1/04 | `git init -b main` inside `cavern-dash` | The repository already exists — `guide/` lives in it and the project is its sibling | `git init` removed; the step now verifies the repository root and the branch instead |
+| 2026-08-24 | M1/05, M1/07 | `git lfs track` prints `*.png (.gitattributes)` | git-lfs prefixes each pattern with the directory of the `.gitattributes` that declared it, so it prints `cavern-dash/*.png (cavern-dash/.gitattributes)` | Both gates rewritten to the prefixed form, with the prefix explained as the proof of scoping |
+| 2026-08-24 | M1/04, M1/07 | `git status --porcelain` lists `?? Assets/` and siblings | Porcelain paths are root-relative, and a wholly untracked folder collapses to one `?? cavern-dash/` line | Gates now use `git status --porcelain -uall .` and read `cavern-dash/…` paths |
+| 2026-08-24 | PLAN.md §8 | Unity's `.gitignore` / `.gitattributes` at the repository root | Anchored patterns (`/[Ll]ibrary/`) resolve against the folder holding the file, so at the root they match nothing | Layout corrected: both files live inside `cavern-dash/`; the root keeps a `.DS_Store`-only `.gitignore` |
+| 2026-08-24 | M13/04 | README, licence, credits and screenshot inside `cavern-dash/` | The repository root is the front door, and it holds guide and game together | Moved to the root; `git check-ignore Builds Library` now stated as run from `cavern-dash` |
+| 2026-08-24 | M1/05, `conventions.md` | The amendment claimed `git status --short` prints root-relative paths | `--short` honours `status.relativePaths` (default on) and prints them relative to the reader's folder; only `--porcelain` and `git lfs track` are root-relative | Both corrected, and the two renderings written into `conventions.md` § *Repository layout* as a rule |
+| 2026-08-24 | M1/04 | The gate piped `git status` into `head` and `grep` | `stack.md` targets PowerShell as well as zsh/bash, where neither exists | Replaced with pipe-free `git status --porcelain -uall <pathspec>`, and the both-shells rule added to `conventions.md` |
+| 2026-08-24 | M13/04 | Action 5 numbered its commands "first / second / third" against a different order than it listed them in | The reader would run `git check-ignore` from the repository root, where it prints nothing and the gate fails | Commands named instead of numbered, each with the folder it runs from |
+| 2026-08-24 | M1/01, guide `README.md` | Nothing told the reader to clone the repository, yet M1/02 sets the project's location by it | A reader working from a download has no repository to put the project in | Clone stated in M1/01 *Before you start* and in *Following this guide*; M1/04's troubleshooting now covers the download case |
 
 ## Session log
+- 2026-08-24 — Audit of M1 and M13 after the amendment (GuideForge v1.18.0): **4 BLOCKERs, 5 WARNINGs, all
+  fixed.** The blockers were the `git status --short` path claim (wrong in M1/05 and promoted to a rule in
+  `conventions.md`), two Unix-only pipes in M1/04's gate on a guide that targets PowerShell too, and M13/04's
+  command ordinals contradicting the order the commands were listed in. Warnings: M1/06's stale "one commit
+  exists", six later gates whose `git status --short` output is correct only from `cavern-dash` and never said
+  so (M2/01, M4/01, M4/02, M6/02, M6/03, M8/01, M13/01), M6/01's un-prefixed `git lfs track` pattern, and the
+  repository never being established as a clone. **Still unverified:** `git lfs track`'s directory-prefixed
+  output is read from the git-lfs source, not from a run — settle it on a real clone with Git LFS installed.
+- 2026-08-24 — Amended (GuideForge v1.18.0): the Unity project is a folder in this repository beside `guide/`,
+  not a repository of its own ([D30](decision-log.md#d30--the-unity-project-is-a-folder-in-the-guides-repository-not-a-repository-of-its-own)).
+  Nothing had been executed, so the whole guide was ahead of the frontier — no superseded banners and no
+  corrections section were needed. Rewrote M1/02, M1/04, M1/05, M1/07, M1/00, M13/02, M13/04, M13/05; corrected
+  `PLAN.md` §1 and §8; added a *Repository layout* section to `conventions.md`. The amendment also closed two
+  gates that would have failed as written: `git lfs track`'s output is directory-prefixed, and
+  `git status --porcelain` collapses an untracked folder to a single line. **M1 and M13 stay ❌** — not started,
+  and their gates are now unrun in their new form.
 - 2026-08-23 — Second audit run (GuideForge v1.18.0): 3 BLOCKERs, 14 WARNINGs. **All 17 fixed.** The three
   blockers were: M5's milestone gate asked for an apex number after step 05 deletes the probe that prints it
   (the gate now reads back step 04's recorded figures); the jump buffer stamped its press on the frame clock

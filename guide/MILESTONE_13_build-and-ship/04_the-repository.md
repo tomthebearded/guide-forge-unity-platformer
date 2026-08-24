@@ -8,6 +8,11 @@ quits. Anything you fixed while testing is committed.
 The last thing between "I built a game" and "here is my game" is a repository someone else can make sense of.
 Three files do most of that work, and one of them you owe to other people rather than to yourself.
 
+They go at the **repository root** — beside `guide/` and `cavern-dash/`, not inside the project folder. That
+root is what a visitor lands on, and it is the only place a README is read without being looked for. It is
+also the honest description of what this repository is: a guide and the game built by following it, and the
+front door has to speak for both.
+
 **The README** answers, in this order: what is this, what does it look like, how do I play it, how do I build
 it. A visitor decides in about fifteen seconds.
 
@@ -24,7 +29,7 @@ awkward to undo.
 
 ## Do this
 
-1. In the `cavern-dash` folder — beside `Assets`, not inside it — create **`README.md`**:
+1. At the repository root — beside `guide` and `cavern-dash`, not inside either — create **`README.md`**:
 
    ```markdown
    # Cavern Dash
@@ -61,18 +66,19 @@ awkward to undo.
    [Impact Sounds](https://kenney.nl/assets/impact-sounds), [Interface Sounds](https://kenney.nl/assets/interface-sounds)
    and [Music Jingles](https://kenney.nl/assets/music-jingles) — all released under CC0.
 
-   Built by following [a step-by-step guide](../guide/README.md).
+   Built by following [the guide in this repository](guide/README.md).
 
    ## Licence
 
    [MIT](LICENSE) for the code. The Kenney assets are CC0 (public domain).
    ```
 
-   Adjust the last line under *Credits* to point wherever your copy of the guide lives, or delete it.
+   The *Build it yourself* section says to open `cavern-dash`, not the folder they cloned, because opening
+   the repository root in Unity produces an empty project — the README is where that is prevented.
 
 2. Take a screenshot. Run the built game, capture a moment that shows the character mid-jump over a cavern
-   with coins in view, and save it as `cavern-dash/docs/screenshot.png`. A README with a picture is read; one
-   without is skimmed.
+   with coins in view, and save it as `docs/screenshot.png` at the repository root. A README with a picture is
+   read; one without is skimmed.
 
 3. Add **`LICENSE`** beside the README. Copy the MIT licence text from <https://choosealicense.com/licenses/mit/>,
    and put your name and the year in its copyright line.
@@ -96,18 +102,29 @@ awkward to undo.
    The Kenney logo is not included and is not covered by CC0.
    ```
 
-5. Check the repository is clean before it becomes public:
+5. Check the repository is clean before it becomes public. These two run from anywhere in the repository:
 
    ```
    git status --porcelain
-   git check-ignore Builds Library
    git lfs ls-files
    ```
 
-   The first should list only your new files; the second must print both `Builds` and `Library`; the third
-   should list your PNGs and audio, proving the binaries went through LFS rather than into Git proper.
+   `git status --porcelain` should list only your new files, and `git lfs ls-files` should list your PNGs and
+   audio, proving the binaries went through LFS rather than into Git proper.
 
-6. Commit, then push to your remote and tag the release:
+   This one must run **from inside `cavern-dash`** — `Builds` and `Library` are ignored by
+   `cavern-dash/.gitignore`, whose patterns anchor to that folder, so asking about them from the repository
+   root asks about paths that do not exist:
+
+   ```
+   git check-ignore Builds Library
+   ```
+
+   It must print both `Builds` and `Library`.
+
+6. Commit, then push to your remote and tag the release. If you started from a clone of someone else's copy
+   of this repository, point `origin` at **your own** remote first — `git remote -v` shows where it currently
+   points, and `git remote set-url origin <your-repository-url>` moves it:
 
    ```
    git tag v1.0.0
@@ -119,10 +136,10 @@ awkward to undo.
    executable reaches players through a release, never through the repository itself.
 
 ## Done when (this step)
-- [ ] `cavern-dash/README.md`, `LICENSE` and `CREDITS.md` all exist, and the README shows a screenshot that
-      renders.
+- [ ] `README.md`, `LICENSE` and `CREDITS.md` all exist **at the repository root**, beside `guide` and
+      `cavern-dash`, and the README shows a screenshot that renders.
 - [ ] The README's control table matches what the game actually does.
-- [ ] `git check-ignore Builds Library` prints **both** names.
+- [ ] `git check-ignore Builds Library`, run from `cavern-dash`, prints **both** names.
 - [ ] `git lfs ls-files` lists the imported PNGs and audio files.
 - [ ] `git status --porcelain` prints nothing after committing.
 - [ ] The tag `v1.0.0` exists locally (`git tag` lists it) and on the remote after the push.
@@ -135,15 +152,17 @@ docs(repo): add README, licence and credits for the 1.0.0 release
 ```
 
 ## If it breaks
-- **`git check-ignore Builds` prints nothing** → the build output landed somewhere other than a folder named
-  `Builds`, or inside `Assets/`. Move it; the ignore rule is `/[Bb]uilds/`.
+- **`git check-ignore Builds` prints nothing** → either you ran it from the repository root instead of from
+  `cavern-dash`, or the build output landed somewhere other than a folder named `Builds`, or inside
+  `Assets/`. The ignore rule is `/[Bb]uilds/` in `cavern-dash/.gitignore`, and it anchors there.
 - **The push is rejected for a file over 100 MB** → a build folder was committed before the ignore rule
   matched it. It is in history now, and removing it means rewriting that history — `git filter-repo` or a
   fresh clone-and-recommit are the two honest routes.
 - **The screenshot does not render on the remote** → the path is case-sensitive there and often is not
   locally. `docs/screenshot.png` and `docs/Screenshot.PNG` are different files on GitHub.
 - **Someone clones it and Unity opens an empty project** → they opened the repository root instead of the
-  `cavern-dash` folder. Say so in the README's build instructions, as the text above does.
+  `cavern-dash` folder. That root holds the guide and the project side by side, and only the project folder is
+  a Unity project. Say so in the README's build instructions, as the text above does.
 - **`git lfs ls-files` prints nothing** → the binaries were committed before LFS was configured. They work,
   but they are in ordinary history; the fix is a history rewrite, and for a project this size it is usually
   not worth it.

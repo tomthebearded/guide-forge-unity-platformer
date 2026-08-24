@@ -65,11 +65,34 @@ file: `### Editor checkpoint` — the GameObject → Component → Field → val
 collecting every Inspector value that milestone set. Inside a step, Editor values are given in the numbered
 action that sets them, not under a heading of their own.
 
+## Repository layout
+- **One repository holds both.** `guide/` and the Unity project `cavern-dash/` are **sibling folders** at the
+  repository root. M1 never runs `git init`; a repository nested inside `cavern-dash/` would hide the project
+  from the outer one.
+- **Unity's `.gitignore` and `.gitattributes` live inside `cavern-dash/`**, never at the root. Unity's official
+  ignore list uses anchored patterns (`/[Ll]ibrary/`, `/[Bb]uilds/`), and a leading slash resolves against the
+  folder holding the file — at the root they would match nothing and let `Library/` into history.
+- **The repository's own documents live at the root**: `README.md`, `LICENSE`, `CREDITS.md`,
+  `docs/screenshot.png`, plus a root `.gitignore` carrying nothing but `.DS_Store`. Authored in M13.
+- **Every terminal command in the guide runs from `cavern-dash/`**, and a step that quotes Git output says so.
+  Git renders paths two different ways from that one place, and a gate must quote the right one:
+  - **From the repository root** — `cavern-dash/Assets/…`: `git status --porcelain` (which ignores
+    `status.relativePaths`) and `git lfs track` (which prefixes each pattern with the folder of the
+    `.gitattributes` that declared it).
+  - **Relative to the folder the reader is standing in** — `Assets/…`: `git status --short`, and
+    `git check-ignore`, which echoes each path exactly as it was typed.
+  Before the project's first commit, `--porcelain` also needs **`-uall`**: Git collapses a wholly untracked
+  folder into a single `?? cavern-dash/` line otherwise.
+- **Every command must run on PowerShell and on zsh/bash alike** (`stack.md` § *Target OS / shell(s)*). Use
+  plain `git` with a pathspec instead of piping into `grep`, `head`, `wc` or `findstr` — those differ between
+  the two shells, and a gate the reader cannot run is not a gate.
+
 ## Commit messages
 - Format: **`<type>(<scope>): <subject>`** (Conventional Commits).
 - Types: `feat`, `fix`, `refactor`, `perf`, `style`, `docs`, `test`, `build`, `chore`, `ci`.
 - Scope: the part of the project the step touched — `player`, `input`, `level`, `enemy`, `ui`, `audio`,
-  `camera`, `scenes`, `options`, `project-settings`, `assets`, `build`.
+  `camera`, `scenes`, `options`, `project-settings`, `assets`, `build`, `unity` (the project folder itself),
+  `repo` (the repository's own documents).
 - Subject: imperative mood, no trailing period, ≤72 characters, says **what** changed, in the code language.
 - One step, one commit — including a step that only changes settings, assets or config.
 

@@ -73,7 +73,8 @@ interiors sort themselves out, including when you edit later.
 - [ ] `Assets/_Project/Art/Tiles/GroundRuleTile.asset` exists, its **Default Sprite** is set, and its
       **Tiling Rules** list has five entries.
 - [ ] `GroundRuleTile` appears in the `CavernPalette` window showing its default sprite — not a blank cell.
-- [ ] `git status --short` lists `Packages/manifest.json` as modified and the new `.asset` plus `.meta`.
+- [ ] `git status --short`, run from `cavern-dash`, lists `Packages/manifest.json` as modified and the new
+      `.asset` plus `.meta`.
 - [ ] The Console shows no red entries.
 
 ## Suggested commit

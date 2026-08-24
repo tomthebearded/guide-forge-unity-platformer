@@ -58,7 +58,7 @@ Keeping these under `Assets/_Project/Art` rather than beside the imported PNGs i
       and `Assets/_Project/Art/Tiles` contains one `.asset` file per tile you dragged in.
 - [ ] The **Tile Palette** window shows your tiles as a grid of thumbnails, sharp rather than blurry.
 - [ ] Clicking a tile highlights it and the brush tool becomes usable.
-- [ ] `git status --short` lists the new `.asset` files **and** a `.meta` for each.
+- [ ] `git status --short`, run from `cavern-dash`, lists the new `.asset` files **and** a `.meta` for each.
 
 ## Suggested commit
 ```

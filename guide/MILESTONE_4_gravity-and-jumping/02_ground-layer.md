@@ -59,7 +59,7 @@ them by name.
       consecutive User Layer slots, spelled exactly like that.
 - [ ] The `Ground` object's Inspector shows **Layer: Ground** at its top right.
 - [ ] The `Player` object's Inspector shows **Layer: Default**.
-- [ ] `git status --short` → lists `ProjectSettings/TagManager.asset` and
+- [ ] `git status --short`, run from `cavern-dash`, → lists `ProjectSettings/TagManager.asset` and
       `Assets/_Project/Scenes/Level01.unity` as modified.
 
 ## Suggested commit

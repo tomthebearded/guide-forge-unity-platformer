@@ -109,8 +109,11 @@ because the reader cannot search for a thing they cannot name.
 - **Free tier only.** No paid Asset Store packages, no Unity Pro features.
 - **All art and audio CC0** (Kenney), so the finished repository can be public, cloned, and reused with no
   licence friction.
-- **The repository is the deliverable**: `guide/` + the finished Unity project + a root `README.md`, publishable
-  on GitHub as-is, mirroring the layout of `guide-forge-web-platformer`.
+- **The repository is the deliverable**: `guide/` + the finished Unity project as its **sibling folder**
+  `cavern-dash/` + a root `README.md`, publishable on GitHub as-is, mirroring the layout of
+  `guide-forge-web-platformer`. One repository, not two: M1 never runs `git init`, and Unity's `.gitignore`
+  and `.gitattributes` live **inside** `cavern-dash/`, because their anchored patterns (`/[Ll]ibrary/`) resolve
+  against the folder that holds them.
 - **Prose language: English. Code language: English** (identifiers, comments, strings, commit messages).
 - **Commit convention:** Conventional Commits — `<type>(<scope>): <subject>`, imperative, ≤72 chars.
 
@@ -482,8 +485,8 @@ guide-forge-unity-platformer/
 ├── README.md                      # repo front door: what this is, how to run the game, how to follow the guide
 ├── LICENSE                        # MIT (the guide + code); Kenney assets are CC0, credited separately
 ├── CREDITS.md                     # the CC0 asset packs used, with links
-├── .gitignore                     # Unity-specific
-├── .gitattributes                 # Git LFS rules
+├── .gitignore                     # repo-level only (.DS_Store); Unity's list lives in cavern-dash/
+├── docs/screenshot.png            # the README's screenshot
 ├── guide/
 │   ├── README.md                  # the guide's front door
 │   ├── PLAN.md                    # this file
@@ -511,6 +514,8 @@ guide-forge-unity-platformer/
 │   ├── MILESTONE_12_options-and-rebinding/
 │   └── MILESTONE_13_build-and-ship/
 └── cavern-dash/                   # the finished Unity project — the end state of M13
+    ├── .gitignore                 # Unity's official list — anchored patterns, so it must sit here
+    ├── .gitattributes             # Git LFS rules, scoped to the project's binaries
     ├── Assets/_Project/{Scripts,Scenes,Prefabs,Art,Audio,Animation,Settings}
     ├── Assets/ThirdParty/Kenney/  # the CC0 files actually used, with their licence
     ├── Packages/manifest.json

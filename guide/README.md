@@ -31,6 +31,12 @@ Kenney's **CC0** packs — full verified table + check date: **[foundation/stack
 
 ## Updates
 
+- 2026-08-24 — audited after the amendment: 4 blockers and 5 warnings, all fixed — the `git status --short`
+  path claim, two Unix-only pipes in a gate, M13/04's command order, and seven gates that never said which
+  folder to run from.
+- 2026-08-24 — amended: the Unity project is a folder in this repository beside `guide/`, not a repository of
+  its own — no `git init`, Unity's `.gitignore` and `.gitattributes` inside `cavern-dash/`, README and licence
+  at the root (M1, M13).
 - 2026-08-23 — Second audit: 3 blockers and 14 warnings, all fixed. The jump buffer, M5's milestone gate and
   two "break it and watch it fail" recipes were the blockers. Still open: the gate numbers derived from the
   physics rather than measured in the Editor.
@@ -70,12 +76,15 @@ diffable as the C#.
 ## Following this guide
 
 1. Read **[foundation/status.md](foundation/status.md)** first — the single source of truth for what's done and verified.
-2. Start at **[Milestone 1](MILESTONE_1_project-and-version-control/00_overview.md)**; do the milestones in order (each builds on the last).
+2. **Work inside a clone of this repository, not a download.** The Unity project you build lives in it, as
+   `cavern-dash/` beside `guide/` — one repository holding the guide and the game it builds. `git clone` it
+   before you start.
+3. Start at **[Milestone 1](MILESTONE_1_project-and-version-control/00_overview.md)**; do the milestones in order (each builds on the last).
    Tick each step in **[foundation/progress.md](foundation/progress.md)** as you finish it — that ledger is
    what lets the guide be changed later without disturbing the work you've already done.
-3. **Type the code — don't paste it.** The complete files are included so you always have an authoritative
+4. **Type the code — don't paste it.** The complete files are included so you always have an authoritative
    copy to diff against, *not* so you can paste blindly. You'll learn far more by typing each file, reading it
    as you go, and predicting a step's expected output *before* you run it. Reach for paste only to unstick
    yourself when something won't work.
-4. If you're following this a while after it was written, run the **review-before-follow** gate first —
+5. If you're following this a while after it was written, run the **review-before-follow** gate first —
    re-check the stack's "Latest stable" column and reconcile any drift before executing (reality wins).

@@ -89,7 +89,8 @@ feat(assets): import the Kenney Pixel Platformer tiles at 18 PPU
 - **A tile covers a fifth of a grid cell** → PPU is still `100`. This is the setting that silently invalidates
   every tuned number in M5, so fix it now rather than compensating with scale.
 - **`git lfs ls-files` prints nothing after committing** → the images were added before LFS was configured, or
-  `.gitattributes` is missing. Check `git lfs track` lists `*.png`; if the files went in as plain blobs, the
+  `.gitattributes` is missing. Check `git lfs track` lists `cavern-dash/*.png`; if the files went in as plain
+  blobs, the
   simplest fix at this stage is to remove them, commit, then re-add them.
 - **Unity shows the images but the Project panel says "0 sprites"** → **Texture Type** is `Default`, not
   `Sprite (2D and UI)`.

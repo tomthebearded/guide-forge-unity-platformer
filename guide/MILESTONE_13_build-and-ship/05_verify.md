@@ -28,10 +28,11 @@ and running both confuses which is which.
 - [ ] **Both devices work.** Keyboard and gamepad each drive move, jump, dash and pause — with the gamepad
       connected before launch. *(This is where the gamepad box left open at the M3 and M12 gates is closed.)*
 - [ ] **Quit closes the window.**
-- [ ] **The repository is publishable.** `README.md`, `LICENSE` and `CREDITS.md` exist; the README's screenshot
-      renders and its control table matches the game; `git check-ignore Builds Library` prints both;
-      `git lfs ls-files` lists the binaries; `git status --porcelain` prints nothing; the `v1.0.0` tag exists
-      on the remote with a build attached to its release.
+- [ ] **The repository is publishable.** `README.md`, `LICENSE` and `CREDITS.md` exist at the repository root,
+      beside `guide` and `cavern-dash`; the README's screenshot renders and its control table matches the
+      game; `git check-ignore Builds Library`, run from `cavern-dash`, prints both; `git lfs ls-files` lists
+      the binaries; `git status --porcelain` prints nothing; the `v1.0.0` tag exists on the remote with a
+      build attached to its release.
 - [ ] **Someone else can use it.** Download your own release zip on a machine without Unity — or ask a
       friend — unzip it, and play it.
 
@@ -44,10 +45,10 @@ listed were not touched this milestone._
 
 | Path | What it is |
 |---|---|
-| `cavern-dash/README.md` | the repository's front door — what it is, how to play, how to build, credits |
-| `cavern-dash/LICENSE` | MIT, with your name and year |
-| `cavern-dash/CREDITS.md` | the CC0 asset packs, with links |
-| `cavern-dash/docs/screenshot.png` | the README's screenshot |
+| `README.md` | the repository's front door — what it is, how to play, how to build, credits |
+| `LICENSE` | MIT, with your name and year |
+| `CREDITS.md` | the CC0 asset packs, with links |
+| `docs/screenshot.png` | the README's screenshot |
 | `cavern-dash/Builds/<platform>/` | the build output — **ignored by Git**, distributed through a release |
 
 ### Editor checkpoint

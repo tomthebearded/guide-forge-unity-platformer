@@ -58,9 +58,10 @@ simply not in the build — producing a game that opens to a black screen with n
    [step 03](03_test-the-build.md)). Choose a folder **outside `Assets/`**: create
    `cavern-dash/Builds/Windows` (or `Builds/macOS`) and select it.
 
-   `Builds/` is already ignored by the `.gitignore` you wrote in
-   [M1 step 04](../MILESTONE_1_project-and-version-control/04_git-init.md) — the entry is `/[Bb]uilds/`. A
-   build is output, and output does not belong in a repository.
+   `Builds/` is already ignored by `cavern-dash/.gitignore`, the file you wrote in
+   [M1 step 04](../MILESTONE_1_project-and-version-control/04_git-init.md) — the entry is `/[Bb]uilds/`, and
+   it anchors to the project folder that holds it. A build is output, and output does not belong in a
+   repository.
 
 5. Wait. The first IL2CPP build of a project takes several minutes and pins a CPU core; later ones are much
    quicker. When it finishes, Unity opens the folder.

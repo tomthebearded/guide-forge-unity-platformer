@@ -6,6 +6,11 @@ an internet connection. You do **not** need Unity installed — that is what thi
 [step 04](04_git-init.md); if `git --version` prints nothing, install it from
 [git-scm.com](https://git-scm.com/downloads) while the Editor downloads.
 
+You also need this guide as a **Git repository on your machine**, not as loose files: the Unity project you
+create in [step 02](02_create-project.md) becomes a folder inside it, beside `guide/`, and
+[step 04](04_git-init.md) commits into it. If you are reading these files on the web or from a downloaded zip,
+`git clone` the repository they live in first, and read from your clone.
+
 ## Glossary for this step
 > New here: **[Unity Hub](../foundation/glossary.md#unity-hub)** (defined under *Why / design*) · **[LTS](../foundation/glossary.md#lts-long-term-support)** (defined under *Why / design*).
 

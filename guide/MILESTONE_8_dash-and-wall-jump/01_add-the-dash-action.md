@@ -42,14 +42,15 @@ The action's name — **`Dash`** — is **load-bearing**: `PlayerInputReader` lo
 6. Press **Save Asset** at the top of the editor window. The Input Actions editor does **not** auto-save, and
    an unsaved action is the reason for half of all "my binding does nothing" reports.
 
-7. Close the editor and check the file changed: `git status --short` lists
+7. Close the editor and check the file changed. From the `cavern-dash` folder, `git status --short` lists
    `Assets/InputSystem_Actions.inputactions` as modified.
 
 ## Done when (this step)
 - [ ] The `Player` map contains an action named exactly **`Dash`**, of **Action Type** `Button`.
 - [ ] `Dash` has **two** bindings: `<Keyboard>/leftShift` and `<Gamepad>/buttonWest`.
 - [ ] The editor's title no longer shows an unsaved-changes marker after **Save Asset**.
-- [ ] `git status --short` → lists `Assets/InputSystem_Actions.inputactions` as modified.
+- [ ] `git status --short`, run from `cavern-dash`, → lists `Assets/InputSystem_Actions.inputactions` as
+      modified.
 - [ ] The Console shows no red entries. *(Nothing reads the action yet — that is [step 03](03_dash.md).)*
 
 ## Suggested commit

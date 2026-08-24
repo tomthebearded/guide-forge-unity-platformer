@@ -3,7 +3,8 @@
 
 ## Done-when gate (the real test — check every box by hand)
 
-Run the four terminal checks from the `cavern-dash` folder, with the Editor open.
+Run the terminal checks from the `cavern-dash` folder, with the Editor open. Git writes every path from the
+repository root, so they read `cavern-dash/…` even though you are standing inside it.
 
 - [ ] **The project opens on the pinned Editor.** In Unity Hub → **Projects**, the `cavern-dash` row shows an
       **Editor Version** beginning `6000.3.`. Opening it brings up the Editor with the title bar reading
@@ -16,10 +17,15 @@ Run the four terminal checks from the `cavern-dash` folder, with the Editor open
       `git status --porcelain` → prints **nothing at all** (an empty response is the pass).
 - [ ] **LFS is armed for binaries.**
       `git lfs track` → prints `Listing tracked patterns` followed by lines that include
-      `*.png (.gitattributes)` and `*.wav (.gitattributes)`.
+      `cavern-dash/*.png (cavern-dash/.gitattributes)` and
+      `cavern-dash/*.wav (cavern-dash/.gitattributes)`.
 - [ ] **The history is exactly what you made it.**
-      `git log --oneline` → prints **two** lines: the `chore(project): …` commit from step 06 on top, and
-      `chore(repo): …` from step 05 below it.
+      `git log --oneline -2` → prints the `chore(project): …` commit from step 06 on top and
+      `chore(unity): …` from step 05 below it. Anything older is the repository's own history, which the
+      guide arrived in.
+- [ ] **One repository, not two.**
+      `git rev-parse --show-toplevel` → prints the folder that contains `guide/` and `cavern-dash/`, and
+      `cavern-dash/.git` does not exist. Listing that folder shows `guide` and `cavern-dash` side by side.
 - [ ] **The folder layout exists.** In the Project panel, `Assets/_Project` contains `Scripts`, `Scenes`,
       `Prefabs`, `Art`, `Audio`, `Animation`, `Settings`; `Assets/ThirdParty` sits beside it; the scene is at
       `Assets/_Project/Scenes/Level01.unity`; `Assets/Scenes` is gone.
@@ -149,17 +155,17 @@ None — the template's own files were moved and renamed, not edited.
 
 | Symptom | Likely cause → fix |
 |---|---|
-| `git status --porcelain` prints `?? Assets/_Project/Art.meta` and similar | Unity wrote new `.meta` files after your last commit (it does this on focus). Stage and amend, or commit them as a follow-up — never delete them. |
-| `git check-ignore Library` prints nothing | `.gitignore` is inside `Assets/` or saved as `.gitignore.txt`. It must sit beside `Assets`. |
-| `git lfs track` lists no patterns | `.gitattributes` is missing, misnamed, or in the wrong folder. |
+| `git status --porcelain` prints `?? cavern-dash/Assets/_Project/Art.meta` and similar | Unity wrote new `.meta` files after your last commit (it does this on focus). Stage and amend, or commit them as a follow-up — never delete them. |
+| `git check-ignore Library` prints nothing | `.gitignore` is inside `Assets/`, saved as `.gitignore.txt`, or left at the repository root where its anchored patterns match nothing. It must sit at `cavern-dash/.gitignore`, beside `Assets`. |
+| `git lfs track` lists no patterns, or lists them without the `cavern-dash/` prefix | `.gitattributes` is missing, misnamed, or at the repository root instead of inside `cavern-dash/`. |
 | The Console shows "Multiple scenes … " or an empty Hierarchy | The scene was moved outside Unity. `git checkout -- Assets` to restore, then redo the move by dragging inside the Project panel. |
 | The Editor asks to upgrade the project on open | The Hub opened it with a different Editor version. Say **no**, close, and open it from the Hub row that reads `6000.3.x` — upgrading is a one-way change. |
 
 ## Handoff
-- **You now have:** a Unity 6.3 LTS project called `cavern-dash`, created from the Universal 2D template,
-  laid out as `Assets/_Project/` (seven folders) plus `Assets/ThirdParty/`, holding one scene,
-  `Level01`; and a clean Git repository on `main` with two commits, `Library/` ignored, `.meta` files tracked
-  and Git LFS armed for images, audio and fonts.
+- **You now have:** a Unity 6.3 LTS project called `cavern-dash`, created from the Universal 2D template and
+  living beside `guide/` in the guide's own repository, laid out as `Assets/_Project/` (seven folders) plus
+  `Assets/ThirdParty/`, holding one scene, `Level01`; and a clean working tree on `main` carrying your two
+  new commits, with `Library/` ignored, `.meta` files tracked and Git LFS armed for images, audio and fonts.
 - **Open / deferred:** nothing moves yet, and the scene contains only the template's `Main Camera` and
   `Global Volume`. No C# has been written.
 - **Next:** **[M2 — First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md)** —

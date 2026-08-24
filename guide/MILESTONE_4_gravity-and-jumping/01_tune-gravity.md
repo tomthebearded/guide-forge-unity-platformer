@@ -44,7 +44,8 @@ falling faster than rising.
 - [ ] `Player` → `Rigidbody 2D` → **Gravity Scale** reads `4`.
 - [ ] Pressing Play → the square falls to the strip visibly faster than it did in M3 and rests at Position Y
       between `-3.00` and `-2.98`, as before.
-- [ ] `git status --short` → lists `Assets/_Project/Scenes/Level01.unity` as modified and nothing else.
+- [ ] `git status --short`, run from `cavern-dash`, → lists `Assets/_Project/Scenes/Level01.unity` as
+      modified and nothing else.
 
 ## Suggested commit
 ```
