@@ -7,8 +7,8 @@
 > _Last updated with **GuideForge v1.18.0** on 2026-08-24._
 
 ## Frontier
-- **Current frontier:** M1 — not started (guide fully drafted, nothing executed).
-- **Executed through:** nothing yet.
+- **Current frontier:** M2 — not started (M1 executed and verified).
+- **Executed through:** M1 / 07_verify.md (2026-08-24).
 
 ## Source inputs
 | Input file | Used for (stack / scope / decisions) | Provided on | Re-checked on |
@@ -18,7 +18,7 @@
 ## Milestone status
 | Milestone | Status | Verified on | Notes |
 |-----------|--------|-------------|-------|
-| M1 — Project, Editor & version control | ❌ | — | Amended 2026-08-24 (D30): the project is a folder in this repository, not a repository of its own. Gates rewritten — re-verify when executed. |
+| M1 — Project, Editor & version control | ✅ | 2026-08-24 | Amended 2026-08-24 (D30): the project is a folder in this repository, not a repository of its own. Executed and gate passed 2026-08-24. |
 | M2 — First script & frame-rate-independent motion | ❌ | — | |
 | M3 — Input & running (keyboard and gamepad) | ❌ | — | |
 | M4 — Gravity, jumping & the ground check | ❌ | — | |
@@ -48,6 +48,8 @@
 | 2026-08-24 | M1/01, guide `README.md` | Nothing told the reader to clone the repository, yet M1/02 sets the project's location by it | A reader working from a download has no repository to put the project in | Clone stated in M1/01 *Before you start* and in *Following this guide*; M1/04's troubleshooting now covers the download case |
 
 ## Session log
+- 2026-08-24 — **M1 executed and completed.** All seven steps (01_install-unity → 07_verify) run in order; the
+  `07_verify.md` milestone gate passed. Frontier advanced to M2; M1 marked ✅ (verified 2026-08-24).
 - 2026-08-24 — Audit of M1 and M13 after the amendment (GuideForge v1.18.0): **4 BLOCKERs, 5 WARNINGs, all
   fixed.** The blockers were the `git status --short` path claim (wrong in M1/05 and promoted to a rule in
   `conventions.md`), two Unix-only pipes in M1/04's gate on a guide that targets PowerShell too, and M13/04's

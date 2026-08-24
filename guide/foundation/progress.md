@@ -19,17 +19,17 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** nothing yet.
-- **Next up:** M1 / 01_install-unity.md.
+- **Last executed:** M1 / 07_verify.md (milestone gate passed).
+- **Next up:** M2 / 01_player-sprite.md.
 
 ## MILESTONE_1 — Project, Editor & version control
-- [ ] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS
-- [ ] `02_create-project.md` — Create the Universal 2D project
-- [ ] `03_find-your-way-around.md` — Find your way around the Editor
-- [ ] `04_git-init.md` — Put the project under Git
-- [ ] `05_git-lfs.md` — Track binary assets with Git LFS
-- [ ] `06_project-folders.md` — Lay out the project folders and name the scene
-- [ ] `07_verify.md` — milestone gate
+- [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
+- [x] `02_create-project.md` — Create the Universal 2D project — 2026-08-24
+- [x] `03_find-your-way-around.md` — Find your way around the Editor — 2026-08-24
+- [x] `04_git-init.md` — Put the project under Git — 2026-08-24
+- [x] `05_git-lfs.md` — Track binary assets with Git LFS — 2026-08-24
+- [x] `06_project-folders.md` — Lay out the project folders and name the scene — 2026-08-24
+- [x] `07_verify.md` — milestone gate — 2026-08-24
 
 ## MILESTONE_2 — First script & frame-rate-independent motion
 - [ ] `01_player-sprite.md` — Add the player sprite
