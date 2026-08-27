@@ -444,6 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f3ebb6c492c6a4091f0f814177f855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConstantMover
+  targetFrameRateForTesting: 60
   moveSpeedUnitPerSeconds: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
