@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M1 / 07_verify.md (milestone gate passed).
-- **Next up:** M2 / 01_player-sprite.md.
+- **Last executed:** M2 / 04_frame-rate-independence.md (build steps done; the `05_verify.md` gate is not yet confirmed).
+- **Next up:** M2 / 05_verify.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -32,11 +32,11 @@
 - [x] `07_verify.md` — milestone gate — 2026-08-24
 
 ## MILESTONE_2 — First script & frame-rate-independent motion
-- [ ] `01_player-sprite.md` — Add the player sprite
-- [ ] `02_first-script.md` — Write your first MonoBehaviour
-- [ ] `03_tune-in-inspector.md` — Tune it while it runs
-- [ ] `04_frame-rate-independence.md` — Prove the motion is frame-rate independent
-- [ ] `05_verify.md` — milestone gate
+- [x] `01_player-sprite.md` — Add the player sprite — 2026-08-27
+- [x] `02_first-script.md` — Write your first MonoBehaviour — 2026-08-27
+- [x] `03_tune-in-inspector.md` — Tune it while it runs — 2026-08-27
+- [x] `04_frame-rate-independence.md` — Prove the motion is frame-rate independent — 2026-08-27
+- [ ] `05_verify.md` — milestone gate (awaiting confirmation the gate passed)
 
 ## MILESTONE_3 — Input & running (keyboard and gamepad)
 - [ ] `01_meet-the-input-system.md` — Meet the Input System
