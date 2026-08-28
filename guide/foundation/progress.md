@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M3 / 06_verify.md (milestone gate passed; M3 complete).
-- **Next up:** M4 / 01_tune-gravity.md.
+- **Last executed:** M4 / 06_verify.md (milestone gate passed; M4 complete).
+- **Next up:** M5 / 01_acceleration.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -47,12 +47,12 @@
 - [x] `06_verify.md` — milestone gate — 2026-08-28
 
 ## MILESTONE_4 — Gravity, jumping & the ground check
-- [ ] `01_tune-gravity.md` — Give gravity some weight
-- [ ] `02_ground-layer.md` — Put the ground on its own layer
-- [ ] `03_ground-check.md` — Ask whether the player is grounded
-- [ ] `04_jump.md` — Jump once per press
-- [ ] `05_measure-the-jump.md` — Measure the jump
-- [ ] `06_verify.md` — milestone gate
+- [x] `01_tune-gravity.md` — Give gravity some weight — 2026-08-28
+- [x] `02_ground-layer.md` — Put the ground on its own layer — 2026-08-28
+- [x] `03_ground-check.md` — Ask whether the player is grounded — 2026-08-28
+- [x] `04_jump.md` — Jump once per press — 2026-08-28
+- [x] `05_measure-the-jump.md` — Measure the jump — 2026-08-28
+- [x] `06_verify.md` — milestone gate — 2026-08-28
 
 ## MILESTONE_5 — Game feel
 - [ ] `01_acceleration.md` — Give movement weight

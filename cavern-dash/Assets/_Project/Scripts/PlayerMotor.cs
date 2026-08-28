@@ -4,7 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInputReader))]
 public class PlayerMotor : MonoBehaviour
 {
-    [SerializeField] private float moveSpeedUnitsPerSeconds = 7f;
+    [SerializeField] private float moveSpeedUnitsPerSecond = 7f;
+    [SerializeField] private float groundAccelerationUnitsPerSecondSquared = 60f;
+    [SerializeField] private float airAccelerationUnitsPerSecondSquared = 35f;
 
     [Header("Ground check")]
     [SerializeField] private Vector2 groundCheckSizeUnits = new(0.9f, 0.12f);
@@ -29,8 +31,17 @@ public class PlayerMotor : MonoBehaviour
     {
         UpdateGroundedState();
 
-        float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSeconds;
-        body.linearVelocity = new Vector2(desiredHorizontalSpeed, body.linearVelocity.y);
+        float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSecond;
+        float accelerationThisStep = IsGrounded
+            ? groundAccelerationUnitsPerSecondSquared
+            : airAccelerationUnitsPerSecondSquared;
+
+        float newHorizontalSpeed = Mathf.MoveTowards(
+            body.linearVelocity.x,
+            desiredHorizontalSpeed,
+            accelerationThisStep * Time.fixedDeltaTime);
+
+        body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
 
         if (input.JumpRequested && IsGrounded)
         {
