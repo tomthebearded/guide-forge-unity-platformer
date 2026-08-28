@@ -4,11 +4,11 @@
 # STATUS — Cavern Dash
 
 > _Generated with **GuideForge v1.18.0** on 2026-08-22._
-> _Last updated with **GuideForge v1.16.0** on 2026-08-27._
+> _Last updated with **GuideForge v1.16.0** on 2026-08-28._
 
 ## Frontier
-- **Current frontier:** M2 — in progress (steps 01–04 executed; `05_verify.md` gate not yet confirmed).
-- **Executed through:** M2 / 04_frame-rate-independence.md (2026-08-27).
+- **Current frontier:** M4 — not started. M2 and M3 both complete (gates passed 2026-08-28).
+- **Executed through:** M3 / 06_verify.md (2026-08-28).
 
 ## Source inputs
 | Input file | Used for (stack / scope / decisions) | Provided on | Re-checked on |
@@ -19,8 +19,8 @@
 | Milestone | Status | Verified on | Notes |
 |-----------|--------|-------------|-------|
 | M1 — Project, Editor & version control | ✅ | 2026-08-24 | Amended 2026-08-24 (D30): the project is a folder in this repository, not a repository of its own. Executed and gate passed 2026-08-24. |
-| M2 — First script & frame-rate-independent motion | ⏳ | — | Steps 01–04 executed 2026-08-27; `05_verify.md` gate not yet confirmed. |
-| M3 — Input & running (keyboard and gamepad) | ❌ | — | |
+| M2 — First script & frame-rate-independent motion | ✅ | 2026-08-28 | Steps 01–04 executed 2026-08-27; `05_verify.md` gate passed 2026-08-28. |
+| M3 — Input & running (keyboard and gamepad) | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
 | M4 — Gravity, jumping & the ground check | ❌ | — | |
 | M5 — Game feel | ❌ | — | Reality-check gate: stop and play for five minutes |
 | M6 — The level as a Tilemap | ❌ | — | |
@@ -47,7 +47,13 @@
 | 2026-08-24 | M13/04 | Action 5 numbered its commands "first / second / third" against a different order than it listed them in | The reader would run `git check-ignore` from the repository root, where it prints nothing and the gate fails | Commands named instead of numbered, each with the folder it runs from |
 | 2026-08-24 | M1/01, guide `README.md` | Nothing told the reader to clone the repository, yet M1/02 sets the project's location by it | A reader working from a download has no repository to put the project in | Clone stated in M1/01 *Before you start* and in *Following this guide*; M1/04's troubleshooting now covers the download case |
 
-## Session log
+- 2026-08-28 — **M2 and M3 gates confirmed passed.** Reader confirmed both `05_verify.md` (M2) and
+  `06_verify.md` (M3) gates passed. Both verify rows marked `[x]`; M2 and M3 both marked ✅ (verified 2026-08-28).
+  Frontier advanced to M4 (not started).
+- 2026-08-28 — **M3 build steps executed.** Reader reported "M3 done"; steps 01–05
+  (01_meet-the-input-system → 05_move-with-velocity) marked `[x]`. The `06_verify.md` milestone gate was not
+  mentioned, so M3 stayed ⏳ pending confirmation the gate passed (confirmed later same day). Frontier advanced
+  to M3 / 05.
 - 2026-08-27 — **M2 build steps executed.** Reader reported "milestone 2 completed"; steps 01–04
   (01_player-sprite → 04_frame-rate-independence) marked `[x]`. The `05_verify.md` milestone gate was not
   mentioned, so M2 stays ⏳ and its verify row unticked pending confirmation the gate passed. Frontier advanced

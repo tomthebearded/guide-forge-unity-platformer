@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M2 / 04_frame-rate-independence.md (build steps done; the `05_verify.md` gate is not yet confirmed).
-- **Next up:** M2 / 05_verify.md.
+- **Last executed:** M3 / 06_verify.md (milestone gate passed; M3 complete).
+- **Next up:** M4 / 01_tune-gravity.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -36,15 +36,15 @@
 - [x] `02_first-script.md` — Write your first MonoBehaviour — 2026-08-27
 - [x] `03_tune-in-inspector.md` — Tune it while it runs — 2026-08-27
 - [x] `04_frame-rate-independence.md` — Prove the motion is frame-rate independent — 2026-08-27
-- [ ] `05_verify.md` — milestone gate (awaiting confirmation the gate passed)
+- [x] `05_verify.md` — milestone gate — 2026-08-28
 
 ## MILESTONE_3 — Input & running (keyboard and gamepad)
-- [ ] `01_meet-the-input-system.md` — Meet the Input System
-- [ ] `02_input-reader.md` — Read the Move action
-- [ ] `03_ground-platform.md` — Give the world a floor
-- [ ] `04_rigidbody-and-collider.md` — Give the player a body
-- [ ] `05_move-with-velocity.md` — Move the body with velocity
-- [ ] `06_verify.md` — milestone gate
+- [x] `01_meet-the-input-system.md` — Meet the Input System — 2026-08-28
+- [x] `02_input-reader.md` — Read the Move action — 2026-08-28
+- [x] `03_ground-platform.md` — Give the world a floor — 2026-08-28
+- [x] `04_rigidbody-and-collider.md` — Give the player a body — 2026-08-28
+- [x] `05_move-with-velocity.md` — Move the body with velocity — 2026-08-28
+- [x] `06_verify.md` — milestone gate — 2026-08-28
 
 ## MILESTONE_4 — Gravity, jumping & the ground check
 - [ ] `01_tune-gravity.md` — Give gravity some weight
