@@ -11,6 +11,9 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float groundCheckDistanceBelowCentreUnits = 0.5f;
     [SerializeField] private LayerMask groundLayers;
 
+    [Header("Jump")]
+    [SerializeField] private float jumpVelocityUnitsPerSecond = 14f;
+
     public bool IsGrounded { get; private set; }
 
     private Rigidbody2D body;
@@ -28,6 +31,13 @@ public class PlayerMotor : MonoBehaviour
 
         float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSeconds;
         body.linearVelocity = new Vector2(desiredHorizontalSpeed, body.linearVelocity.y);
+
+        if (input.JumpRequested && IsGrounded)
+        {
+            body.linearVelocity = new Vector2(body.linearVelocity.x, jumpVelocityUnitsPerSecond);
+        }
+
+        input.ConsumeJumpRequest();
     }
 
     private void UpdateGroundedState()
