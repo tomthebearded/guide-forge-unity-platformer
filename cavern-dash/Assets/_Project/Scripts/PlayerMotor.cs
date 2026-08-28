@@ -7,6 +7,8 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float moveSpeedUnitsPerSecond = 7f;
     [SerializeField] private float groundAccelerationUnitsPerSecondSquared = 60f;
     [SerializeField] private float airAccelerationUnitsPerSecondSquared = 35f;
+    [SerializeField] private float coyoteTimeSeconds = 0.10f;
+
 
     [Header("Ground check")]
     [SerializeField] private Vector2 groundCheckSizeUnits = new(0.9f, 0.12f);
@@ -20,6 +22,7 @@ public class PlayerMotor : MonoBehaviour
 
     private Rigidbody2D body;
     private PlayerInputReader input;
+    private float coyoteTimeRemainingSeconds;
 
     void Awake()
     {
@@ -30,6 +33,11 @@ public class PlayerMotor : MonoBehaviour
     void FixedUpdate()
     {
         UpdateGroundedState();
+
+        if (IsGrounded)
+            coyoteTimeRemainingSeconds = coyoteTimeSeconds;
+        else
+            coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
 
         float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSecond;
         float accelerationThisStep = IsGrounded
@@ -43,9 +51,11 @@ public class PlayerMotor : MonoBehaviour
 
         body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
 
-        if (input.JumpRequested && IsGrounded)
+        if (input.JumpRequested && coyoteTimeRemainingSeconds > 0f)
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpVelocityUnitsPerSecond);
+
+            coyoteTimeRemainingSeconds = 0f;
         }
 
         input.ConsumeJumpRequest();
