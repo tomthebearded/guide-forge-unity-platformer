@@ -1,6 +1,53 @@
 # M6 · Step 01 of 06 — Import the art
 > Nav: — · [Overview](00_overview.md) · [Build a tile palette →](02_tile-palette.md)
 
+## Before you continue — corrections
+> Applies only if you executed M5 steps 02, 03 and 06 before 2026-08-28. Started the guide after that date?
+> Skip this section — your project already matches.
+
+A reader found that **mashing the jump button could fire a second jump in mid-air**. The cause was in M5's
+coyote window: it was topped back up on *every* grounded frame, but the ground check can still see the floor
+for one physics step after take-off — so the window was re-armed while the player was already rising, and a
+freshly pressed (mashed) jump caught it. The fix guards the refill so it never re-arms while the player is
+moving upward.
+
+1. In `Assets/_Project/Scripts/PlayerMotor.cs`, in `FixedUpdate()`, **REPLACE** the coyote refill block —
+   the `if (IsGrounded) { coyoteTimeRemainingSeconds = coyoteTimeSeconds; } else { … }` directly below the
+   `UpdateGroundedState();` call — with this guarded version:
+
+   ```csharp
+   // Assets/_Project/Scripts/PlayerMotor.cs — in FixedUpdate(), below UpdateGroundedState()
+   // Refill only while grounded AND not rising. The ground check can still see the floor
+   // for a step after takeoff; refilling then would re-arm the window mid-rise, and a
+   // freshly pressed jump would fire in the air.
+   if (IsGrounded && body.linearVelocity.y <= 0f)
+   {
+       coyoteTimeRemainingSeconds = coyoteTimeSeconds;
+   }
+   else if (!IsGrounded)
+   {
+       coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
+   }
+   ```
+
+   Nothing else in `PlayerMotor` changes — the jump block, the spend (`coyoteTimeRemainingSeconds = 0f;`) and
+   the buffer are all still correct.
+
+**Corrected when:**
+- [ ] In Play Mode, jumping from flat ground and then **mashing Space** through the take-off produces exactly
+      one jump — never a second jump in the air.
+- [ ] Running off the ledge and pressing within ~0.1 s still jumps (coyote time still works), and an early
+      press just before landing still fires on contact (the buffer still works).
+- [ ] The Console shows no red entries.
+
+**Suggested commit:**
+```
+fix(player): guard the coyote refill so mashing can't double-jump
+```
+
+> Already applied this fix by hand? Then this section is a confirmation — your project already matches, and you
+> can tick the boxes above and carry on.
+
 **Before you start:** M5's gate passed. You need a browser and a few minutes; the download is small. Git LFS
 has been armed for `*.png` since
 [M1 step 05](../MILESTONE_1_project-and-version-control/05_git-lfs.md), which is why this step can commit

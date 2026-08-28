@@ -1,6 +1,11 @@
 # M5 · Step 02 of 06 — Coyote time: jump just after the ledge
 > Nav: [← Give movement weight](01_acceleration.md) · [Overview](00_overview.md) · [Jump buffering: jump just before landing →](03_jump-buffer.md)
 
+> ⚠️ **Superseded 2026-08-28** — action 2's coyote refill is now guarded so mashing jump can't double-jump in
+> mid-air. The step below is corrected and safe to follow fresh. **If you executed it before 2026-08-28**, your
+> project has the old version — apply the fix under *Before you continue — corrections* in
+> [../MILESTONE_6_tilemap-level/01_import-the-art.md](../MILESTONE_6_tilemap-level/01_import-the-art.md).
+
 **Before you start:** [step 01](01_acceleration.md) finished — movement accelerates, and the jump still works
 exactly as M4 left it.
 
@@ -24,6 +29,12 @@ The implementation is a countdown, not a flag. While grounded it is topped back 
 the jump asks whether it is still positive. **And a jump spends it** — setting it to zero — because otherwise
 the player could jump, still be inside the window, and jump again.
 
+Spending it is necessary but not sufficient. The ground check can still see the floor for a physics step
+*after* take-off, so a blind refill would top the window straight back up while the player is already rising —
+and a second, freshly pressed jump (someone mashing the button) would catch that re-armed window and fire in
+mid-air. So the refill only runs while grounded **and not moving upward**: a jump you are still climbing out
+of never re-arms the window.
+
 ## Do this
 
 1. In `Assets/_Project/Scripts/PlayerMotor.cs`, **ADD** this field and this counter directly below the
@@ -42,11 +53,14 @@ the player could jump, still be inside the window, and jump again.
 
    ```csharp
    // Assets/_Project/Scripts/PlayerMotor.cs — in FixedUpdate(), below UpdateGroundedState()
-   if (IsGrounded)
+   // Refill only while grounded AND not rising. The ground check can still see the floor
+   // for a step after takeoff; refilling then would re-arm the window mid-rise, and a
+   // freshly pressed jump would fire in the air.
+   if (IsGrounded && body.linearVelocity.y <= 0f)
    {
        coyoteTimeRemainingSeconds = coyoteTimeSeconds;
    }
-   else
+   else if (!IsGrounded)
    {
        coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
    }
@@ -83,15 +97,18 @@ the player could jump, still be inside the window, and jump again.
    set it back to `0.1`, and save the scene.
 
 7. Check the thing that would make this a bug rather than a feature: jump normally from the middle of the
-   strip and press **Space** again immediately while rising. Nothing happens — the window was spent by the
-   first jump.
+   strip and then **mash Space** as fast as you can right through the take-off. The square jumps **once** and
+   no more — the window is spent by the first jump, and the guard (`&& body.linearVelocity.y <= 0f`) stops the
+   ground check re-arming it while the square is still rising. Without that guard, a mashed press catches the
+   re-armed window and fires a second jump a fraction of a unit off the ground.
 
 ## Done when (this step)
 - [ ] Running off the strip and pressing **Space** within about a tenth of a second → the square jumps.
 - [ ] Doing the same after a clear pause in the air → nothing happens.
 - [ ] With **Coyote Time Seconds** set to `0`, the run-off-and-press produces no jump at all; restoring `0.1`
       brings it back.
-- [ ] Jumping from flat ground and immediately pressing **Space** again → still exactly one jump.
+- [ ] Jumping from flat ground and then **mashing Space** through the take-off → still exactly one jump, with
+      no second jump in the air.
 - [ ] The Console shows no red entries; the project compiles.
 
 ## Suggested commit
@@ -100,8 +117,11 @@ feat(player): forgive late jumps with a 0.10s coyote window
 ```
 
 ## If it breaks
-- **The player can now double-jump** → `coyoteTimeRemainingSeconds = 0f;` is missing from inside the jump
-  block, so the window survives the jump that used it.
+- **Mashing jump fires a second jump in mid-air** → the refill is not guarded by `&& body.linearVelocity.y <= 0f`,
+  so the ground check re-arms the window for a step after take-off and a fresh press catches it. The refill
+  must not run while the player is rising.
+- **The player can now double-jump from a single press** → `coyoteTimeRemainingSeconds = 0f;` is missing from
+  inside the jump block, so the window survives the jump that used it.
 - **Coyote time seems to last for ever** → the `else` branch is missing, or the countdown is subtracting
   `Time.deltaTime` outside `FixedUpdate`. It must drain on the physics clock, in the same method.
 - **The window feels far longer than a tenth of a second** → check the field really reads `0.1` and not `1`.

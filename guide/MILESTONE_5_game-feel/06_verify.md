@@ -1,6 +1,12 @@
 # M5 · Verify — Game feel
 > Nav: [← Stop and play it](05_reality-check.md) · [Overview](00_overview.md) · [The level as a Tilemap →](../MILESTONE_6_tilemap-level/00_overview.md)
 
+> ⚠️ **Superseded 2026-08-28** — the coyote refill in the checkpoint below is now guarded so mashing jump
+> can't double-jump in mid-air, and the "one press, one jump" gate box checks for it. **If you executed M5
+> before 2026-08-28**, apply the fix under *Before you continue — corrections* in
+> [../MILESTONE_6_tilemap-level/01_import-the-art.md](../MILESTONE_6_tilemap-level/01_import-the-art.md), then
+> re-run this gate.
+
 ## Done-when gate (the real test — check every box by hand)
 
 Observed in **Play Mode in the Editor**, `Level01` open, Game view focused. Where a box refers to "your
@@ -25,8 +31,8 @@ the instrument removed.
       takes off the instant it touches down, with no pause on the ground.
 - [ ] **The buffer is what does it.** Set **Jump Buffer Seconds** to `0` → the early press is discarded and
       the square lands and stays. Restore `0.12` → it works again.
-- [ ] **One press, one jump — still.** However early or late a press is, it never produces two jumps, and
-      pressing again in mid-air does nothing.
+- [ ] **One press, one jump — still.** However early or late a press is, it never produces two jumps;
+      **mashing** Space through a take-off yields exactly one jump, and pressing again in mid-air does nothing.
 - [ ] **Height is a decision.** The *numbers* for this box were read at
       [step 04](04_variable-jump-height.md), while the apex probe was still attached: a held jump printed your
       M4 baseline, a quick tap printed under 70% of it. Confirm you recorded both, then confirm the effect is
@@ -171,11 +177,14 @@ public class PlayerMotor : MonoBehaviour
     {
         UpdateGroundedState();
 
-        if (IsGrounded)
+        // Refill only while grounded AND not rising. The ground check can still see the floor
+        // for a step after takeoff; refilling then would re-arm the window mid-rise, and a
+        // freshly pressed jump would fire in the air.
+        if (IsGrounded && body.linearVelocity.y <= 0f)
         {
             coyoteTimeRemainingSeconds = coyoteTimeSeconds;
         }
-        else
+        else if (!IsGrounded)
         {
             coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
         }
@@ -277,7 +286,7 @@ If [step 05](05_reality-check.md) led you to different numbers, **yours are corr
 
 | Symptom | Likely cause → fix |
 |---|---|
-| The player can double-jump | `coyoteTimeRemainingSeconds = 0f;` missing inside the jump block. |
+| The player can double-jump | `coyoteTimeRemainingSeconds = 0f;` missing inside the jump block — or, if it only happens while mashing, the refill isn't guarded by `&& body.linearVelocity.y <= 0f`, so the ground check re-arms coyote for a step after take-off. |
 | One press produces a bouncing loop | `input.ConsumeJumpRequest();` sits outside the `if`, so the same timestamp keeps qualifying. |
 | Gravity grows every jump until the player is nailed to the floor | `baseGravityScale` is read from `body.gravityScale` inside the multiplier method instead of once in `Awake`. |
 | Tap and hold give identical heights | `IsJumpHeld` is never set, or `IsPressed()` is being called from `FixedUpdate`. |

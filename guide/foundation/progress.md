@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M5 / 06_verify.md (milestone gate passed; M5 complete).
-- **Next up:** M6 / 01_import-the-art.md.
+- **Last executed:** M5 / 06_verify.md (gate passed 2026-08-28) — but M5 was **corrected 2026-08-28** (coyote double-jump fix); rows 02/03/06 are `[!]` pending the retrofit and a re-run of the gate.
+- **Next up:** M6 / 01_import-the-art.md — apply its *Before you continue — corrections* first (confirm-only if you already hand-patched `PlayerMotor.cs`), then re-run the M5 gate.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -56,11 +56,11 @@
 
 ## MILESTONE_5 — Game feel
 - [x] `01_acceleration.md` — Give movement weight — 2026-08-28
-- [x] `02_coyote-time.md` — Coyote time: jump just after the ledge — 2026-08-28
-- [x] `03_jump-buffer.md` — Jump buffering: jump just before landing — 2026-08-28
+- [!] `02_coyote-time.md` — Coyote time: jump just after the ledge — executed 2026-08-28; **superseded 2026-08-28** (coyote refill guarded against mid-rise re-arm) — retrofit in *Before you continue — corrections*, `MILESTONE_6_tilemap-level/01_import-the-art.md`
+- [!] `03_jump-buffer.md` — Jump buffering: jump just before landing — executed 2026-08-28; **superseded 2026-08-28** (gate now checks mashing) — retrofit in *Before you continue — corrections*, `MILESTONE_6_tilemap-level/01_import-the-art.md`
 - [x] `04_variable-jump-height.md` — Variable jump height — 2026-08-28
 - [x] `05_reality-check.md` — Stop and play it — 2026-08-28 (played; `JumpApexProbe.cs` deleted — confirmed gone from disk)
-- [x] `06_verify.md` — milestone gate — 2026-08-28
+- [!] `06_verify.md` — milestone gate — executed 2026-08-28; **superseded 2026-08-28** (checkpoint refill guarded; gate re-tightened) — re-run after applying the retrofit in `MILESTONE_6_tilemap-level/01_import-the-art.md`
 
 ## MILESTONE_6 — The level as a Tilemap
 - [ ] `01_import-the-art.md` — Import the art

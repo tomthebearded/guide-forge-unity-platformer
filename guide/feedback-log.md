@@ -16,5 +16,5 @@
 - **Suspected class:** `unknown` — the underlying cause is diagnosed (a correctness defect in the guide's taught code), but the fixed vocabulary has no value for "bug in the guide's own code"; `unknown` is the honest fit.
 - **Severity:** `slowed-down` — the game still runs, but the behaviour is wrong and directly contradicts the M5 verify gate's "one press, one jump" box (audit-BLOCKER-worthy for the guide when fixed).
 - **Tags:** M5, jump, coyote-time, jump-buffer, game-feel, correctness, verify-gate, PlayerMotor
-- **Status:** logged
+- **Status:** fixed via /report-issue (2026-08-28) — Route B; root fix in M5/02, swept to M5/03, M5/06, M8/02, M8/06, M10/07; retrofit in M6/01 corrections; see [decision-log D31](foundation/decision-log.md#d31--the-coyote-refill-is-guarded-against-re-arming-while-rising)
 - **Quote:** "when i keep pressing jump sometime it jumps in midair"

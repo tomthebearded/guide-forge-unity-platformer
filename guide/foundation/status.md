@@ -5,11 +5,10 @@
 
 > _Generated with **GuideForge v1.18.0** on 2026-08-22._
 > _Last updated with **GuideForge v1.16.0** on 2026-08-28._
-> _Marked with **GuideForge v1.16.0** on 2026-08-28._
 
 ## Frontier
-- **Current frontier:** M6 — not started. M2, M3, M4 and M5 all complete (M5 gate passed 2026-08-28).
-- **Executed through:** M5 / 06_verify.md (2026-08-28).
+- **Current frontier:** M6 — not started. M2–M4 complete; **M5 was corrected 2026-08-28 (coyote double-jump fix) and now needs re-verification** — apply the corrections at `MILESTONE_6_tilemap-level/01_import-the-art.md` and re-run the M5 gate.
+- **Executed through:** M5 / 06_verify.md (2026-08-28) — gate now `[!]` pending re-run after the correction.
 
 ## Source inputs
 | Input file | Used for (stack / scope / decisions) | Provided on | Re-checked on |
@@ -23,7 +22,7 @@
 | M2 — First script & frame-rate-independent motion | ✅ | 2026-08-28 | Steps 01–04 executed 2026-08-27; `05_verify.md` gate passed 2026-08-28. |
 | M3 — Input & running (keyboard and gamepad) | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
 | M4 — Gravity, jumping & the ground check | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
-| M5 — Game feel | ✅ | 2026-08-28 | Steps 01–04 code-confirmed in the working tree; step 05 played and `JumpApexProbe.cs` deleted (confirmed gone); `06_verify.md` gate passed 2026-08-28. |
+| M5 — Game feel | ⏳ | — | Gate passed 2026-08-28, then **corrected 2026-08-28** (coyote double-jump fix): 02/03/06 rewritten, rows `[!]`. Needs re-verification once the retrofit at M6/01 is applied and the gate re-run. |
 | M6 — The level as a Tilemap | ❌ | — | |
 | M7 — Moving & one-way platforms | ❌ | — | |
 | M8 — Dash & wall-jump (a movement state machine) | ❌ | — | |
@@ -47,7 +46,16 @@
 | 2026-08-24 | M1/04 | The gate piped `git status` into `head` and `grep` | `stack.md` targets PowerShell as well as zsh/bash, where neither exists | Replaced with pipe-free `git status --porcelain -uall <pathspec>`, and the both-shells rule added to `conventions.md` |
 | 2026-08-24 | M13/04 | Action 5 numbered its commands "first / second / third" against a different order than it listed them in | The reader would run `git check-ignore` from the repository root, where it prints nothing and the gate fails | Commands named instead of numbered, each with the folder it runs from |
 | 2026-08-24 | M1/01, guide `README.md` | Nothing told the reader to clone the repository, yet M1/02 sets the project's location by it | A reader working from a download has no repository to put the project in | Clone stated in M1/01 *Before you start* and in *Following this guide*; M1/04's troubleshooting now covers the download case |
+| 2026-08-28 | M5/02, M5/03, M5/06 (swept M8/02, M8/06, M10/07) | Coyote window refilled on *every* grounded frame (`if (IsGrounded) coyoteTimeRemainingSeconds = coyoteTimeSeconds;`); gates tested only a single press | The ground check still reads grounded for a step after take-off, so the refill re-armed the window mid-rise and a mashed press double-jumped in mid-air — contradicting M5's "one press, one jump" gate | **Route B.** Guarded the refill (`&& body.linearVelocity.y <= 0f`, `else if (!IsGrounded)`) in all six places; M5/02/03/06 corrected in place + superseded banners; retrofit (one code change) collected in M6/01 *Before you continue — corrections*; M5 gates re-tightened to test mashing. Re-apply checklist for the reader lives in that corrections section. |
 
+- 2026-08-28 — **M5 coyote double-jump fixed (/report-issue, Route B).** Field report: mashing jump sometimes
+  produced a second jump in mid-air. Root cause: the coyote window was refilled on every grounded frame, and
+  the ground check still reads grounded for a physics step after take-off, so a freshly pressed (mashed) jump
+  caught the re-armed window. Fixed by guarding the refill against re-arming while rising, in M5/02, M5/03
+  (gate), M5/06 (checkpoint + gate) and swept into M8/02, M8/06, M10/07. Executed steps 02/03/06 corrected in
+  place with superseded banners; retrofit collected in M6/01's corrections section; rows `[!]`. **M5 → ⏳,
+  needs re-verification.** (Separately noted, not fixed here: M1/05 is marked done but no `.gitattributes`
+  exists, so `*.png` is **not** actually LFS-tracked — a distinct open defect.)
 - 2026-08-28 — **M5 gate confirmed passed; milestone complete.** Reader confirmed step 05 (played it) and the
   `06_verify.md` gate, and deleted the apex probe — `JumpApexProbe*` confirmed gone from disk, so the gate's
   "measuring tool is gone" box is genuinely satisfied. Rows 05 and 06 marked `[x]`; M5 marked ✅ (verified

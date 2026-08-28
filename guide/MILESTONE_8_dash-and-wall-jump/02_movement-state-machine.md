@@ -85,11 +85,13 @@ changed* — and with somewhere for [step 03](03_dash.md) and [step 04](04_wall-
 
    private void UpdateCoyoteTimer()
    {
-       if (IsGrounded)
+       // Refill only while grounded AND not rising, so the ground check can't re-arm the
+       // window for a step after takeoff and let a mashed press double-jump in mid-air.
+       if (IsGrounded && body.linearVelocity.y <= 0f)
        {
            coyoteTimeRemainingSeconds = coyoteTimeSeconds;
        }
-       else
+       else if (!IsGrounded)
        {
            coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
        }

@@ -31,6 +31,9 @@ Kenney's **CC0** packs — full verified table + check date: **[foundation/stack
 
 ## Updates
 
+- 2026-08-28 — fixed: mashing jump could produce a second jump in mid-air; the coyote window is now guarded
+  against re-arming while rising (M5/02, /03, /06; swept M8/02, /06 and M10/07; retrofit in M6/01). See
+  [decision-log D31](foundation/decision-log.md#d31--the-coyote-refill-is-guarded-against-re-arming-while-rising).
 - 2026-08-24 — audited after the amendment: 4 blockers and 5 warnings, all fixed — the `git status --short`
   path claim, two Unix-only pipes in a gate, M13/04's command order, and seven gates that never said which
   folder to run from.

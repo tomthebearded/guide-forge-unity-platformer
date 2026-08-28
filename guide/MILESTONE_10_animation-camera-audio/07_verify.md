@@ -350,11 +350,13 @@ public class PlayerMotor : MonoBehaviour
 
     private void UpdateCoyoteTimer()
     {
-        if (IsGrounded)
+        // Refill only while grounded AND not rising, so the ground check can't re-arm the
+        // window for a step after takeoff and let a mashed press double-jump in mid-air.
+        if (IsGrounded && body.linearVelocity.y <= 0f)
         {
             coyoteTimeRemainingSeconds = coyoteTimeSeconds;
         }
-        else
+        else if (!IsGrounded)
         {
             coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
         }

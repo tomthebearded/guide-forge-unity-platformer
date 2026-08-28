@@ -1,6 +1,12 @@
 # M5 · Step 03 of 06 — Jump buffering: jump just before landing
 > Nav: [← Coyote time: jump just after the ledge](02_coyote-time.md) · [Overview](00_overview.md) · [Variable jump height →](04_variable-jump-height.md)
 
+> ⚠️ **Superseded 2026-08-28** — with the buffer in place, an unguarded coyote refill let *mashing* jump
+> double-jump in mid-air; the code fix lives in [step 02](02_coyote-time.md) and this step's gate now checks
+> for it. The step below is corrected. **If you executed it before 2026-08-28**, apply the fix under *Before
+> you continue — corrections* in
+> [../MILESTONE_6_tilemap-level/01_import-the-art.md](../MILESTONE_6_tilemap-level/01_import-the-art.md).
+
 **Before you start:** [step 02](02_coyote-time.md) finished — coyote time works and does not permit a second
 jump.
 
@@ -119,7 +125,8 @@ leaving them out of step would mean a project that does not compile.
       pause on the ground.
 - [ ] Pressing **Space** a long way above the ground → nothing is remembered; the square lands and stays.
 - [ ] With **Jump Buffer Seconds** at `0`, an early press is discarded; restoring `0.12` makes it work again.
-- [ ] One press never produces two jumps, however early it is made.
+- [ ] One press never produces two jumps, however early it is made — and **mashing** Space through a take-off
+      still yields exactly one jump, never a second in the air.
 - [ ] The Console shows no red entries; the project compiles.
 
 ## Suggested commit
@@ -136,6 +143,9 @@ feat(player): buffer jump presses for 0.12s before landing
   `1.2` instead of `0.12`). The buffer must be shorter than the time it takes a player to change their mind.
 - **The very first jump of a session fires without a press** → `lastJumpPressedTimeSeconds` was initialised to
   `0` rather than `float.NegativeInfinity`, and `Time.time` starts near zero.
+- **Mashing jump pops a second jump in mid-air** → not a buffer fault: [step 02](02_coyote-time.md)'s coyote
+  refill isn't guarded against re-arming while rising. Apply the corrections in
+  [M6/01](../MILESTONE_6_tilemap-level/01_import-the-art.md).
 
 ---
 > Nav: [← Coyote time: jump just after the ledge](02_coyote-time.md) · [Overview](00_overview.md) · [Variable jump height →](04_variable-jump-height.md)
