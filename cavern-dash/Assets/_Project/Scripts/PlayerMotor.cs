@@ -17,6 +17,8 @@ public class PlayerMotor : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float jumpVelocityUnitsPerSecond = 14f;
+    [SerializeField] private float jumpBufferSeconds = 0.12f;
+
 
     public bool IsGrounded { get; private set; }
 
@@ -51,14 +53,15 @@ public class PlayerMotor : MonoBehaviour
 
         body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
 
-        if (input.JumpRequested && coyoteTimeRemainingSeconds > 0f)
+        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
+
+        if (jumpIsBuffered && coyoteTimeRemainingSeconds > 0f)
         {
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpVelocityUnitsPerSecond);
 
             coyoteTimeRemainingSeconds = 0f;
+            input.ConsumeJumpRequest();
         }
-
-        input.ConsumeJumpRequest();
     }
 
     private void UpdateGroundedState()

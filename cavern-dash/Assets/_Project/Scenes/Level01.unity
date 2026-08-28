@@ -681,6 +681,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   jumpVelocityUnitsPerSecond: 14
+  jumpBufferSeconds: 0.1
 --- !u!114 &1473688158
 MonoBehaviour:
   m_ObjectHideFlags: 0
