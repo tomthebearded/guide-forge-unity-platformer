@@ -8,4 +8,13 @@
 > Written by `/log-feedback` (capture) and, when a fix ships, by `/report-issue`. Newest entries on top; one
 > entry per distinct piece of friction. Use absolute dates (`2026-08-22`), never "today".
 
-_No entries yet._
+## 2026-08-28 — M5 · Mashing the jump button produces a second jump in mid-air
+
+- **Where:** M5 — Game feel. Coyote logic introduced in [`02_coyote-time.md`](MILESTONE_5_game-feel/02_coyote-time.md), combined with the buffer in [`03_jump-buffer.md`](MILESTONE_5_game-feel/03_jump-buffer.md); contradicts the gate box in [`06_verify.md`](MILESTONE_5_game-feel/06_verify.md).
+- **Reader:** the guide's target reader — a developer following the M5 build and testing jump feel by hand.
+- **What happened:** Repeatedly mashing the jump button while taking off *sometimes* produces a second jump a fraction of a unit above the ground. **Expected** (M5/06 gate): "one press, one jump — pressing again in mid-air does nothing." **Actually:** an intermittent extra mid-air jump. Root cause understood: the taught `PlayerMotor` refills the coyote window on *every* grounded frame (`if (IsGrounded) coyoteTimeRemainingSeconds = coyoteTimeSeconds;`), the ground-check `OverlapBox` can still report grounded for a frame after takeoff, so coyote is re-armed, and a fresh (mashed) buffered press then satisfies `jumpIsBuffered && coyoteTimeRemainingSeconds > 0f` a second time. Timing-dependent, hence "sometime".
+- **Suspected class:** `unknown` — the underlying cause is diagnosed (a correctness defect in the guide's taught code), but the fixed vocabulary has no value for "bug in the guide's own code"; `unknown` is the honest fit.
+- **Severity:** `slowed-down` — the game still runs, but the behaviour is wrong and directly contradicts the M5 verify gate's "one press, one jump" box (audit-BLOCKER-worthy for the guide when fixed).
+- **Tags:** M5, jump, coyote-time, jump-buffer, game-feel, correctness, verify-gate, PlayerMotor
+- **Status:** logged
+- **Quote:** "when i keep pressing jump sometime it jumps in midair"

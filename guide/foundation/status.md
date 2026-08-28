@@ -5,10 +5,11 @@
 
 > _Generated with **GuideForge v1.18.0** on 2026-08-22._
 > _Last updated with **GuideForge v1.16.0** on 2026-08-28._
+> _Marked with **GuideForge v1.16.0** on 2026-08-28._
 
 ## Frontier
-- **Current frontier:** M5 — not started. M2, M3 and M4 all complete (gates passed 2026-08-28).
-- **Executed through:** M4 / 06_verify.md (2026-08-28).
+- **Current frontier:** M6 — not started. M2, M3, M4 and M5 all complete (M5 gate passed 2026-08-28).
+- **Executed through:** M5 / 06_verify.md (2026-08-28).
 
 ## Source inputs
 | Input file | Used for (stack / scope / decisions) | Provided on | Re-checked on |
@@ -22,7 +23,7 @@
 | M2 — First script & frame-rate-independent motion | ✅ | 2026-08-28 | Steps 01–04 executed 2026-08-27; `05_verify.md` gate passed 2026-08-28. |
 | M3 — Input & running (keyboard and gamepad) | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
 | M4 — Gravity, jumping & the ground check | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
-| M5 — Game feel | ❌ | — | Reality-check gate: stop and play for five minutes |
+| M5 — Game feel | ✅ | 2026-08-28 | Steps 01–04 code-confirmed in the working tree; step 05 played and `JumpApexProbe.cs` deleted (confirmed gone); `06_verify.md` gate passed 2026-08-28. |
 | M6 — The level as a Tilemap | ❌ | — | |
 | M7 — Moving & one-way platforms | ❌ | — | |
 | M8 — Dash & wall-jump (a movement state machine) | ❌ | — | |
@@ -47,6 +48,18 @@
 | 2026-08-24 | M13/04 | Action 5 numbered its commands "first / second / third" against a different order than it listed them in | The reader would run `git check-ignore` from the repository root, where it prints nothing and the gate fails | Commands named instead of numbered, each with the folder it runs from |
 | 2026-08-24 | M1/01, guide `README.md` | Nothing told the reader to clone the repository, yet M1/02 sets the project's location by it | A reader working from a download has no repository to put the project in | Clone stated in M1/01 *Before you start* and in *Following this guide*; M1/04's troubleshooting now covers the download case |
 
+- 2026-08-28 — **M5 gate confirmed passed; milestone complete.** Reader confirmed step 05 (played it) and the
+  `06_verify.md` gate, and deleted the apex probe — `JumpApexProbe*` confirmed gone from disk, so the gate's
+  "measuring tool is gone" box is genuinely satisfied. Rows 05 and 06 marked `[x]`; M5 marked ✅ (verified
+  2026-08-28). Frontier advanced to M6 (not started).
+- 2026-08-28 — **M5 marked against the codebase (claimed "complete").** Reconciled the "M5 complete" claim
+  with the working tree. Build steps 01–04 (01_acceleration → 04_variable-jump-height) are demonstrably in
+  `PlayerMotor.cs` (acceleration via `Mathf.MoveTowards`, `coyoteTimeSeconds`, `jumpBufferSeconds` +
+  `TimeSinceJumpPressedSeconds`, fall/low-jump gravity multipliers + `IsJumpHeld`), each backed by a commit —
+  marked `[x]`. **Step 05 (reality-check) is NOT done:** it deletes `JumpApexProbe.cs`, but that file is still
+  on disk, so its `[ ]` stands. The `06_verify.md` gate is a hand-observed Play Mode test and would currently
+  fail its "measuring tool is gone" box while the probe exists — left `[ ]`. **M5 stays ⏳, not ✅.** Frontier
+  advanced to M5 / 04. Awaiting confirmation the reader played it, deleted the probe, and the gate passed.
 - 2026-08-28 — **M4 gate confirmed passed.** Reader confirmed the `06_verify.md` (M4) gate passed. Verify row
   marked `[x]`; M4 marked ✅ (verified 2026-08-28). Frontier advanced to M5 (not started).
 - 2026-08-28 — **M4 build steps executed.** Reader reported "M4 done"; steps 01–05

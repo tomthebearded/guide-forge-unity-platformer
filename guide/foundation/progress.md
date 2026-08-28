@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M4 / 06_verify.md (milestone gate passed; M4 complete).
-- **Next up:** M5 / 01_acceleration.md.
+- **Last executed:** M5 / 06_verify.md (milestone gate passed; M5 complete).
+- **Next up:** M6 / 01_import-the-art.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -55,12 +55,12 @@
 - [x] `06_verify.md` — milestone gate — 2026-08-28
 
 ## MILESTONE_5 — Game feel
-- [ ] `01_acceleration.md` — Give movement weight
-- [ ] `02_coyote-time.md` — Coyote time: jump just after the ledge
-- [ ] `03_jump-buffer.md` — Jump buffering: jump just before landing
-- [ ] `04_variable-jump-height.md` — Variable jump height
-- [ ] `05_reality-check.md` — Stop and play it
-- [ ] `06_verify.md` — milestone gate
+- [x] `01_acceleration.md` — Give movement weight — 2026-08-28
+- [x] `02_coyote-time.md` — Coyote time: jump just after the ledge — 2026-08-28
+- [x] `03_jump-buffer.md` — Jump buffering: jump just before landing — 2026-08-28
+- [x] `04_variable-jump-height.md` — Variable jump height — 2026-08-28
+- [x] `05_reality-check.md` — Stop and play it — 2026-08-28 (played; `JumpApexProbe.cs` deleted — confirmed gone from disk)
+- [x] `06_verify.md` — milestone gate — 2026-08-28
 
 ## MILESTONE_6 — The level as a Tilemap
 - [ ] `01_import-the-art.md` — Import the art

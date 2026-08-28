@@ -39,9 +39,12 @@ public class PlayerMotor : MonoBehaviour
     {
         UpdateGroundedState();
 
-        if (IsGrounded)
+        // Refill the coyote window only while grounded and NOT rising. The ground check
+        // can still see the floor for a frame after takeoff; refilling then would re-arm
+        // the jump, and a fresh (mashed) press would fire a second jump in mid-air.
+        if (IsGrounded && body.linearVelocity.y <= 0f)
             coyoteTimeRemainingSeconds = coyoteTimeSeconds;
-        else
+        else if (!IsGrounded)
             coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
 
         float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSecond;
