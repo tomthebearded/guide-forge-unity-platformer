@@ -7,8 +7,10 @@ public class PlayerInputReader : MonoBehaviour
 
     private float lastJumpPressedTimeSeconds = float.NegativeInfinity;
     public float TimeSinceJumpPressedSeconds => Mathf.Max(0f, Time.time - lastJumpPressedTimeSeconds);
+    public bool IsJumpHeld { get; private set; }
     private InputAction moveAction;
     private InputAction jumpAction;
+
 
 
     void Start()
@@ -25,6 +27,8 @@ public class PlayerInputReader : MonoBehaviour
         {
             lastJumpPressedTimeSeconds = Time.time;
         }
+        
+        IsJumpHeld = jumpAction.IsPressed();
     }
 
     public void ConsumeJumpRequest() =>

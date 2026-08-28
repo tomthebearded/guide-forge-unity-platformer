@@ -18,18 +18,21 @@ public class PlayerMotor : MonoBehaviour
     [Header("Jump")]
     [SerializeField] private float jumpVelocityUnitsPerSecond = 14f;
     [SerializeField] private float jumpBufferSeconds = 0.12f;
-
+    [SerializeField] private float fallGravityMultiplier = 1.8f;
+    [SerializeField] private float lowJumpGravityMultiplier = 2.2f;
 
     public bool IsGrounded { get; private set; }
 
     private Rigidbody2D body;
     private PlayerInputReader input;
     private float coyoteTimeRemainingSeconds;
+    private float baseGravityScale;
 
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         input = GetComponent<PlayerInputReader>();
+        baseGravityScale = body.gravityScale;
     }
 
     void FixedUpdate()
@@ -62,12 +65,24 @@ public class PlayerMotor : MonoBehaviour
             coyoteTimeRemainingSeconds = 0f;
             input.ConsumeJumpRequest();
         }
+        
+        ApplyJumpGravityMultipliers();
     }
 
     private void UpdateGroundedState()
     {
         Vector2 boxCentre = (Vector2)transform.position + Vector2.down * groundCheckDistanceBelowCentreUnits;
         IsGrounded = Physics2D.OverlapBox(boxCentre, groundCheckSizeUnits, 0f, groundLayers) != null;
+    }
+
+    private void ApplyJumpGravityMultipliers()
+    {
+        if (body.linearVelocity.y < 0f)
+            body.gravityScale = baseGravityScale * fallGravityMultiplier;
+        else if (body.linearVelocity.y > 0f && !input.IsJumpHeld)
+            body.gravityScale = baseGravityScale * lowJumpGravityMultiplier;
+        else
+            body.gravityScale = baseGravityScale;
     }
 
     private void OnDrawGizmosSelected()
