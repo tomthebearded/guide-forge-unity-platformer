@@ -4,11 +4,12 @@
 # STATUS — Cavern Dash
 
 > _Generated with **GuideForge v1.18.0** on 2026-08-22._
-> _Last updated with **GuideForge v1.16.0** on 2026-08-28._
+> _Last updated with **GuideForge v1.16.0** on 2026-08-31._
 
 ## Frontier
-- **Current frontier:** M6 — not started. M2–M4 complete; **M5 was corrected 2026-08-28 (coyote double-jump fix) and now needs re-verification** — apply the corrections at `MILESTONE_6_tilemap-level/01_import-the-art.md` and re-run the M5 gate.
-- **Executed through:** M5 / 06_verify.md (2026-08-28) — gate now `[!]` pending re-run after the correction.
+- **Current frontier:** M6 — in progress. Steps 01–03 executed 2026-08-31 (art imported, palette built, Rule Tile made); next is M6/04 (paint the cavern). The M5 coyote retrofit is applied in `PlayerMotor.cs`.
+- **Executed through:** M6 / 03_rule-tile.md (2026-08-31).
+- **M5 is closed:** `M5/06_verify.md` re-ran and passed 2026-08-31 (mash-jump test confirmed after the coyote retrofit) — M5 → ✅.
 
 ## Source inputs
 | Input file | Used for (stack / scope / decisions) | Provided on | Re-checked on |
@@ -22,8 +23,8 @@
 | M2 — First script & frame-rate-independent motion | ✅ | 2026-08-28 | Steps 01–04 executed 2026-08-27; `05_verify.md` gate passed 2026-08-28. |
 | M3 — Input & running (keyboard and gamepad) | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
 | M4 — Gravity, jumping & the ground check | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
-| M5 — Game feel | ⏳ | — | Gate passed 2026-08-28, then **corrected 2026-08-28** (coyote double-jump fix): 02/03/06 rewritten, rows `[!]`. Needs re-verification once the retrofit at M6/01 is applied and the gate re-run. |
-| M6 — The level as a Tilemap | ❌ | — | |
+| M5 — Game feel | ✅ | 2026-08-31 | Gate first passed 2026-08-28, then corrected (coyote double-jump fix). Retrofit applied 2026-08-31 in `PlayerMotor.cs`; `06_verify.md` re-run and passed 2026-08-31 (mash-jump test confirmed). |
+| M6 — The level as a Tilemap | ⏳ | — | Steps 01–03 executed 2026-08-31 (art at 18 PPU; `CavernPalette` + 11 tile assets; `GroundRuleTile` with Default Sprite `tile_0122`, 5 rules, collider = Sprite). 04–06 pending. |
 | M7 — Moving & one-way platforms | ❌ | — | |
 | M8 — Dash & wall-jump (a movement state machine) | ❌ | — | |
 | M9 — Coins, enemies, damage, lives & checkpoints | ❌ | — | |
@@ -48,6 +49,17 @@
 | 2026-08-24 | M1/01, guide `README.md` | Nothing told the reader to clone the repository, yet M1/02 sets the project's location by it | A reader working from a download has no repository to put the project in | Clone stated in M1/01 *Before you start* and in *Following this guide*; M1/04's troubleshooting now covers the download case |
 | 2026-08-28 | M5/02, M5/03, M5/06 (swept M8/02, M8/06, M10/07) | Coyote window refilled on *every* grounded frame (`if (IsGrounded) coyoteTimeRemainingSeconds = coyoteTimeSeconds;`); gates tested only a single press | The ground check still reads grounded for a step after take-off, so the refill re-armed the window mid-rise and a mashed press double-jumped in mid-air — contradicting M5's "one press, one jump" gate | **Route B.** Guarded the refill (`&& body.linearVelocity.y <= 0f`, `else if (!IsGrounded)`) in all six places; M5/02/03/06 corrected in place + superseded banners; retrofit (one code change) collected in M6/01 *Before you continue — corrections*; M5 gates re-tightened to test mashing. Re-apply checklist for the reader lives in that corrections section. |
 
+- 2026-08-31 — **M5 gate re-run and passed; M5 → ✅.** Reader confirmed re-running `M5/06_verify.md` in Play
+  Mode after the coyote retrofit — mashing jump in mid-air no longer double-jumps. `06_verify.md` moved
+  `[~]` → `[x]`; M5 marked ✅ (verified 2026-08-31). Frontier stays at M6/04.
+- 2026-08-31 — **M6 steps 01–03 executed; M5 retrofit applied.** Reader marked through M6/03, all valid.
+  Verified on disk: art imported at 18 PPU (commit `cac8620`); `CavernPalette` + 11 tile assets (commit
+  `ac0315a`); `GroundRuleTile.asset` created (untracked) with Default Sprite `tile_0122`, 5 tiling rules,
+  collider = Sprite. The M5 coyote retrofit is present in `PlayerMotor.cs` (refill guarded:
+  `IsGrounded && body.linearVelocity.y <= 0f` / `else if (!IsGrounded)`) and `JumpApexProbe` is gone from
+  disk — so M5/02 and M5/03 moved `[!]` → `[x]`. **M6 → ⏳** (04–06 pending); frontier at M6/04. **M5 stays
+  ⏳:** the reader did not confirm re-running `M5/06_verify.md` after the correction, so its gate is `[~]`,
+  not `[x]`. (Still open, unchanged: no `.gitattributes` exists, so `*.png` is not actually LFS-tracked.)
 - 2026-08-28 — **M5 coyote double-jump fixed (/report-issue, Route B).** Field report: mashing jump sometimes
   produced a second jump in mid-air. Root cause: the coyote window was refilled on every grounded frame, and
   the ground check still reads grounded for a physics step after take-off, so a freshly pressed (mashed) jump

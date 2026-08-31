@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M5 / 06_verify.md (gate passed 2026-08-28) — but M5 was **corrected 2026-08-28** (coyote double-jump fix); rows 02/03/06 are `[!]` pending the retrofit and a re-run of the gate.
-- **Next up:** M6 / 01_import-the-art.md — apply its *Before you continue — corrections* first (confirm-only if you already hand-patched `PlayerMotor.cs`), then re-run the M5 gate.
+- **Last executed:** M6 / 03_rule-tile.md (2026-08-31). M5 is now fully closed — its gate re-ran and passed 2026-08-31 after the coyote retrofit.
+- **Next up:** M6 / 04_paint-the-level.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -56,16 +56,16 @@
 
 ## MILESTONE_5 — Game feel
 - [x] `01_acceleration.md` — Give movement weight — 2026-08-28
-- [!] `02_coyote-time.md` — Coyote time: jump just after the ledge — executed 2026-08-28; **superseded 2026-08-28** (coyote refill guarded against mid-rise re-arm) — retrofit in *Before you continue — corrections*, `MILESTONE_6_tilemap-level/01_import-the-art.md`
-- [!] `03_jump-buffer.md` — Jump buffering: jump just before landing — executed 2026-08-28; **superseded 2026-08-28** (gate now checks mashing) — retrofit in *Before you continue — corrections*, `MILESTONE_6_tilemap-level/01_import-the-art.md`
+- [x] `02_coyote-time.md` — Coyote time: jump just after the ledge — executed 2026-08-28; **retrofit applied 2026-08-31** (coyote refill guarded against mid-rise re-arm in `PlayerMotor.cs`)
+- [x] `03_jump-buffer.md` — Jump buffering: jump just before landing — executed 2026-08-28; **retrofit applied 2026-08-31** (same guard; gate re-tightened to check mashing)
 - [x] `04_variable-jump-height.md` — Variable jump height — 2026-08-28
 - [x] `05_reality-check.md` — Stop and play it — 2026-08-28 (played; `JumpApexProbe.cs` deleted — confirmed gone from disk)
-- [!] `06_verify.md` — milestone gate — executed 2026-08-28; **superseded 2026-08-28** (checkpoint refill guarded; gate re-tightened) — re-run after applying the retrofit in `MILESTONE_6_tilemap-level/01_import-the-art.md`
+- [x] `06_verify.md` — milestone gate — re-run and passed 2026-08-31 (mash-jump test confirmed after the coyote retrofit; first passed 2026-08-28, then corrected)
 
 ## MILESTONE_6 — The level as a Tilemap
-- [ ] `01_import-the-art.md` — Import the art
-- [ ] `02_tile-palette.md` — Build a tile palette
-- [ ] `03_rule-tile.md` — Make a Rule Tile
+- [x] `01_import-the-art.md` — Import the art — 2026-08-31 (Kenney tiles at 18 PPU; carried the *Before you continue — corrections* coyote retrofit)
+- [x] `02_tile-palette.md` — Build a tile palette — 2026-08-31 (`CavernPalette` + 11 tile assets)
+- [x] `03_rule-tile.md` — Make a Rule Tile — 2026-08-31 (`GroundRuleTile`: Default Sprite `tile_0122`, 5 tiling rules, collider = Sprite)
 - [ ] `04_paint-the-level.md` — Paint the cavern
 - [ ] `05_composite-collider.md` — One collider for the whole level
 - [ ] `06_verify.md` — milestone gate
