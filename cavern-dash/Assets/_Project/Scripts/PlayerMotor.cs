@@ -26,7 +26,13 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float dashDurationSeconds = 0.15f;
     [SerializeField] private float dashCooldownSeconds = 0.60f;
 
+    [Header("Wall")]
+    [SerializeField] private Vector2 wallCheckSizeUnits = new(0.12f, 0.8f);
+    [SerializeField] private float wallCheckDistanceFromCentreUnits = 0.5f;
+    [SerializeField] private LayerMask wallLayers;
+    [SerializeField] private float wallSlideSpeedUnitsPerSecond = 2.5f;
 
+    public int WallDirection { get; private set; }
     public bool IsGrounded { get; private set; }
 
     private Rigidbody2D body;
@@ -49,6 +55,7 @@ public class PlayerMotor : MonoBehaviour
     {
         UpdateGroundedState();
         UpdateCoyoteTimer();
+        UpdateWallContact();
 
         switch (state)
         {
@@ -57,6 +64,9 @@ public class PlayerMotor : MonoBehaviour
                 break;
             case PlayerMovementState.Dashing:
                 TickDashingState();
+                break;
+            case PlayerMovementState.WallSliding:
+                TickWallSlidingState();
                 break;
         }
     }
@@ -77,7 +87,7 @@ public class PlayerMotor : MonoBehaviour
         if (input.DashRequested && Time.time >= nextDashAllowedTimeSeconds)
         {
             StartDash();
-            return;  
+            return;
         }
 
         input.ConsumeDashRequest();
@@ -105,6 +115,10 @@ public class PlayerMotor : MonoBehaviour
         }
 
         ApplyJumpGravityMultipliers();
+        
+        if (!IsGrounded && IsPressingIntoWall() && body.linearVelocity.y < 0f)
+            state = PlayerMovementState.WallSliding;
+
     }
 
     private void StartDash()
@@ -132,11 +146,38 @@ public class PlayerMotor : MonoBehaviour
         body.linearVelocity = new Vector2(exitSpeed, body.linearVelocity.y);
     }
 
+    private void TickWallSlidingState()
+    {
+        if (IsGrounded || !IsPressingIntoWall())
+        {
+            state = PlayerMovementState.Normal;
+            body.gravityScale = baseGravityScale;
+            return;
+        }
+
+        float clampedFallSpeed = Mathf.Max(body.linearVelocity.y, -wallSlideSpeedUnitsPerSecond);
+        body.linearVelocity = new Vector2(0f, clampedFallSpeed);
+    }
+
     private void UpdateGroundedState()
     {
         Vector2 boxCentre = (Vector2)transform.position + Vector2.down * groundCheckDistanceBelowCentreUnits;
         IsGrounded = Physics2D.OverlapBox(boxCentre, groundCheckSizeUnits, 0f, groundLayers) != null;
     }
+
+    private void UpdateWallContact()
+    {
+        Vector2 centre = body.position;
+        Vector2 offset = Vector2.right * wallCheckDistanceFromCentreUnits;
+
+        bool wallOnRight = Physics2D.OverlapBox(centre + offset, wallCheckSizeUnits, 0f, wallLayers) != null;
+        bool wallOnLeft = Physics2D.OverlapBox(centre - offset, wallCheckSizeUnits, 0f, wallLayers) != null;
+
+        WallDirection = wallOnRight ? 1 : wallOnLeft ? -1 : 0;
+    }
+
+    private bool IsPressingIntoWall() =>
+        WallDirection != 0 && !Mathf.Approximately(input.HorizontalInput, 0f) && Mathf.Sign(input.HorizontalInput) == WallDirection;
 
     private void ApplyJumpGravityMultipliers()
     {
