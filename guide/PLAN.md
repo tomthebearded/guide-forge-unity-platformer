@@ -455,8 +455,9 @@ no earlier step established gets its own step; it is never buried in a preamble.
   baseline rather than against a figure derived on paper. Where continuous maths and the fixed 0.02 s
   timestep disagree — as they do for the jump apex — the guide states both and gates on the measured one.
 - **Gates proven by breaking them** (rule 6.5), planned here with their blast radius: **M5** — set
-  `coyoteTimeSeconds` to `0` and confirm the ledge jump stops working, then restore it; **M6** — untick
-  **Used By Composite** and confirm the merged outline breaks back into one collider per painted cell (the
+  `coyoteTimeSeconds` to `0` and confirm the ledge jump stops working, then restore it; **M6** — set the
+  `Tilemap Collider 2D`'s **Composite Operation** to `None` and confirm the merged outline breaks back into
+  one collider per painted cell (the
   seam stutter this prevents is machine-dependent, so the *outline* is what the gate reads); **M9** —
   disable the checkpoint component and confirm death sends the player back to the level start; **M12** —
   delete the `cavernDash.bindingOverrides` key from `PlayerPrefs` and confirm the next launch comes up on

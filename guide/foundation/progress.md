@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M6 / 03_rule-tile.md (2026-08-31). M5 is now fully closed — its gate re-ran and passed 2026-08-31 after the coyote retrofit.
-- **Next up:** M6 / 04_paint-the-level.md.
+- **Last executed:** M6 / 06_verify.md (gate passed 2026-08-31). M1–M6 are complete and verified.
+- **Next up:** M7 / 01_one-way-platform.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -66,9 +66,9 @@
 - [x] `01_import-the-art.md` — Import the art — 2026-08-31 (Kenney tiles at 18 PPU; carried the *Before you continue — corrections* coyote retrofit)
 - [x] `02_tile-palette.md` — Build a tile palette — 2026-08-31 (`CavernPalette` + 11 tile assets)
 - [x] `03_rule-tile.md` — Make a Rule Tile — 2026-08-31 (`GroundRuleTile`: Default Sprite `tile_0122`, 5 tiling rules, collider = Sprite)
-- [ ] `04_paint-the-level.md` — Paint the cavern
-- [ ] `05_composite-collider.md` — One collider for the whole level
-- [ ] `06_verify.md` — milestone gate
+- [x] `04_paint-the-level.md` — Paint the cavern — 2026-08-31
+- [x] `05_composite-collider.md` — One collider for the whole level — 2026-08-31 (Composite Operation = `Merge`; step corrected 2026-08-31 from the stale "Used By Composite" label)
+- [x] `06_verify.md` — milestone gate — passed 2026-08-31 (verified against the corrected M6/05–06 wording)
 
 ## MILESTONE_7 — Moving & one-way platforms
 - [ ] `01_one-way-platform.md` — A ledge you can jump up through

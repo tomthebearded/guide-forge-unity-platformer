@@ -31,6 +31,8 @@ Kenney's **CC0** packs — full verified table + check date: **[foundation/stack
 
 ## Updates
 
+- 2026-08-31 — fixed: Unity 6.3 has no **Used By Composite** checkbox; the `Tilemap Collider 2D` now feeds the
+  composite via **Composite Operation** = `Merge` (M6/05; swept M6/06 and PLAN.md).
 - 2026-08-28 — fixed: mashing jump could produce a second jump in mid-air; the coyote window is now guarded
   against re-arming while rising (M5/02, /03, /06; swept M8/02, /06 and M10/07; retrofit in M6/01). See
   [decision-log D31](foundation/decision-log.md#d31--the-coyote-refill-is-guarded-against-re-arming-while-rising).

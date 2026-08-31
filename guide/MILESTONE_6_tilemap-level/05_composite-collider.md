@@ -52,26 +52,26 @@ one that tells the engine this outline can be baked and forgotten.
 7. Save the scene and press **Play**. The player lands on the painted floor, runs along it, and jumps between
    the ledges.
 
-8. Now run the experiment that proves the composite is doing something. **Untick Used By Composite** on the
-   `Tilemap Collider 2D` and look at the Scene view: the single outline breaks back into one green box per
-   painted cell. That is the geometry the composite was merging, and it is the half of this you can always
-   see. Then run the length of the floor at full speed a few times. On many machines the player now catches
-   or stutters on a cell boundary, most noticeably after landing; on others it stays smooth, because whether
-   a seam bites depends on the speed, the collider size and where the physics step happens to land. **The
-   seam is a risk you have removed, not a bug you have to reproduce** — so gate on the outline, and treat the
-   stutter as a bonus if you feel it. Tick **Used By Composite** again, confirm the one outline returns,
-   leave it ticked, and save the scene.
+8. Now run the experiment that proves the composite is doing something. On the `Tilemap Collider 2D`, set
+   **Composite Operation** back to **`None`** and look at the Scene view: the single outline breaks back into
+   one green box per painted cell. That is the geometry the composite was merging, and it is the half of this
+   you can always see. Then run the length of the floor at full speed a few times. On many machines the player
+   now catches or stutters on a cell boundary, most noticeably after landing; on others it stays smooth,
+   because whether a seam bites depends on the speed, the collider size and where the physics step happens to
+   land. **The seam is a risk you have removed, not a bug you have to reproduce** — so gate on the outline, and
+   treat the stutter as a bonus if you feel it. Set **Composite Operation** back to **`Merge`**, confirm the
+   one outline returns, leave it on `Merge`, and save the scene.
 
 ## Done when (this step)
-- [ ] `GroundTilemap` carries `Tilemap Collider 2D` (**Used By Composite** ticked), `Rigidbody 2D`
+- [ ] `GroundTilemap` carries `Tilemap Collider 2D` (**Composite Operation** = **`Merge`**), `Rigidbody 2D`
       (**Body Type** `Static`) and `Composite Collider 2D` (**Geometry Type** `Outlines`).
 - [ ] The Scene view shows **one** green outline around the painted shape, not one box per cell.
 - [ ] `GroundTilemap`'s Layer reads **`Ground`**.
 - [ ] Pressing **Play** → the player lands on the painted floor and can run its full length at speed **without
       catching, stuttering or stopping** on any cell boundary.
 - [ ] The player can jump from the floor onto every ledge you painted, and back down.
-- [ ] Unticking **Used By Composite** puts one green box per painted cell back in the Scene view; re-ticking
-      it collapses them into the single outline again.
+- [ ] Setting **Composite Operation** to `None` puts one green box per painted cell back in the Scene view;
+      setting it back to `Merge` collapses them into the single outline again.
 - [ ] The Console shows no red entries.
 
 ## Suggested commit
@@ -80,6 +80,9 @@ feat(level): merge the tilemap colliders into one composite outline
 ```
 
 ## If it breaks
+- **There is no "Used By Composite" checkbox on the `Tilemap Collider 2D`** → there is not one in Unity 6.3.
+  It was replaced by the **Composite Operation** dropdown; set it to **`Merge`**. This is the same setting,
+  renamed.
 - **The player still falls through** → the `Tilemap Collider 2D` is on the `Grid` parent instead of on
   `GroundTilemap`. It belongs on the object that holds the tiles.
 - **The player lands but cannot jump** → the tilemap's layer is not `Ground`, so the ground check finds
@@ -90,7 +93,7 @@ feat(level): merge the tilemap colliders into one composite outline
   `Outlines` and the shape is open, or the player's collider is a trigger. Check the player's
   `Box Collider 2D` has **Is Trigger** unticked.
 - **The green outline does not update after painting more tiles** → composites regenerate on change; if one
-  goes stale, toggling **Used By Composite** off and on forces a rebuild.
+  goes stale, toggling **Composite Operation** between `None` and `Merge` forces a rebuild.
 
 ---
 > Nav: [← Paint the cavern](04_paint-the-level.md) · [Overview](00_overview.md) · [Verify →](06_verify.md)

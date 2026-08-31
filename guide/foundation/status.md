@@ -7,9 +7,9 @@
 > _Last updated with **GuideForge v1.16.0** on 2026-08-31._
 
 ## Frontier
-- **Current frontier:** M6 — in progress. Steps 01–03 executed 2026-08-31 (art imported, palette built, Rule Tile made); next is M6/04 (paint the cavern). The M5 coyote retrofit is applied in `PlayerMotor.cs`.
-- **Executed through:** M6 / 03_rule-tile.md (2026-08-31).
-- **M5 is closed:** `M5/06_verify.md` re-ran and passed 2026-08-31 (mash-jump test confirmed after the coyote retrofit) — M5 → ✅.
+- **Current frontier:** M7 — not started. M1–M6 complete and verified.
+- **Executed through:** M6 / 06_verify.md (2026-08-31) — gate confirmed by the reader.
+- **Note:** M6/05–06 carry a 2026-08-31 correction (Used By Composite → **Composite Operation** = `Merge`, Unity 6.3). It was wording-only and the reader verified against the corrected steps.
 
 ## Source inputs
 | Input file | Used for (stack / scope / decisions) | Provided on | Re-checked on |
@@ -24,7 +24,7 @@
 | M3 — Input & running (keyboard and gamepad) | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
 | M4 — Gravity, jumping & the ground check | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
 | M5 — Game feel | ✅ | 2026-08-31 | Gate first passed 2026-08-28, then corrected (coyote double-jump fix). Retrofit applied 2026-08-31 in `PlayerMotor.cs`; `06_verify.md` re-run and passed 2026-08-31 (mash-jump test confirmed). |
-| M6 — The level as a Tilemap | ⏳ | — | Steps 01–03 executed 2026-08-31 (art at 18 PPU; `CavernPalette` + 11 tile assets; `GroundRuleTile` with Default Sprite `tile_0122`, 5 rules, collider = Sprite). 04–06 pending. |
+| M6 — The level as a Tilemap | ✅ | 2026-08-31 | All six steps executed 2026-08-31; `06_verify.md` gate confirmed by the reader. M6/05–06 were corrected 2026-08-31 (Used By Composite → **Composite Operation** = `Merge`, Unity 6.3) — a wording-only fix; the reader applied `Merge` and verified against the corrected steps, so no separate re-verification is outstanding. |
 | M7 — Moving & one-way platforms | ❌ | — | |
 | M8 — Dash & wall-jump (a movement state machine) | ❌ | — | |
 | M9 — Coins, enemies, damage, lives & checkpoints | ❌ | — | |
@@ -48,7 +48,18 @@
 | 2026-08-24 | M13/04 | Action 5 numbered its commands "first / second / third" against a different order than it listed them in | The reader would run `git check-ignore` from the repository root, where it prints nothing and the gate fails | Commands named instead of numbered, each with the folder it runs from |
 | 2026-08-24 | M1/01, guide `README.md` | Nothing told the reader to clone the repository, yet M1/02 sets the project's location by it | A reader working from a download has no repository to put the project in | Clone stated in M1/01 *Before you start* and in *Following this guide*; M1/04's troubleshooting now covers the download case |
 | 2026-08-28 | M5/02, M5/03, M5/06 (swept M8/02, M8/06, M10/07) | Coyote window refilled on *every* grounded frame (`if (IsGrounded) coyoteTimeRemainingSeconds = coyoteTimeSeconds;`); gates tested only a single press | The ground check still reads grounded for a step after take-off, so the refill re-armed the window mid-rise and a mashed press double-jumped in mid-air — contradicting M5's "one press, one jump" gate | **Route B.** Guarded the refill (`&& body.linearVelocity.y <= 0f`, `else if (!IsGrounded)`) in all six places; M5/02/03/06 corrected in place + superseded banners; retrofit (one code change) collected in M6/01 *Before you continue — corrections*; M5 gates re-tightened to test mashing. Re-apply checklist for the reader lives in that corrections section. |
+| 2026-08-31 | M6/05 (step 4, seam experiment, two Done-when boxes, "If it breaks"); swept M6/06 (gate box, checkpoint table, troubleshooting) and PLAN.md §gates | Tick **Used By Composite** on the `Tilemap Collider 2D` to feed the composite | Unity 6.3 removed the `usedByComposite` checkbox; a collider now feeds a `CompositeCollider2D` via the **Composite Operation** dropdown — `Merge` (Boolean OR) is the old "ticked", `None` is "unticked" ([Unity 6.3 docs](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Collider2D.CompositeOperation.html)) | **All ahead of frontier — rewritten in place** (no route decision). Every reference changed to Composite Operation = `Merge`/`None`; a 5.1 failure note added at M6/05 for "there is no Used By Composite checkbox". Verified online against the Unity 6.3 ScriptReference. |
 
+- 2026-08-31 — **M6 fixed (Used By Composite → Composite Operation) and completed; M6 → ✅.** Field report:
+  the reader had no **Used By Composite** checkbox on the `Tilemap Collider 2D` (Unity 6.3 replaced it with
+  the **Composite Operation** dropdown). Root cause: stale API label — `usedByComposite` was removed; a
+  collider now feeds a `CompositeCollider2D` via `compositeOperation`, where `Merge` = old ticked and `None`
+  = old unticked (verified against the Unity 6.3 ScriptReference). All hits were **ahead of the frontier**
+  (M6/04–06 unexecuted), so rewritten in place — no route decision, no superseded banners. Swept M6/05 (6
+  spots), M6/06 (4), PLAN.md (1); a 5.1 failure note added at M6/05. Then, on the reader's confirmation
+  ("tutto verificato"), M6/04–06 marked `[x]` and **M6 → ✅** (verified 2026-08-31): the correction was
+  wording-only and the reader applied `Merge` and observed the `06_verify.md` gate against the corrected
+  steps. Frontier advanced to M7. `feedback-log.md` created with the report (Status: fixed via /report-issue).
 - 2026-08-31 — **M5 gate re-run and passed; M5 → ✅.** Reader confirmed re-running `M5/06_verify.md` in Play
   Mode after the coyote retrofit — mashing jump in mid-air no longer double-jumps. `06_verify.md` moved
   `[~]` → `[x]`; M5 marked ✅ (verified 2026-08-31). Frontier stays at M6/04.

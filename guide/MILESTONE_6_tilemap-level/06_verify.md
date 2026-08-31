@@ -15,14 +15,14 @@ Observed in **Play Mode in the Editor**, `Level01` open, Game view focused.
 - [ ] **The level is painted and reachable.** The cavern has a floor at least ten cells long, end walls, and
       two or three ledges — **none of them more than two cells above** what you jump from. From a standing
       start you can reach every ledge you painted, and get back down.
-- [ ] **One collider, not hundreds.** `GroundTilemap` carries `Tilemap Collider 2D` with **Used By Composite**
-      ticked, a **Static** `Rigidbody 2D`, and a `Composite Collider 2D` — and the Scene view shows a single
-      outline around the whole shape.
+- [ ] **One collider, not hundreds.** `GroundTilemap` carries `Tilemap Collider 2D` with **Composite
+      Operation** = **`Merge`**, a **Static** `Rigidbody 2D`, and a `Composite Collider 2D` — and the Scene
+      view shows a single outline around the whole shape.
 - [ ] **No seams.** Running the full length of the floor at top speed, several times, the player never
       catches, stutters or stops on a cell boundary.
-- [ ] **The composite is what does it.** Unticking **Used By Composite** returns the Scene view to one green
-      box per painted cell; re-ticking it restores the single outline. (Whether you can *feel* a seam while
-      it is unticked varies by machine — the outline is the part that always shows.)
+- [ ] **The composite is what does it.** Setting **Composite Operation** to `None` returns the Scene view to
+      one green box per painted cell; setting it back to `Merge` restores the single outline. (Whether you can
+      *feel* a seam while it is `None` varies by machine — the outline is the part that always shows.)
 - [ ] **The ground check sees the tilemap.** `GroundTilemap`'s Layer reads `Ground`, and the player can jump
       from anywhere on the painted floor — including from the top of every ledge.
 - [ ] **The temporary scaffolding is gone.** There is no `Ground` object in the Hierarchy.
@@ -53,7 +53,7 @@ milestone._
 | every imported tile | Texture importer | Compression | `None` |
 | `Grid` | `Grid` | Cell Size | `1, 1, 0` |
 | `GroundTilemap` | GameObject | Layer | `Ground` |
-| `GroundTilemap` | `Tilemap Collider 2D` | Used By Composite | ticked |
+| `GroundTilemap` | `Tilemap Collider 2D` | Composite Operation | `Merge` |
 | `GroundTilemap` | `Rigidbody 2D` | Body Type | `Static` |
 | `GroundTilemap` | `Composite Collider 2D` | Geometry Type | `Outlines` |
 | `Player` | `Transform` | Position | just above your painted floor (e.g. `-10, -2, 0`) |
@@ -81,7 +81,7 @@ milestone._
 | The Rule Tile always draws the same sprite | The catch-all rule (all boxes empty) is not last in the list. |
 | The player falls through the painted floor | The `Tilemap Collider 2D` is on `Grid` instead of `GroundTilemap`. |
 | The player lands but cannot jump | `GroundTilemap`'s layer is not `Ground`. |
-| The player catches on invisible bumps | **Used By Composite** is unticked — the seam problem this milestone exists to remove. |
+| The player catches on invisible bumps | **Composite Operation** is `None` on the `Tilemap Collider 2D` — set it to `Merge`; this is the seam problem the milestone exists to remove. |
 | The whole level falls when you press Play | The tilemap's `Rigidbody 2D` is `Dynamic`; it must be `Static`. |
 | A ledge is unreachable | It is more than two cells above its approach. Your jump clears about 2.4 units and one cell is one unit. |
 
