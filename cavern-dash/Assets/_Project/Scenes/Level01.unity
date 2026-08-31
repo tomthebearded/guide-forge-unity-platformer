@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 238978179}
   - component: {fileID: 238978178}
   - component: {fileID: 238978177}
+  - component: {fileID: 238978180}
+  - component: {fileID: 238978181}
   m_Layer: 6
   m_Name: MovingPlatform
   m_TagString: Untagged
@@ -226,6 +228,36 @@ Transform:
   - {fileID: 1616713840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &238978180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238978176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158228b632bfe374e9ba477de5557379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
+  travelOffsetUnits: {x: 6, y: 0}
+  speedUnitsPerSecond: 2
+--- !u!114 &238978181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238978176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2eecd8130eff7848b7555ed1f1925c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformRiderCarrier
+  riderLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  standingToleranceUnits: 0.1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
