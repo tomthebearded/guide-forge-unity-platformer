@@ -27,6 +27,7 @@ public class PlayerMotor : MonoBehaviour
     private PlayerInputReader input;
     private float coyoteTimeRemainingSeconds;
     private float baseGravityScale;
+    private PlayerMovementState state = PlayerMovementState.Normal;
 
     void Awake()
     {
@@ -35,18 +36,29 @@ public class PlayerMotor : MonoBehaviour
         baseGravityScale = body.gravityScale;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         UpdateGroundedState();
+        UpdateCoyoteTimer();
 
-        // Refill the coyote window only while grounded and NOT rising. The ground check
-        // can still see the floor for a frame after takeoff; refilling then would re-arm
-        // the jump, and a fresh (mashed) press would fire a second jump in mid-air.
+        switch (state)
+        {
+            case PlayerMovementState.Normal:
+                TickNormalState();
+                break;
+        }
+    }
+
+    private void UpdateCoyoteTimer()
+    {
         if (IsGrounded && body.linearVelocity.y <= 0f)
             coyoteTimeRemainingSeconds = coyoteTimeSeconds;
         else if (!IsGrounded)
             coyoteTimeRemainingSeconds -= Time.fixedDeltaTime;
+    }
 
+    private void TickNormalState()
+    {
         float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSecond;
         float accelerationThisStep = IsGrounded
             ? groundAccelerationUnitsPerSecondSquared
@@ -68,7 +80,7 @@ public class PlayerMotor : MonoBehaviour
             coyoteTimeRemainingSeconds = 0f;
             input.ConsumeJumpRequest();
         }
-        
+
         ApplyJumpGravityMultipliers();
     }
 
@@ -88,10 +100,4 @@ public class PlayerMotor : MonoBehaviour
             body.gravityScale = baseGravityScale;
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Vector3 boxCentre = transform.position + Vector3.down * groundCheckDistanceBelowCentreUnits;
-        Gizmos.DrawWireCube(boxCentre, new Vector3(groundCheckSizeUnits.x, groundCheckSizeUnits.y, 0f));
-    }
 }
