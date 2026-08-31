@@ -21,6 +21,12 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float fallGravityMultiplier = 1.8f;
     [SerializeField] private float lowJumpGravityMultiplier = 2.2f;
 
+    [Header("Dash")]
+    [SerializeField] private float dashDistanceUnits = 5f;
+    [SerializeField] private float dashDurationSeconds = 0.15f;
+    [SerializeField] private float dashCooldownSeconds = 0.60f;
+
+
     public bool IsGrounded { get; private set; }
 
     private Rigidbody2D body;
@@ -28,6 +34,9 @@ public class PlayerMotor : MonoBehaviour
     private float coyoteTimeRemainingSeconds;
     private float baseGravityScale;
     private PlayerMovementState state = PlayerMovementState.Normal;
+    private float dashEndTimeSeconds;
+    private float nextDashAllowedTimeSeconds;
+    private int facingDirection = 1;
 
     void Awake()
     {
@@ -46,6 +55,9 @@ public class PlayerMotor : MonoBehaviour
             case PlayerMovementState.Normal:
                 TickNormalState();
                 break;
+            case PlayerMovementState.Dashing:
+                TickDashingState();
+                break;
         }
     }
 
@@ -59,6 +71,17 @@ public class PlayerMotor : MonoBehaviour
 
     private void TickNormalState()
     {
+        if (!Mathf.Approximately(input.HorizontalInput, 0f))
+            facingDirection = input.HorizontalInput > 0f ? 1 : -1;
+
+        if (input.DashRequested && Time.time >= nextDashAllowedTimeSeconds)
+        {
+            StartDash();
+            return;  
+        }
+
+        input.ConsumeDashRequest();
+
         float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSecond;
         float accelerationThisStep = IsGrounded
             ? groundAccelerationUnitsPerSecondSquared
@@ -82,6 +105,31 @@ public class PlayerMotor : MonoBehaviour
         }
 
         ApplyJumpGravityMultipliers();
+    }
+
+    private void StartDash()
+    {
+        state = PlayerMovementState.Dashing;
+        dashEndTimeSeconds = Time.time + dashDurationSeconds;
+        nextDashAllowedTimeSeconds = Time.time + dashCooldownSeconds;
+        input.ConsumeDashRequest();
+
+        body.gravityScale = 0f;
+
+        float dashSpeedUnitsPerSecond = dashDistanceUnits / dashDurationSeconds;
+        body.linearVelocity = new Vector2(facingDirection * dashSpeedUnitsPerSecond, 0f);
+    }
+
+    private void TickDashingState()
+    {
+        if (Time.time < dashEndTimeSeconds)
+            return;
+
+        state = PlayerMovementState.Normal;
+        body.gravityScale = baseGravityScale;
+
+        float exitSpeed = Mathf.Clamp(body.linearVelocity.x, -moveSpeedUnitsPerSecond, moveSpeedUnitsPerSecond);
+        body.linearVelocity = new Vector2(exitSpeed, body.linearVelocity.y);
     }
 
     private void UpdateGroundedState()
