@@ -31,6 +31,8 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField] private float wallCheckDistanceFromCentreUnits = 0.5f;
     [SerializeField] private LayerMask wallLayers;
     [SerializeField] private float wallSlideSpeedUnitsPerSecond = 2.5f;
+    [SerializeField] private Vector2 wallJumpVelocity = new Vector2(9f, 13f);
+    [SerializeField] private float wallJumpControlLockSeconds = 0.15f;
 
     public int WallDirection { get; private set; }
     public bool IsGrounded { get; private set; }
@@ -43,6 +45,7 @@ public class PlayerMotor : MonoBehaviour
     private float dashEndTimeSeconds;
     private float nextDashAllowedTimeSeconds;
     private int facingDirection = 1;
+    private float horizontalControlLockedUntilTimeSeconds;
 
     void Awake()
     {
@@ -81,8 +84,23 @@ public class PlayerMotor : MonoBehaviour
 
     private void TickNormalState()
     {
-        if (!Mathf.Approximately(input.HorizontalInput, 0f))
-            facingDirection = input.HorizontalInput > 0f ? 1 : -1;
+        bool horizontalControlLocked = Time.time < horizontalControlLockedUntilTimeSeconds;
+
+        if (!horizontalControlLocked)
+        {
+            float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSecond;
+            float accelerationThisStep = IsGrounded
+                ? groundAccelerationUnitsPerSecondSquared
+                : airAccelerationUnitsPerSecondSquared;
+
+            float newHorizontalSpeed = Mathf.MoveTowards(
+                body.linearVelocity.x,
+                desiredHorizontalSpeed,
+                accelerationThisStep * Time.fixedDeltaTime);
+
+            body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
+        }
+
 
         if (input.DashRequested && Time.time >= nextDashAllowedTimeSeconds)
         {
@@ -91,18 +109,6 @@ public class PlayerMotor : MonoBehaviour
         }
 
         input.ConsumeDashRequest();
-
-        float desiredHorizontalSpeed = input.HorizontalInput * moveSpeedUnitsPerSecond;
-        float accelerationThisStep = IsGrounded
-            ? groundAccelerationUnitsPerSecondSquared
-            : airAccelerationUnitsPerSecondSquared;
-
-        float newHorizontalSpeed = Mathf.MoveTowards(
-            body.linearVelocity.x,
-            desiredHorizontalSpeed,
-            accelerationThisStep * Time.fixedDeltaTime);
-
-        body.linearVelocity = new Vector2(newHorizontalSpeed, body.linearVelocity.y);
 
         bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
 
@@ -115,8 +121,8 @@ public class PlayerMotor : MonoBehaviour
         }
 
         ApplyJumpGravityMultipliers();
-        
-        if (!IsGrounded && IsPressingIntoWall() && body.linearVelocity.y < 0f)
+
+        if (!IsGrounded && !horizontalControlLocked && IsPressingIntoWall() && body.linearVelocity.y < 0f)
             state = PlayerMovementState.WallSliding;
 
     }
@@ -157,6 +163,19 @@ public class PlayerMotor : MonoBehaviour
 
         float clampedFallSpeed = Mathf.Max(body.linearVelocity.y, -wallSlideSpeedUnitsPerSecond);
         body.linearVelocity = new Vector2(0f, clampedFallSpeed);
+
+        bool jumpIsBuffered = input.TimeSinceJumpPressedSeconds < jumpBufferSeconds;
+
+        if (jumpIsBuffered)
+        {
+            body.linearVelocity = new Vector2(-WallDirection * wallJumpVelocity.x, wallJumpVelocity.y);
+
+            horizontalControlLockedUntilTimeSeconds = Time.time + wallJumpControlLockSeconds;
+            input.ConsumeJumpRequest();
+
+            state = PlayerMovementState.Normal;
+            body.gravityScale = baseGravityScale;
+        }
     }
 
     private void UpdateGroundedState()

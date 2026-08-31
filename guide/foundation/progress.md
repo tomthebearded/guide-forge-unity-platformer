@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M7 / 04_verify.md (gate passed 2026-08-31). M1–M7 are complete and verified.
-- **Next up:** M8 / 01_add-the-dash-action.md.
+- **Last executed:** M8 / 06_verify.md (gate passed 2026-08-31). M1–M8 are complete and verified.
+- **Next up:** M9 / 01_coin-prefab.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -77,12 +77,12 @@
 - [x] `04_verify.md` — milestone gate — passed 2026-08-31
 
 ## MILESTONE_8 — Dash & wall-jump (a movement state machine)
-- [ ] `01_add-the-dash-action.md` — Add the Dash action
-- [ ] `02_movement-state-machine.md` — Turn the motor into a state machine
-- [ ] `03_dash.md` — Dash
-- [ ] `04_wall-slide.md` — Cling to a wall
-- [ ] `05_wall-jump.md` — Jump off the wall
-- [ ] `06_verify.md` — milestone gate
+- [x] `01_add-the-dash-action.md` — Add the Dash action — 2026-08-31
+- [x] `02_movement-state-machine.md` — Turn the motor into a state machine — 2026-08-31
+- [x] `03_dash.md` — Dash — 2026-08-31
+- [x] `04_wall-slide.md` — Cling to a wall — 2026-08-31
+- [x] `05_wall-jump.md` — Jump off the wall — 2026-08-31
+- [x] `06_verify.md` — milestone gate — passed 2026-08-31
 
 ## MILESTONE_9 — Coins, enemies, damage, lives & checkpoints
 - [ ] `01_coin-prefab.md` — Make a coin
