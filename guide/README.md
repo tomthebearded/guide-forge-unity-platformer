@@ -31,6 +31,9 @@ Kenney's **CC0** packs — full verified table + check date: **[foundation/stack
 
 ## Updates
 
+- 2026-08-31 — fixed: carrying a rider by re-parenting threw `Cannot set the parent … while activating` on
+  Play and slid off anyway; the platform now carries riders by moving them with its own per-step delta,
+  detecting them with a `Physics2D.OverlapBox` on its top edge (M7/03; swept M7/00, /02, /04, PLAN.md, D14).
 - 2026-08-31 — fixed: Unity 6.3 has no **Used By Composite** checkbox; the `Tilemap Collider 2D` now feeds the
   composite via **Composite Operation** = `Merge` (M6/05; swept M6/06 and PLAN.md).
 - 2026-08-28 — fixed: mashing jump could produce a second jump in mid-air; the coyote window is now guarded

@@ -8,6 +8,17 @@
 > Written by `/log-feedback` (capture) and, when a fix ships, by `/report-issue`. Newest entries on top; one
 > entry per distinct piece of friction. Use absolute dates (`2026-08-22`), never "today".
 
+## 2026-08-31 — M7 · Carrying the rider errors on Play, then the player still slides off
+
+- **Where:** M7 — Moving & one-way platforms, [`03_carry-the-rider.md`](MILESTONE_7_moving-and-one-way-platforms/03_carry-the-rider.md); gate in [`04_verify.md`](MILESTONE_7_moving-and-one-way-platforms/04_verify.md).
+- **Reader:** the guide's target reader — a developer following the M7 build and testing the moving platform in Play Mode.
+- **What happened:** On pressing Play, the Console threw `Cannot set the parent of the GameObject 'Player' while activating or deactivating the parent GameObject` (from `PlatformRiderCarrier.OnCollisionEnter2D` → `transform.SetParent`). **Expected** (M7/03): stand on the platform and travel with it. Root cause: `SetParent` from a physics collision callback is forbidden while the parent is activating, which happens as the first contacts fire on scene load — and re-parenting a Dynamic `Rigidbody2D` is fragile regardless (inherits the platform's scale, fights world-space physics). A first replacement (delta-carry with `OnCollisionEnter/Exit` rider tracking) removed the error but the player **still slid off**, because a kinematic platform sliding into a resting body fires those callbacks unreliably; the fix that held detects riders with a per-step `Physics2D.OverlapBox` on the platform's top edge.
+- **Suspected class:** `unknown` — the guide taught code that both errors and (in its first fix) fails to carry; the fixed vocabulary has no value for "defect in the guide's own approach", so `unknown` is the honest fit.
+- **Severity:** `blocked` — the step errors on Play and its core outcome (the rider is carried) does not happen.
+- **Tags:** M7, moving-platform, rider, SetParent, physics-callback, OverlapBox, correctness, verify-gate, PlatformRiderCarrier
+- **Status:** fixed via /report-issue (2026-08-31) — all ahead of the frontier, rewritten in place; root fix in M7/03, swept to M7/02, M7/04, M7/00, PLAN.md; see [decision-log D14](foundation/decision-log.md#d14--build-vs-borrow-carrying-a-rider-on-a-moving-platform)
+- **Quote:** "ho questo errore … sta scivolando ancora"
+
 ## 2026-08-28 — M5 · Mashing the jump button produces a second jump in mid-air
 
 - **Where:** M5 — Game feel. Coyote logic introduced in [`02_coyote-time.md`](MILESTONE_5_game-feel/02_coyote-time.md), combined with the buffer in [`03_jump-buffer.md`](MILESTONE_5_game-feel/03_jump-buffer.md); contradicts the gate box in [`06_verify.md`](MILESTONE_5_game-feel/06_verify.md).

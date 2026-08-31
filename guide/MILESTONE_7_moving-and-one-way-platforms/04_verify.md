@@ -12,10 +12,10 @@ Observed in **Play Mode in the Editor**, `Level01` open, Game view focused, with
 - [ ] **The platform travels.** `MovingPlatform` slides six units, reverses, and repeats, smoothly and
       indefinitely, with a cyan path drawn in the Scene view when it is selected.
 - [ ] **The rider is carried.** Standing on the platform → the player travels with it in both directions,
-      without sliding off and without judder.
-- [ ] **Parenting is what carries it.** During Play Mode the Hierarchy shows `Player` indented under
-      `MovingPlatform` while riding, and back at the root after stepping off.
-- [ ] **Nothing is deformed.** The player's `Transform` Scale reads `1, 1, 1` while riding.
+      without sliding off, without judder, and **without creeping ahead** of it in the travel direction.
+- [ ] **It carries without re-parenting.** During Play Mode the Hierarchy shows `Player` **staying at the
+      root** the whole time — it is never indented under `MovingPlatform` — yet it still travels with it. The
+      Console shows no `Cannot set the parent … while activating` error.
 - [ ] **Only the top counts.** Walking into the platform's side, or jumping up into its underside, does
       **not** attach the player to it.
 - [ ] **Jumping off a moving platform behaves.** A jump taken while riding rises and lands normally instead of
@@ -84,57 +84,92 @@ public class MovingPlatform : MonoBehaviour
 ```csharp
 using UnityEngine;
 
-// Carries whatever is standing on top of this platform, by making it a child while
-// it rides. A child follows its parent for free — which is why this object's own
-// transform must stay at scale 1, 1, 1.
+// Carries whatever is standing on top of this platform by moving it the same
+// amount the platform moves each physics step. It does NOT re-parent the rider:
+// re-parenting a Dynamic body fights the physics engine, inherits the platform's
+// scale, and SetParent throws while the platform is still activating on load.
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlatformRiderCarrier : MonoBehaviour
 {
     [SerializeField] private LayerMask riderLayers;
 
-    // How far below the platform's top surface a rider's feet may be and still count
-    // as standing on it. Physics keeps a hair of separation, so this is not zero.
+    // Height of the thin detection strip sitting on the platform's top surface.
+    // A rider resting on the platform overlaps it; nothing beside or under does.
     [SerializeField] private float standingToleranceUnits = 0.1f;
 
     private Collider2D platformCollider;
+    private Rigidbody2D platformBody;
+
+    // Where the platform was at the end of the previous physics step, so we can
+    // measure how far it has moved since.
+    private Vector2 previousPlatformPosition;
+
+    // Non-allocating buffer for the overlap query, plus a filter that restricts it
+    // to the rider layers and ignores triggers. We rebuild the rider set every
+    // step instead of tracking OnCollisionEnter/Exit — a kinematic platform
+    // sliding into a resting body makes those callbacks fire unreliably.
+    private readonly Collider2D[] overlapResults = new Collider2D[8];
+    private ContactFilter2D riderFilter;
 
     private void Awake()
     {
         platformCollider = GetComponent<Collider2D>();
+        platformBody = GetComponent<Rigidbody2D>();
+        previousPlatformPosition = platformBody.position;
+
+        // We carry riders explicitly by the platform's delta, so the surface must
+        // NOT also drag them by friction — that double-counts and pushes the rider a
+        // hair ahead of the platform. Install a frictionless material so our delta is
+        // the only horizontal carry. Skip it if a material was set on purpose.
+        if (platformCollider.sharedMaterial == null)
+        {
+            platformCollider.sharedMaterial = new PhysicsMaterial2D("RiderCarrierFrictionless")
+            {
+                friction = 0f,
+                bounciness = 0f
+            };
+        }
+
+        riderFilter = new ContactFilter2D
+        {
+            useLayerMask = true,
+            layerMask = riderLayers,
+            useTriggers = false
+        };
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void FixedUpdate()
     {
-        if (!IsRider(collision.collider) || !IsStandingOnTop(collision.collider))
+        // The delta is the change in the platform's position since the last step.
+        Vector2 platformDelta = platformBody.position - previousPlatformPosition;
+        previousPlatformPosition = platformBody.position;
+
+        if (platformDelta == Vector2.zero)
         {
             return;
         }
 
-        collision.transform.SetParent(transform);
-    }
+        // A thin box straddling the platform's top edge, as wide as the platform.
+        // Anything standing on it overlaps this strip.
+        Bounds platformBounds = platformCollider.bounds;
+        Vector2 stripCentre = new Vector2(platformBounds.center.x, platformBounds.max.y + standingToleranceUnits * 0.5f);
+        Vector2 stripSize = new Vector2(platformBounds.size.x, standingToleranceUnits);
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        // Only un-parent what this platform actually adopted.
-        if (collision.transform.parent == transform)
+        int found = Physics2D.OverlapBox(stripCentre, stripSize, 0f, riderFilter, overlapResults);
+        for (int i = 0; i < found; i++)
         {
-            collision.transform.SetParent(null);
+            Rigidbody2D rider = overlapResults[i].attachedRigidbody;
+            if (rider == null)
+            {
+                continue;
+            }
+
+            // Move the rider by the same amount as the platform. This adds on top
+            // of the rider's own velocity-driven movement: standing still it rides
+            // the platform; walking, its input velocity composes with the shift.
+            rider.position += platformDelta;
         }
-    }
-
-    private bool IsRider(Collider2D other)
-    {
-        // A LayerMask is a bitmask: bit N is set when layer N is selected.
-        // Shifting 1 into the object's layer position and masking tests membership.
-        return (riderLayers.value & (1 << other.gameObject.layer)) != 0;
-    }
-
-    private bool IsStandingOnTop(Collider2D other)
-    {
-        // bounds is the collider's world-space box. The rider is on top when the
-        // bottom of its box is at or above the top of the platform's.
-        float platformTopY = platformCollider.bounds.max.y;
-        return other.bounds.min.y >= platformTopY - standingToleranceUnits;
     }
 }
 ```
@@ -175,17 +210,19 @@ public class PlatformRiderCarrier : MonoBehaviour
 | Standing on the ledge, jump does nothing | **Ground Layers** does not include `OneWay`. |
 | The platform falls away on Play | Its `Rigidbody 2D` is `Dynamic`; it must be `Kinematic`. |
 | The platform shoves the player through the floor | `transform.position` written instead of `MovePosition`. |
-| The player is not carried | **Rider Layers** is `Nothing`, or the carrier script sits on `Visual` rather than the parent. |
-| The player stretches when it steps on | The platform parent's scale is not `1, 1, 1`. |
-| The player is carried when brushing the platform's side | `IsStandingOnTop` bypassed, or the tolerance is far too large. |
+| The player is not carried | **Rider Layers** is `Nothing`, or the carrier script sits on `Visual` (no `Rigidbody 2D`/`Collider 2D`) rather than on the parent. |
+| Console: `Cannot set the parent … while activating` | An old `SetParent`-based `PlatformRiderCarrier`; replace it with the movement-inheritance version above. |
+| The collider does not match the sprite | The platform parent's scale is not `1, 1, 1`, stretching the unit-sized collider. |
+| The player is carried while jumping past the platform's edge | `standingToleranceUnits` (the detection strip's height) is far too large; `0.1` is right. |
+| The player creeps a hair ahead of the platform | A `Material` is assigned to the platform's `Box Collider 2D`, so the frictionless one is skipped; set its **Friction** to `0` or clear the field. |
 | Riding judders | `Interpolate` is `None` on the platform's body. |
 
 ## Handoff
 - **You now have:** the M1 project and clean repository; a tuned player controller; a painted tilemap cavern
   with a single composite collider; a one-way ledge on the `OneWay` layer that you pass through from below and
   land on from above; and a kinematic moving platform that travels a visible path and carries the player by
-  re-parenting. Two new scripts, `MovingPlatform` and `PlatformRiderCarrier`, neither of which required a
-  change to the player's movement code.
+  moving it with the platform each physics step — no re-parenting. Two new scripts, `MovingPlatform` and
+  `PlatformRiderCarrier`, neither of which required a change to the player's movement code.
 - **Open / deferred:** the moveset is still run and jump. There is nothing to reach that a single jump cannot,
   and nothing in the cavern to collect, avoid or aim at. M8 extends the moveset; M9 gives the level a point.
 - **Next:** **[M8 — Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md)** —

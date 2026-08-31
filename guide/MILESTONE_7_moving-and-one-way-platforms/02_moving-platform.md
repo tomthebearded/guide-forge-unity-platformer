@@ -17,16 +17,18 @@ the object teleporting into whatever is standing on it. It is also the reason th
 player through the floor at the end of its travel.
 
 **Its root object has a scale of `1, 1, 1`, and the sprite lives on a child.** This looks like fussiness and
-is not: [step 03](03_carry-the-rider.md) carries the player by making it a **child** of this object, and a
-child inherits its parent's scale. Give the root a scale of `4, 0.25, 1` and the player becomes four times
-wide and a quarter tall the moment it steps on. So the root carries the collider — sized in units, since there
-is no scale to stretch it — and a child carries the stretched sprite.
+is not: the root is the object that carries the `Box Collider 2D`, and a collider is **stretched by its
+object's transform scale**. Size the collider in units on a scale-`1` object and the physics box matches the
+numbers you typed; give the root a scale of `4, 0.25, 1` instead and the same collider is silently squashed to
+a different shape than the sprite (non-uniform scale on a collider is a classic source of "it looks right but
+collides wrong"). So the root carries the collider — sized in units, since there is no scale to stretch it —
+and a child carries the stretched sprite.
 
 ## Do this
 
 1. In the **Hierarchy**, right-click and choose **Create Empty**. Rename it **`MovingPlatform`**. Set its
    `Transform` **Position** to a clear stretch of your cavern — this guide uses `X 8`, `Y -2`, `Z 0` — and
-   **leave Scale at `1, 1, 1`**. That last part is load-bearing for step 03.
+   **leave Scale at `1, 1, 1`**. That last part is load-bearing: it keeps the collider you size next undistorted.
 
 2. Right-click `MovingPlatform` and choose **2D Object > Sprites > Square** to create it as a **child**.
    Rename the child **`Visual`**, set its `Transform` **Position** to `0, 0, 0` and its **Scale** to
@@ -133,8 +135,9 @@ feat(level): add a kinematic moving platform on a ping-pong path
   being written instead of `MovePosition`.
 - **The platform does not move at all** → `Travel Offset Units` is `0, 0`, which makes the path length zero
   and the division in `FixedUpdate` produce `NaN`. Give it a non-zero offset.
-- **The player becomes gigantic when standing on the platform** → the parent has a scale other than
-  `1, 1, 1`. This bites in step 03; fix it now by moving the scale onto the `Visual` child.
+- **The collider does not match the sprite** → the parent has a scale other than `1, 1, 1`, stretching the
+  unit-sized `Box Collider 2D` into a different shape. Move the scale onto the `Visual` child and leave the
+  parent at `1, 1, 1`.
 
 ---
 > Nav: [← A ledge you can jump up through](01_one-way-platform.md) · [Overview](00_overview.md) · [Carry the rider →](03_carry-the-rider.md)

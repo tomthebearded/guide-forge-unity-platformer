@@ -24,8 +24,8 @@ full length without catching.
 ## Design / decisions folded in
 - `PlatformEffector2D` instead of hand-written normal filtering — taught in [step 01](01_one-way-platform.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d13--build-vs-borrow-one-way-pass-through-from-below-platforms).
 - A `Kinematic` body moved with `MovePosition`, and why not a `Dynamic` one — taught in [step 02](02_moving-platform.md).
-- The rider problem, and re-parenting as the chosen fix — taught in [step 03](03_carry-the-rider.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d14--build-vs-borrow-carrying-a-rider-on-a-moving-platform).
-- Why a carried object's parent must have a scale of `1, 1, 1` — taught in [step 02](02_moving-platform.md).
+- The rider problem, and moving the rider with the platform (movement inheritance, **not** re-parenting) as the chosen fix — taught in [step 03](03_carry-the-rider.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d14--build-vs-borrow-carrying-a-rider-on-a-moving-platform).
+- Why the platform's collider lives on a scale-`1, 1, 1` parent with the stretched sprite on a child — taught in [step 02](02_moving-platform.md).
 
 ---
 > Part 3 — The world · milestone 7 of 13 · prev: [The level as a Tilemap](../MILESTONE_6_tilemap-level/00_overview.md) · next: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · start: [A ledge you can jump up through](01_one-way-platform.md)
