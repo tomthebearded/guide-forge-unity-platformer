@@ -7,9 +7,9 @@
 > _Last updated with **GuideForge v1.16.0** on 2026-08-31._
 
 ## Frontier
-- **Current frontier:** M7 — not started. M1–M6 complete and verified.
-- **Executed through:** M6 / 06_verify.md (2026-08-31) — gate confirmed by the reader.
-- **Note:** M6/05–06 carry a 2026-08-31 correction (Used By Composite → **Composite Operation** = `Merge`, Unity 6.3). It was wording-only and the reader verified against the corrected steps.
+- **Current frontier:** M8 — not started. M1–M7 complete and verified.
+- **Executed through:** M7 / 04_verify.md (2026-08-31) — gate confirmed by the reader.
+- **Note:** M7/03 (rider carry) was corrected 2026-08-31 via /report-issue — re-parenting replaced by movement inheritance (OverlapBox detection + frictionless surface). All of M7 was unexecuted when it was fixed, so the reader followed the corrected steps and observed the gate against them.
 
 ## Source inputs
 | Input file | Used for (stack / scope / decisions) | Provided on | Re-checked on |
@@ -25,7 +25,7 @@
 | M4 — Gravity, jumping & the ground check | ✅ | 2026-08-28 | Steps 01–05 executed 2026-08-28; `06_verify.md` gate passed 2026-08-28. |
 | M5 — Game feel | ✅ | 2026-08-31 | Gate first passed 2026-08-28, then corrected (coyote double-jump fix). Retrofit applied 2026-08-31 in `PlayerMotor.cs`; `06_verify.md` re-run and passed 2026-08-31 (mash-jump test confirmed). |
 | M6 — The level as a Tilemap | ✅ | 2026-08-31 | All six steps executed 2026-08-31; `06_verify.md` gate confirmed by the reader. M6/05–06 were corrected 2026-08-31 (Used By Composite → **Composite Operation** = `Merge`, Unity 6.3) — a wording-only fix; the reader applied `Merge` and verified against the corrected steps, so no separate re-verification is outstanding. |
-| M7 — Moving & one-way platforms | ❌ | — | |
+| M7 — Moving & one-way platforms | ✅ | 2026-08-31 | Steps 01–04 executed 2026-08-31; `04_verify.md` gate confirmed by the reader. M7/03 was corrected 2026-08-31 (/report-issue): rider carry re-cast from re-parenting to movement inheritance (per-step delta + `Physics2D.OverlapBox` detection + a frictionless surface). All of M7 was unexecuted at fix time, so the reader followed the corrected steps and observed the gate against them. |
 | M8 — Dash & wall-jump (a movement state machine) | ❌ | — | |
 | M9 — Coins, enemies, damage, lives & checkpoints | ❌ | — | |
 | M10 — Animation, camera & audio | ❌ | — | |
@@ -51,6 +51,11 @@
 | 2026-08-31 | M6/05 (step 4, seam experiment, two Done-when boxes, "If it breaks"); swept M6/06 (gate box, checkpoint table, troubleshooting) and PLAN.md §gates | Tick **Used By Composite** on the `Tilemap Collider 2D` to feed the composite | Unity 6.3 removed the `usedByComposite` checkbox; a collider now feeds a `CompositeCollider2D` via the **Composite Operation** dropdown — `Merge` (Boolean OR) is the old "ticked", `None` is "unticked" ([Unity 6.3 docs](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Collider2D.CompositeOperation.html)) | **All ahead of frontier — rewritten in place** (no route decision). Every reference changed to Composite Operation = `Merge`/`None`; a 5.1 failure note added at M6/05 for "there is no Used By Composite checkbox". Verified online against the Unity 6.3 ScriptReference. |
 | 2026-08-31 | M7/03 (design, code, Do-this, Done-when, If-it-breaks); swept M7/02 (scale rationale + troubleshooting), M7/04 (two gate boxes, checkpoint code, troubleshooting, handoff), M7/00, PLAN.md, decision-log D14 | Carry the rider by `transform.SetParent()` in `OnCollisionEnter2D`/`Exit2D` — re-parent the player under the platform | `SetParent` from a physics collision callback throws `Cannot set the parent of the GameObject 'Player' while activating or deactivating the parent GameObject` when the first contacts fire during scene activation, and re-parenting a Dynamic `Rigidbody2D` is fragile anyway (inherits the platform's scale, fights world-space physics). Carry instead by measuring the platform's per-step position delta and shifting every rider on its top surface by it | **All ahead of frontier — rewritten in place** (M7 unexecuted; no route decision, no banners). Corrected in three passes the same day: (1) delta-carry with `OnCollisionEnter/Exit` rider tracking still slid (a kinematic platform sliding into a resting body fires those callbacks unreliably) → (2) per-step `Physics2D.OverlapBox` detection of what is on the top edge → (3) the rider then crept a hair ahead, because `MovePosition` still drags a resting body by friction on top of the delta; the carrier now installs a frictionless `PhysicsMaterial2D` on its surface in `Awake` (guarded on `sharedMaterial == null`). |
 
+- 2026-08-31 — **M7 executed and completed; M7 → ✅.** Reader confirmed steps 01–04 run and the
+  `04_verify.md` gate passed (rider travels with the platform, no re-parent, no creep; one-way ledge and
+  platform travel behave). Rows 01–04 marked `[x]`; **M7 → ✅** (verified 2026-08-31). Frontier advanced to
+  M8 (not started). M7/03 was the /report-issue fix applied and tested the same day (movement inheritance +
+  OverlapBox + frictionless surface); the guide fix and the game script were committed separately.
 - 2026-08-31 — **M7/03 rider carry fixed (/report-issue).** Field report: on entering Play the Console threw
   `Cannot set the parent of the GameObject 'Player' while activating or deactivating the parent GameObject`,
   from `PlatformRiderCarrier` calling `transform.SetParent(...)` inside `OnCollisionEnter2D`. Root cause:

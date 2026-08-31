@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M6 / 06_verify.md (gate passed 2026-08-31). M1–M6 are complete and verified.
-- **Next up:** M7 / 01_one-way-platform.md.
+- **Last executed:** M7 / 04_verify.md (gate passed 2026-08-31). M1–M7 are complete and verified.
+- **Next up:** M8 / 01_add-the-dash-action.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -71,10 +71,10 @@
 - [x] `06_verify.md` — milestone gate — passed 2026-08-31 (verified against the corrected M6/05–06 wording)
 
 ## MILESTONE_7 — Moving & one-way platforms
-- [ ] `01_one-way-platform.md` — A ledge you can jump up through
-- [ ] `02_moving-platform.md` — A platform that travels
-- [ ] `03_carry-the-rider.md` — Carry the rider
-- [ ] `04_verify.md` — milestone gate
+- [x] `01_one-way-platform.md` — A ledge you can jump up through — 2026-08-31
+- [x] `02_moving-platform.md` — A platform that travels — 2026-08-31
+- [x] `03_carry-the-rider.md` — Carry the rider — 2026-08-31 (carried by movement inheritance after the /report-issue fix: OverlapBox detection + frictionless surface, replacing re-parenting)
+- [x] `04_verify.md` — milestone gate — passed 2026-08-31
 
 ## MILESTONE_8 — Dash & wall-jump (a movement state machine)
 - [ ] `01_add-the-dash-action.md` — Add the Dash action
