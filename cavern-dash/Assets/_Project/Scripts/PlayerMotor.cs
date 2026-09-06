@@ -84,6 +84,9 @@ public class PlayerMotor : MonoBehaviour
 
     private void TickNormalState()
     {
+        if (!Mathf.Approximately(input.HorizontalInput, 0f))
+            facingDirection = input.HorizontalInput > 0f ? 1 : -1;
+
         bool horizontalControlLocked = Time.time < horizontalControlLockedUntilTimeSeconds;
 
         if (!horizontalControlLocked)
