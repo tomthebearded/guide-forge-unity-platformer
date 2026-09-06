@@ -37,6 +37,7 @@ public class PlayerMotor : MonoBehaviour
     public int WallDirection { get; private set; }
     public bool IsGrounded { get; private set; }
 
+    public bool IsDashing => state == PlayerMovementState.Dashing;
     private Rigidbody2D body;
     private PlayerInputReader input;
     private float coyoteTimeRemainingSeconds;
@@ -46,6 +47,7 @@ public class PlayerMotor : MonoBehaviour
     private float nextDashAllowedTimeSeconds;
     private int facingDirection = 1;
     private float horizontalControlLockedUntilTimeSeconds;
+
 
     void Awake()
     {
