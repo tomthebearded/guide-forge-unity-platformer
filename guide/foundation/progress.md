@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M8 / 06_verify.md (gate passed 2026-08-31). M1–M8 are complete and verified.
-- **Next up:** M9 / 01_coin-prefab.md.
+- **Last executed:** M9 / 06_verify.md (gate passed 2026-09-06). M1–M9 are complete and verified.
+- **Next up:** M10 / 01_dress-the-player.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -85,12 +85,12 @@
 - [x] `06_verify.md` — milestone gate — passed 2026-08-31
 
 ## MILESTONE_9 — Coins, enemies, damage, lives & checkpoints
-- [ ] `01_coin-prefab.md` — Make a coin
-- [ ] `02_collect-coins.md` — Collect coins
-- [ ] `03_enemy.md` — An enemy that patrols
-- [ ] `04_stomp-and-damage.md` — Stomp it, or lose a life
-- [ ] `05_checkpoints-and-respawn.md` — Checkpoints and respawn
-- [ ] `06_verify.md` — milestone gate
+- [x] `01_coin-prefab.md` — Make a coin — 2026-09-06
+- [x] `02_collect-coins.md` — Collect coins — 2026-09-06
+- [x] `03_enemy.md` — An enemy that patrols — 2026-09-06
+- [x] `04_stomp-and-damage.md` — Stomp it, or lose a life — 2026-09-06
+- [x] `05_checkpoints-and-respawn.md` — Checkpoints and respawn — 2026-09-06
+- [x] `06_verify.md` — milestone gate — passed 2026-09-06
 
 ## MILESTONE_10 — Animation, camera & audio
 - [ ] `01_dress-the-player.md` — Dress the player
