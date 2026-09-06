@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3935439655913099056}
   - component: {fileID: 2727012116868683540}
   - component: {fileID: 3569373501976951111}
+  - component: {fileID: 4281526991061671862}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Untagged
@@ -186,3 +187,17 @@ MonoBehaviour:
   probeDistanceAheadUnits: 0.45
   floorProbeDepthUnits: 0.55
   probeRadiusUnits: 0.08
+--- !u!114 &4281526991061671862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680531545723579131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce4a02232df121249afd2406704c3869, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyContact
+  stompBounceVelocityUnitsPerSecond: 10
+  stompToleranceUnits: 0.1
