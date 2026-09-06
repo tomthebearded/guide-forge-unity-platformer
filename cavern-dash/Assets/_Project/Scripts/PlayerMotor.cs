@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerInputReader))]
@@ -48,6 +50,12 @@ public class PlayerMotor : MonoBehaviour
     private int facingDirection = 1;
     private float horizontalControlLockedUntilTimeSeconds;
 
+    public event Action Jumped;
+    public event Action Landed;
+    public event Action Dashed;
+
+    private bool wasGroundedLastStep;
+
 
     void Awake()
     {
@@ -61,6 +69,11 @@ public class PlayerMotor : MonoBehaviour
         UpdateGroundedState();
         UpdateCoyoteTimer();
         UpdateWallContact();
+
+        if (IsGrounded && !wasGroundedLastStep)
+            Landed?.Invoke();
+
+        wasGroundedLastStep = IsGrounded;
 
         switch (state)
         {
@@ -123,6 +136,7 @@ public class PlayerMotor : MonoBehaviour
 
             coyoteTimeRemainingSeconds = 0f;
             input.ConsumeJumpRequest();
+            Jumped?.Invoke(); 
         }
 
         ApplyJumpGravityMultipliers();
@@ -138,6 +152,7 @@ public class PlayerMotor : MonoBehaviour
         dashEndTimeSeconds = Time.time + dashDurationSeconds;
         nextDashAllowedTimeSeconds = Time.time + dashCooldownSeconds;
         input.ConsumeDashRequest();
+        Dashed?.Invoke();
 
         body.gravityScale = 0f;
 
@@ -177,7 +192,7 @@ public class PlayerMotor : MonoBehaviour
 
             horizontalControlLockedUntilTimeSeconds = Time.time + wallJumpControlLockSeconds;
             input.ConsumeJumpRequest();
-
+            Jumped?.Invoke();
             state = PlayerMovementState.Normal;
             body.gravityScale = baseGravityScale;
         }
