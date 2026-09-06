@@ -40,4 +40,10 @@ public class PlayerHealth : MonoBehaviour
 
         Died?.Invoke();
     }
+
+    public void KillIgnoringInvulnerability()
+    {
+        invulnerableUntilTimeSeconds = float.NegativeInfinity;
+        TakeDamage();
+    }
 }
