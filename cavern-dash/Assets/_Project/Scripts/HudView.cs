@@ -13,7 +13,10 @@ public class HudView : MonoBehaviour
     {
         stats.CoinsChanged += ShowCoins;
         health.LivesChanged += ShowLives;
+    }
 
+    private void Start()
+    {
         ShowCoins(stats.CoinsCollected);
         ShowLives(health.LivesRemaining);
     }

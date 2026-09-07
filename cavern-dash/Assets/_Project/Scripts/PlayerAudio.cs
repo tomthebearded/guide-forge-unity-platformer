@@ -22,8 +22,10 @@ public class PlayerAudio : MonoBehaviour
         motor = GetComponent<PlayerMotor>();
         stats = GetComponent<PlayerStats>();
         health = GetComponent<PlayerHealth>();
-        livesLastSeen = health.LivesRemaining;
     }
+
+    private void Start()=>
+        livesLastSeen = health.LivesRemaining;
 
     private void OnEnable()
     {

@@ -3986,8 +3986,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HudView
   coinsLabel: {fileID: 1180000013}
   livesLabel: {fileID: 1180000023}
-  stats: {fileID: 1473688159}
-  health: {fileID: 1473688158}
+  stats: {fileID: 1473688158}
+  health: {fileID: 1473688159}
 --- !u!1 &1180000010
 GameObject:
   m_ObjectHideFlags: 0
