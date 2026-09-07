@@ -3838,6 +3838,7 @@ GameObject:
   - component: {fileID: 1180000004}
   - component: {fileID: 1180000005}
   - component: {fileID: 1180000006}
+  - component: {fileID: 1180000007}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5350,6 +5351,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseController
   pausePanel: {fileID: 1210000000}
+--- !u!114 &1180000007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e60af6f2142491fa847e72afa4f431d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelTimer
+  timeLabel: {fileID: 1180000033}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
