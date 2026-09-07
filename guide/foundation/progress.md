@@ -19,8 +19,8 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M9 / 06_verify.md (gate passed 2026-09-06). M1–M9 are complete and verified.
-- **Next up:** M10 / 01_dress-the-player.md.
+- **Last executed:** M10 / 07_verify.md (gate passed 2026-09-07). M1–M10 are complete and verified.
+- **Next up:** M11 / 01_hud.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -93,13 +93,13 @@
 - [x] `06_verify.md` — milestone gate — passed 2026-09-06
 
 ## MILESTONE_10 — Animation, camera & audio
-- [ ] `01_dress-the-player.md` — Dress the player
-- [ ] `02_animate-the-player.md` — Animate the player
-- [ ] `03_cinemachine-camera.md` — The camera follows
-- [ ] `04_parallax.md` — A background with depth
-- [ ] `05_sound-effects.md` — Sound effects
-- [ ] `06_audio-mixer.md` — The audio mixer
-- [ ] `07_verify.md` — milestone gate
+- [x] `01_dress-the-player.md` — Dress the player — 2026-09-07 (commit `6bec19a`)
+- [x] `02_animate-the-player.md` — Animate the player — 2026-09-07 (commit `fbb7f6a`)
+- [x] `03_cinemachine-camera.md` — The camera follows — 2026-09-07 (commit `3818162`)
+- [x] `04_parallax.md` — A background with depth — 2026-09-07 (commit `db3308d`)
+- [x] `05_sound-effects.md` — Sound effects — 2026-09-07 (commit `b852e3e`)
+- [x] `06_audio-mixer.md` — The audio mixer — 2026-09-07 (commit `32d9ce8`)
+- [x] `07_verify.md` — milestone gate — passed 2026-09-07
 
 ## MILESTONE_11 — Scenes, menus, HUD & persistence
 - [ ] `01_hud.md` — The HUD

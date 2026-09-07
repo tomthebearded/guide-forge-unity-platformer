@@ -4,11 +4,11 @@
 # STATUS — Cavern Dash
 
 > _Generated with **GuideForge v1.18.0** on 2026-08-22._
-> _Last updated with **GuideForge v1.19.0** on 2026-09-06._
+> _Last updated with **GuideForge v1.18.0** on 2026-09-07._
 
 ## Frontier
-- **Current frontier:** M10 — not started. M1–M9 complete and verified.
-- **Executed through:** M9 / 06_verify.md (2026-09-06) — gate confirmed by the reader.
+- **Current frontier:** M11 — not started. M1–M10 complete and verified.
+- **Executed through:** M10 / 07_verify.md (2026-09-07) — gate confirmed by the reader.
 - **Note:** M7/03 (rider carry) was corrected 2026-08-31 via /report-issue — re-parenting replaced by movement inheritance (OverlapBox detection + frictionless surface). All of M7 was unexecuted when it was fixed, so the reader followed the corrected steps and observed the gate against them.
 
 ## Source inputs
@@ -28,7 +28,7 @@
 | M7 — Moving & one-way platforms | ✅ | 2026-08-31 | Steps 01–04 executed 2026-08-31; `04_verify.md` gate confirmed by the reader. M7/03 was corrected 2026-08-31 (/report-issue): rider carry re-cast from re-parenting to movement inheritance (per-step delta + `Physics2D.OverlapBox` detection + a frictionless surface). All of M7 was unexecuted at fix time, so the reader followed the corrected steps and observed the gate against them. |
 | M8 — Dash & wall-jump (a movement state machine) | ✅ | 2026-08-31 | Steps 01–06 executed 2026-08-31; `06_verify.md` gate confirmed by the reader. |
 | M9 — Coins, enemies, damage, lives & checkpoints | ✅ | 2026-09-06 | Steps 01–06 executed; `06_verify.md` gate confirmed by the reader (coins count, enemies patrol, stomp kills, contact costs a life behind one-second i-frames, run resets at zero, checkpoints arm once, death respawns at the last checkpoint, the kill zone below the level costs a life). Build steps corroborated by commits `6cf544b`, `82af780`, `313efaf`, `a51331f`, `f4a055d`. |
-| M10 — Animation, camera & audio | ❌ | — | |
+| M10 — Animation, camera & audio | ✅ | 2026-09-07 | Steps 01–07 executed; `07_verify.md` gate confirmed by the reader. Build steps corroborated by commits `6bec19a`, `fbb7f6a`, `3818162`, `db3308d`, `b852e3e`, `32d9ce8`, and on disk by `PlayerAnimationDriver.cs`, `ParallaxLayer.cs`, `PlayerAudio.cs`, `Player.controller` (+ four clips) and `GameMixer.mixer`. |
 | M11 — Scenes, menus, HUD & persistence | ❌ | — | |
 | M12 — Options: volume, display & key rebinding | ❌ | — | |
 | M13 — Build & ship | ❌ | — | Gate is observed in the built player, not the Editor. Amended 2026-08-24 (D30): README, licence and credits move to the repository root. |
@@ -51,6 +51,14 @@
 | 2026-08-31 | M6/05 (step 4, seam experiment, two Done-when boxes, "If it breaks"); swept M6/06 (gate box, checkpoint table, troubleshooting) and PLAN.md §gates | Tick **Used By Composite** on the `Tilemap Collider 2D` to feed the composite | Unity 6.3 removed the `usedByComposite` checkbox; a collider now feeds a `CompositeCollider2D` via the **Composite Operation** dropdown — `Merge` (Boolean OR) is the old "ticked", `None` is "unticked" ([Unity 6.3 docs](https://docs.unity3d.com/6000.3/Documentation/ScriptReference/Collider2D.CompositeOperation.html)) | **All ahead of frontier — rewritten in place** (no route decision). Every reference changed to Composite Operation = `Merge`/`None`; a 5.1 failure note added at M6/05 for "there is no Used By Composite checkbox". Verified online against the Unity 6.3 ScriptReference. |
 | 2026-08-31 | M7/03 (design, code, Do-this, Done-when, If-it-breaks); swept M7/02 (scale rationale + troubleshooting), M7/04 (two gate boxes, checkpoint code, troubleshooting, handoff), M7/00, PLAN.md, decision-log D14 | Carry the rider by `transform.SetParent()` in `OnCollisionEnter2D`/`Exit2D` — re-parent the player under the platform | `SetParent` from a physics collision callback throws `Cannot set the parent of the GameObject 'Player' while activating or deactivating the parent GameObject` when the first contacts fire during scene activation, and re-parenting a Dynamic `Rigidbody2D` is fragile anyway (inherits the platform's scale, fights world-space physics). Carry instead by measuring the platform's per-step position delta and shifting every rider on its top surface by it | **All ahead of frontier — rewritten in place** (M7 unexecuted; no route decision, no banners). Corrected in three passes the same day: (1) delta-carry with `OnCollisionEnter/Exit` rider tracking still slid (a kinematic platform sliding into a resting body fires those callbacks unreliably) → (2) per-step `Physics2D.OverlapBox` detection of what is on the top edge → (3) the rider then crept a hair ahead, because `MovePosition` still drags a resting body by friction on top of the delta; the carrier now installs a frictionless `PhysicsMaterial2D` on its surface in `Awake` (guarded on `sharedMaterial == null`). |
 
+- 2026-09-07 — **M10 executed and completed; M10 → ✅.** Reader confirmed steps 01–07 run and the
+  `07_verify.md` gate passed (the character sprite is dressed and flips with input, the Animator drives
+  idle/run/jump/fall from movement parameters, the Cinemachine camera follows and stays confined to the
+  level, two parallax layers give the background depth, jump/land/dash play their sound effects, and every
+  sound routes through the mixer's Music and SFX groups). Rows 01–07 marked `[x]`; **M10 → ✅** (verified
+  2026-09-07). Frontier advanced to M11 (not started). The six build steps are each backed by a commit
+  (`6bec19a` character sprite, `fbb7f6a` animation driver, `3818162` camera follow + confiner, `db3308d`
+  parallax layers, `b852e3e` jump/land/dash SFX, `32d9ce8` audio mixer with Music and SFX groups).
 - 2026-09-06 — **M9 executed and completed; M9 → ✅.** Reader confirmed steps 01–06 run and the
   `06_verify.md` gate passed (coins collect and count, enemies patrol and turn at ledges and walls, a stomp
   kills and bounces, a touch costs a life behind one-second invulnerability, the run resets at zero,
