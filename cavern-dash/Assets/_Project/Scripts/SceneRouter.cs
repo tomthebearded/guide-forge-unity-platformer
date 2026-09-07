@@ -8,7 +8,11 @@ public class SceneRouter : MonoBehaviour
     public const string SecondLevelScene = "Level02";
 
     public void LoadMenu() => SceneManager.LoadScene(MenuScene);
-    public void LoadFirstLevel() => SceneManager.LoadScene(FirstLevelScene);
+    public void LoadFirstLevel()
+    {
+        GameSession.Instance.StartNewRun();
+        SceneManager.LoadScene(FirstLevelScene);
+    }
 
     public void QuitGame()
     {
