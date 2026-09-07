@@ -5,9 +5,6 @@ public class EnemyContact : MonoBehaviour
 {
     [SerializeField] private float stompBounceVelocityUnitsPerSecond = 10f;
 
-    // How far below this enemy's head the player's feet may be and still stomp.
-    [SerializeField] private float stompToleranceUnits = 0.1f;
-
     private Collider2D ownCollider;
 
     private void Awake() =>
@@ -23,10 +20,12 @@ public class EnemyContact : MonoBehaviour
 
         Rigidbody2D playerBody = other.attachedRigidbody;
 
+        // Against the centre, not the head: this callback runs after the physics
+        // step, and a falling player is already well inside the enemy by now.
         bool comingDownOnTop =
             playerBody != null &&
             playerBody.linearVelocity.y < 0f &&
-            other.bounds.min.y >= ownCollider.bounds.max.y - stompToleranceUnits;
+            other.bounds.min.y >= ownCollider.bounds.center.y;
 
         if (comingDownOnTop)
         {
