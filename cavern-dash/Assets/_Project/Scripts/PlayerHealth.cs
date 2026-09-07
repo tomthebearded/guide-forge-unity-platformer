@@ -1,4 +1,3 @@
-// Assets/_Project/Scripts/PlayerHealth.cs — the whole file
 using System;
 using UnityEngine;
 
@@ -10,8 +9,8 @@ public class PlayerHealth : MonoBehaviour
     public int LivesRemaining { get; private set; }
 
     public event Action<int> LivesChanged;
-
     public event Action Died;
+    public event Action RunEnded;
 
     private float invulnerableUntilTimeSeconds = float.NegativeInfinity;
 
@@ -31,12 +30,9 @@ public class PlayerHealth : MonoBehaviour
 
         if (LivesRemaining <= 0)
         {
-            Debug.Log("run over — lives reset");
-            LivesRemaining = startingLives;
-            LivesChanged?.Invoke(LivesRemaining);
+            RunEnded?.Invoke();
+            return;
         }
-        else
-            Debug.Log($"lives = {LivesRemaining}");
 
         Died?.Invoke();
     }
