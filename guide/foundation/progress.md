@@ -19,8 +19,15 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last executed:** M10 / 07_verify.md (gate passed 2026-09-07). M1–M10 are complete and verified.
-- **Next up:** M11 / 01_hud.md.
+- **Last recorded here:** M10 / 07_verify.md (gate passed 2026-09-07).
+- **⚠️ The ledger is behind reality.** M11 / 01, 02 and 03 were executed on 2026-09-07 — 01 as commit
+  `32459dbf`, 02 as `b44d7b97`, 03 in the working tree — but nobody ticked them, and no skill may tick a step
+  on your behalf. Run `/mark-progress` to record them; until then every maintenance skill will treat M11 as
+  untouched and rewrite it freely.
+- **Before M11 / 04:** apply *Before you continue — corrections* at the top of
+  `MILESTONE_11_scenes-menus-hud-persistence/04_pause.md` — it repairs M11/01 and M10/05, both of which you
+  executed before the 2026-09-07 lifecycle-order fix.
+- **Next up:** M11 / 04_pause.md.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -97,9 +104,13 @@
 - [x] `02_animate-the-player.md` — Animate the player — 2026-09-07 (commit `fbb7f6a`)
 - [x] `03_cinemachine-camera.md` — The camera follows — 2026-09-07 (commit `3818162`)
 - [x] `04_parallax.md` — A background with depth — 2026-09-07 (commit `db3308d`)
-- [x] `05_sound-effects.md` — Sound effects — 2026-09-07 (commit `b852e3e`)
+- [!] `05_sound-effects.md` — Sound effects — 2026-09-07 (commit `b852e3e`) — **invalidated 2026-09-07** by the
+  lifecycle-order fix (`livesLastSeen` moves from `Awake` to `Start`); repaired by *Before you continue —
+  corrections* in `MILESTONE_11_scenes-menus-hud-persistence/04_pause.md`
 - [x] `06_audio-mixer.md` — The audio mixer — 2026-09-07 (commit `32d9ce8`)
-- [x] `07_verify.md` — milestone gate — passed 2026-09-07
+- [!] `07_verify.md` — milestone gate — passed 2026-09-07 — **invalidated 2026-09-07**: its `PlayerAudio`
+  checkpoint changed with the same fix; re-run the gate after applying the corrections in
+  `MILESTONE_11_scenes-menus-hud-persistence/04_pause.md`
 
 ## MILESTONE_11 — Scenes, menus, HUD & persistence
 - [ ] `01_hud.md` — The HUD

@@ -7,6 +7,9 @@ Observed in **Play Mode in the Editor**, starting from the **`Menu`** scene.
 
 - [ ] **The whole loop runs.** `Menu` → **Play** → `Level01` → its exit → `Level02` → its exit → `Win`, with
       no errors at any transition.
+- [ ] **The HUD opens on the right numbers.** `Coins: 0` and `Lives: 3` are on screen in the first frame of
+      each level, before anything is touched — `Lives: 0` means the labels were filled in before
+      `PlayerHealth` had set the starting lives.
 - [ ] **The HUD is live in both levels.** Coins and lives update the instant they change, and the time counts
       up in `mm:ss.hh`.
 - [ ] **The run accumulates across the load.** The timer keeps counting into `Level02` rather than restarting,
@@ -51,17 +54,22 @@ public class HudView : MonoBehaviour
     {
         stats.CoinsChanged += ShowCoins;
         health.LivesChanged += ShowLives;
-
-        // Draw the starting values too: the events only fire on a change, and
-        // the player may not touch anything for a while.
-        ShowCoins(stats.CoinsCollected);
-        ShowLives(health.LivesRemaining);
     }
 
     private void OnDisable()
     {
         stats.CoinsChanged -= ShowCoins;
         health.LivesChanged -= ShowLives;
+    }
+
+    // Draw the starting values too: the events only fire on a change, and the
+    // player may not touch anything for a while. Start rather than OnEnable,
+    // because Start is the first moment PlayerHealth.Awake is guaranteed to have
+    // run.
+    private void Start()
+    {
+        ShowCoins(stats.CoinsCollected);
+        ShowLives(health.LivesRemaining);
     }
 
     private void ShowCoins(int coinsCollected)

@@ -8,6 +8,17 @@
 > Written by `/log-feedback` (capture) and, when a fix ships, by `/report-issue`. Newest entries on top; one
 > entry per distinct piece of friction. Use absolute dates (`2026-08-22`), never "today".
 
+## 2026-09-07 — M11 · The HUD reads `Lives: 0` from the first frame and never changes
+
+- **Where:** M11 — Scenes, menus, HUD & persistence, [`01_hud.md`](MILESTONE_11_scenes-menus-hud-persistence/01_hud.md), action 6 (the `HudView` listing); breaks its own second Done-when box.
+- **Reader:** the guide's target reader — a developer who had just executed M11/01–03 and ran the game to check the flow.
+- **What happened:** Pressing Play in `Level01` showed `Coins: 0` and `Lives: 0`, and the lives label never moved until damage was taken. **Expected** (M11/01 Done-when): `Coins: 0` and `Lives: 3` from the first frame, without touching anything. Root cause: the taught `HudView` draws its opening values in `OnEnable`, and Unity defines no `Awake`/`OnEnable` order between two objects — the `Canvas` was initialized before the `Player`, so `health.LivesRemaining` was still `0`. A headless PlayMode trace pinned it: `OnEnable frame=11 lives=0`, then `PlayerHealth.Awake frame=11 lives=3`. Because `LivesChanged` only fires on a change, the `0` then stood for the whole run. The sweep found one sibling: `PlayerAudio` seeds `livesLastSeen` from its own `Awake` (M10/05) — latent, and only saved by the component happening to sit after `PlayerHealth` in the Player's component list. Separately, and not a guide defect, `HudView`'s `Stats` and `Health` fields had been wired crossed over in both level scenes, which threw `NullReferenceException` on every load until it was fixed.
+- **Suspected class:** `unknown` — a correctness defect in the guide's own code; the fixed vocabulary has no value for that, so `unknown` is the honest fit.
+- **Severity:** `slowed-down` — the game runs, but the step's gate cannot go green on a correct build.
+- **Tags:** M11, M10, HUD, HudView, PlayerAudio, lifecycle, Awake, OnEnable, Start, execution-order, correctness, verify-gate
+- **Status:** fixed via /report-issue (2026-09-07) — Route B; root fix in M11/01, swept to M10/05, M10/07 and M11/07; retrofit in M11/04 corrections; see [decision-log D32](foundation/decision-log.md#d32--opening-reads-happen-in-start-not-in-awake-or-onenable)
+- **Quote:** "fai un check che funzioni"
+
 ## 2026-08-31 — M7 · Carrying the rider errors on Play, then the player still slides off
 
 - **Where:** M7 — Moving & one-way platforms, [`03_carry-the-rider.md`](MILESTONE_7_moving-and-one-way-platforms/03_carry-the-rider.md); gate in [`04_verify.md`](MILESTONE_7_moving-and-one-way-platforms/04_verify.md).

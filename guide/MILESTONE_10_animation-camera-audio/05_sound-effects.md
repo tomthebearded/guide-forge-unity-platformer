@@ -1,5 +1,9 @@
 # M10 · Step 05 of 07 — Sound effects
 > Nav: [← A background with depth](04_parallax.md) · [Overview](00_overview.md) · [The audio mixer →](06_audio-mixer.md)
+> ⚠️ **Superseded 2026-09-07** — `PlayerAudio` read `health.LivesRemaining` from its own `Awake`, which
+> is not guaranteed to run after `PlayerHealth.Awake` has filled that number in. Don't follow this step as
+> written: the correction that brings it up to date is under *Before you continue — corrections* in
+> [../MILESTONE_11_scenes-menus-hud-persistence/04_pause.md](../MILESTONE_11_scenes-menus-hud-persistence/04_pause.md).
 
 **Before you start:** [step 04](04_parallax.md) finished — the background has depth. You need Kenney's CC0
 sound packs: download **Impact Sounds** (<https://kenney.nl/assets/impact-sounds>) and **Interface Sounds**
@@ -109,6 +113,13 @@ transition: not grounded last physics step, grounded this one. One remembered bo
            motor = GetComponent<PlayerMotor>();
            stats = GetComponent<PlayerStats>();
            health = GetComponent<PlayerHealth>();
+       }
+
+       // Not Awake: PlayerHealth fills LivesRemaining in its own Awake, and Unity
+       // does not promise which component's Awake runs first. Start does — it runs
+       // only once every Awake in the scene has.
+       private void Start()
+       {
            livesLastSeen = health.LivesRemaining;
        }
 
@@ -179,6 +190,8 @@ transition: not grounded last physics step, grounded this one. One remembered bo
 - [ ] Landing plays **once** per landing, not repeatedly while standing still.
 - [ ] Collecting two coins in quick succession plays both sounds, overlapping rather than truncating.
 - [ ] Losing the last life and resetting the run does **not** play the hurt sound twice.
+- [ ] The **first** hit of a fresh run plays the hurt sound — if only the second one does, `livesLastSeen`
+      started at `0` instead of `3`.
 - [ ] Emptying one clip field makes that action silent, with no Console error.
 - [ ] The Console shows no red entries; the project compiles.
 
@@ -199,6 +212,9 @@ feat(audio): announce jump, land and dash, and play sound effects
 - **A sound plays at level start** → **Play On Awake** is still ticked on the `Audio Source`.
 - **The hurt sound plays when the run resets** → the `livesLastSeen` comparison is missing; a reset raises
   `LivesChanged` with a *higher* number.
+- **The hurt sound is silent on the first hit of a run, then works** → `livesLastSeen` was still read in
+  `Awake`, which ran before `PlayerHealth.Awake`, so it started at `0` and the first `LivesChanged` did
+  not look like a loss. It belongs in `Start`.
 
 ---
 > Nav: [← A background with depth](04_parallax.md) · [Overview](00_overview.md) · [The audio mixer →](06_audio-mixer.md)

@@ -176,6 +176,12 @@ A tile asset that picks its sprite from its neighbours, using a 3 × 3 pattern p
 ### scene
 A file (`.unity`) holding a set of GameObjects and their arrangement. A game is a handful of scenes — a menu, each level — loaded one at a time.
 
+### script lifecycle order
+The order Unity calls a MonoBehaviour's start-up hooks in. Per object: `Awake`, then `OnEnable`. **Between**
+two objects — or two components on the same object — the order is *not* defined, so a script must never read
+in `Awake`/`OnEnable` a value another script fills in there. `Start` is the hook that waits: it runs only once
+every `Awake` in the scene has, which makes it the place for an opening read.
+
 ### serialization
 Unity's process of saving a component's field values into the scene or prefab file, which is also what makes
 them appear in the Inspector. A `private` field needs `[SerializeField]` to take part.

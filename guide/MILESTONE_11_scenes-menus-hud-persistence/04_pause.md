@@ -1,6 +1,79 @@
 # M11 · Step 04 of 07 — Pause
 > Nav: [← Carry the run across scenes](03_game-session.md) · [Overview](00_overview.md) · [The timer and the best time →](05_timer-and-best-time.md)
 
+## Before you continue — corrections
+> Applies only if you executed [M10 step 05](../MILESTONE_10_animation-camera-audio/05_sound-effects.md) or
+> [M11 step 01](01_hud.md) before 2026-09-07. Started the guide after that date? Skip this section — your
+> project already matches.
+
+Both scripts read a number that another `Awake` fills in, from a place that can run first. Unity brings a
+scene up one object at a time — `Awake`, then `OnEnable`, per object — and promises **no order** between two
+objects, nor between two components on the same one. `Start` is the one hook that waits for every `Awake` in
+the scene, and that is where an opening read belongs.
+
+1. In `Assets/_Project/Scripts/HudView.cs`, **REPLACE** the `OnEnable` method with these two — the
+   subscriptions stay, the opening draw moves out:
+
+   ```csharp
+   // Assets/_Project/Scripts/HudView.cs — replacing OnEnable()
+   private void OnEnable()
+   {
+       stats.CoinsChanged += ShowCoins;
+       health.LivesChanged += ShowLives;
+   }
+
+   // Draw the starting values too: the events only fire on a change, and the
+   // player may not touch anything for a while. Start rather than OnEnable,
+   // because Start is the first moment PlayerHealth.Awake is guaranteed to have
+   // run.
+   private void Start()
+   {
+       ShowCoins(stats.CoinsCollected);
+       ShowLives(health.LivesRemaining);
+   }
+   ```
+
+2. In the same file, check the four Inspector fields on the `Canvas`'s `HudView` while you are here:
+   **Coins Label** ← `CoinsLabel`, **Lives Label** ← `LivesLabel`, **Stats** ← `Player`, **Health** ←
+   `Player`. `Stats` and `Health` both accept the same `Player` object, so a swap between them looks right in
+   the Inspector and is `null` at run time — the symptom is a `NullReferenceException` from `HudView` on every
+   level load. Fix it in **both** `Level01` and `Level02`.
+
+3. In `Assets/_Project/Scripts/PlayerAudio.cs`, **REMOVE** the last line of `Awake` and add a `Start` below
+   it:
+
+   ```csharp
+   // Assets/_Project/Scripts/PlayerAudio.cs — replacing Awake()
+   private void Awake()
+   {
+       source = GetComponent<AudioSource>();
+       motor = GetComponent<PlayerMotor>();
+       stats = GetComponent<PlayerStats>();
+       health = GetComponent<PlayerHealth>();
+   }
+
+   // Not Awake: PlayerHealth fills LivesRemaining in its own Awake, and Unity
+   // does not promise which component's Awake runs first. Start does — it runs
+   // only once every Awake in the scene has.
+   private void Start()
+   {
+       livesLastSeen = health.LivesRemaining;
+   }
+   ```
+
+**Corrected when:**
+- [ ] Pressing **Play** in `Level01` shows `Coins: 0` and `Lives: 3` on the HUD from the first frame — not
+      `Lives: 0`.
+- [ ] The same is true in `Level02`.
+- [ ] The **first** hit of a fresh run plays the hurt sound, not just the second.
+- [ ] The Console shows no red entries; the project compiles.
+
+**Suggested commit:**
+```
+fix(gameplay): read starting lives in Start, once every Awake has run
+```
+
+
 **Before you start:** [step 03](03_game-session.md) finished — the level exits chain `Level01` → `Level02` →
 `Win`, and the run survives the loads.
 

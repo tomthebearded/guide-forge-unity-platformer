@@ -1,5 +1,9 @@
 # M10 · Verify — Animation, camera & audio
 > Nav: [← The audio mixer](06_audio-mixer.md) · [Overview](00_overview.md) · [Scenes, menus, HUD & persistence →](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md)
+> ⚠️ **Superseded 2026-09-07** — the `PlayerAudio` checkpoint below moved `livesLastSeen` out of `Awake`
+> and into `Start`. Don't diff your file against the old listing: the correction that brings it up to date
+> is under *Before you continue — corrections* in
+> [../MILESTONE_11_scenes-menus-hud-persistence/04_pause.md](../MILESTONE_11_scenes-menus-hud-persistence/04_pause.md).
 
 ## Done-when gate (the real test — check every box by hand)
 
@@ -18,7 +22,8 @@ Observed in **Play Mode in the Editor**, `Level01` open, with sound unmuted in t
       the cavern, and neither edge ever comes into view. Setting both factors to `1` removes the effect;
       restoring `0.2` and `0.5` brings it back.
 - [ ] **Five distinct sounds**: jump (including wall-jump), land (once per landing), dash, coin, hurt — and
-      overlapping coins do not cut each other off.
+      overlapping coins do not cut each other off. The hurt sound plays on the **first** hit of a fresh run,
+      not only from the second: silence on the first means `livesLastSeen` started at `0`.
 - [ ] **The mixer routes them.** Lowering the `Music` group during play silences music alone; lowering
       `Master` silences everything. The exposed parameters `MasterVolumeDb`, `MusicVolumeDb` and `SfxVolumeDb`
       all exist.
@@ -147,6 +152,13 @@ public class PlayerAudio : MonoBehaviour
         motor = GetComponent<PlayerMotor>();
         stats = GetComponent<PlayerStats>();
         health = GetComponent<PlayerHealth>();
+    }
+
+    // Not Awake: PlayerHealth fills LivesRemaining in its own Awake, and Unity
+    // does not promise which component's Awake runs first. Start does — it runs
+    // only once every Awake in the scene has.
+    private void Start()
+    {
         livesLastSeen = health.LivesRemaining;
     }
 

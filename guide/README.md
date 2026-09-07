@@ -31,6 +31,10 @@ Kenney's **CC0** packs — full verified table + check date: **[foundation/stack
 
 ## Updates
 
+- 2026-09-07 — fixed: the HUD showed `Lives: 0` from the first frame, because `HudView` read the starting
+  lives in `OnEnable`, which Unity may run before `PlayerHealth.Awake`; opening reads now happen in `Start`
+  (M11/01; swept M10/05, M10/07, M11/07; retrofit in M11/04). See
+  [D32](foundation/decision-log.md#d32--opening-reads-happen-in-start-not-in-awake-or-onenable).
 - 2026-08-31 — fixed: carrying a rider by re-parenting threw `Cannot set the parent … while activating` on
   Play and slid off anyway; the platform now carries riders by moving them with its own per-step delta,
   detecting them with a `Physics2D.OverlapBox` on its top edge (M7/03; swept M7/00, /02, /04, PLAN.md, D14).
