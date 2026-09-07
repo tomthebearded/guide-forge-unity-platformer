@@ -1,6 +1,53 @@
 # M11 · Verify — Scenes, menus, HUD & persistence
 > Nav: [← Game over](06_game-over.md) · [Overview](00_overview.md) · [Options: volume, display & key rebinding →](../MILESTONE_12_options-and-rebinding/00_overview.md)
 
+## Before you continue — corrections
+> Applies only if you executed [M9 step 04](../MILESTONE_9_coins-enemies-lives-checkpoints/04_stomp-and-damage.md)
+> before 2026-09-07. Started the guide after that date? Skip this section — your project already matches.
+
+Landing on an enemy from a jump hurt the player instead of killing it. The stomp asked whether the player's
+feet were within `0.1` units of the enemy's **head**, but a trigger callback runs *after* the physics step
+that produced the overlap: the feet sink up to `|velocity.y| × 0.02` first, which is `0.44` units on a
+four-unit drop and was measured at `0.128` even on a gentle `5.41` u/s contact — outside the window either
+way. Measuring against the enemy's **centre** gives `0.4` units of room instead, enough for any landing up to
+`20` u/s, and the tolerance field is not needed at all.
+
+1. In `Assets/_Project/Scripts/EnemyContact.cs`, **DELETE** the tolerance field together with the comment
+   above it:
+
+   ```csharp
+   // Assets/_Project/Scripts/EnemyContact.cs — delete these two lines
+   // How far below this enemy's head the player's feet may be and still stomp.
+   [SerializeField] private float stompToleranceUnits = 0.1f;
+   ```
+
+2. In the same file, **REPLACE** the `comingDownOnTop` block inside `HandleContact` with this:
+
+   ```csharp
+   // Assets/_Project/Scripts/EnemyContact.cs — replacing the stomp test in HandleContact()
+   // Against the centre, not the head: this callback runs after the physics
+   // step, and a falling player is already well inside the enemy by now.
+   bool comingDownOnTop =
+       playerBody != null &&
+       playerBody.linearVelocity.y < 0f &&
+       other.bounds.min.y >= ownCollider.bounds.center.y;
+   ```
+
+3. Nothing to re-wire: `Stomp Tolerance Units` disappears from the `Enemy` prefab's Inspector on its own, and
+   **Stomp Bounce Velocity Units Per Second** keeps its `10`.
+
+**Corrected when:**
+- [ ] Jumping onto an enemy from as high as you can reach destroys it and bounces you — every time, not
+      sometimes.
+- [ ] Walking into an enemy's side still costs a life, and rising into one from below still hurts.
+- [ ] The `Enemy` prefab shows one field on `Enemy Contact (Script)`, not two.
+- [ ] The Console shows no red entries; the project compiles.
+
+**Suggested commit:**
+```
+fix(gameplay): decide a stomp against the enemy's centre, not its head
+```
+
 ## Done-when gate (the real test — check every box by hand)
 
 Observed in **Play Mode in the Editor**, starting from the **`Menu`** scene.

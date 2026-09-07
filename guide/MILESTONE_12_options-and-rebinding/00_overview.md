@@ -1,5 +1,5 @@
 # Milestone 12 — Options: volume, display & key rebinding
-> Part 5 — Shipping · milestone 12 of 13 · prev: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · next: [Build & ship](../MILESTONE_13_build-and-ship/00_overview.md) · start: [The options panel](01_options-panel.md)
+> Part 5 — Options · milestone 12 of 12 · prev: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · next: — · start: [The options panel](01_options-panel.md)
 
 ## Goal
 By the end of this milestone the player controls the game rather than the other way round. Three sliders set
@@ -34,4 +34,4 @@ M11's gate passed: the whole loop runs from menu to win screen, pause works, and
 - Why the options UI itself is hand-written — recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d25--build-vs-borrow-the-options-ui-itself-sliders-the-rebind-buttons-states).
 
 ---
-> Part 5 — Shipping · milestone 12 of 13 · prev: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · next: [Build & ship](../MILESTONE_13_build-and-ship/00_overview.md) · start: [The options panel](01_options-panel.md)
+> Part 5 — Options · milestone 12 of 12 · prev: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · next: — · start: [The options panel](01_options-panel.md)

@@ -50,8 +50,9 @@ verified online on 2026-08-22. If you are reading this much later, re-check that
 4. Before you press Continue, tick the **modules** — the optional extras Unity installs alongside the Editor.
    These are mandatory for this guide:
    - **Windows Build Support (IL2CPP)** if you are on Windows, or **Mac Build Support (IL2CPP)** if you are on
-     macOS. This is what lets you produce the standalone executable in M13; adding it later means a second
-     download.
+     macOS. This guide never packages a standalone executable — it stops at development, and every gate is
+     observed in the Editor — but this is the module you would need the day you want one, and adding it
+     later means a second download.
    - **Microsoft Visual Studio Community** (Windows) or the Rider/Visual Studio integration your platform
      offers, unless you already have a C# editor you intend to use.
 

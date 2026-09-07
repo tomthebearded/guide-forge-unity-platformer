@@ -127,8 +127,8 @@ time becomes unreachable.
    run: the best time stays where it was.
 
 9. **Prove it persists.** Stop Play Mode entirely, then press Play again and finish another run — the best
-   time from before is still there. (In a built game, quitting and relaunching does the same; that is checked
-   at the M13 gate.)
+   time from before is still there. (`PlayerPrefs` writes to disk, so a built game would survive a real
+   quit-and-relaunch the same way; leaving Play Mode is the Editor's equivalent.)
 
 10. Prove the key is what holds it. Stop the game, open **Edit > Clear All PlayerPrefs**, then play a run: the
     best time is whatever you just scored, because the stored value is gone.

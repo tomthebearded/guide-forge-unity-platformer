@@ -1,5 +1,5 @@
 # Milestone 6 — The level as a Tilemap
-> Part 3 — The world · milestone 6 of 13 · prev: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · next: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · start: [Import the art](01_import-the-art.md)
+> Part 3 — The world · milestone 6 of 12 · prev: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · next: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · start: [Import the art](01_import-the-art.md)
 
 ## Goal
 By the end of this milestone the grey strip is gone and the player runs through a cavern you painted: real
@@ -32,4 +32,4 @@ more milestones on top of.
 - Why one composite collider beats hundreds of box colliders — taught in [step 05](05_composite-collider.md).
 
 ---
-> Part 3 — The world · milestone 6 of 13 · prev: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · next: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · start: [Import the art](01_import-the-art.md)
+> Part 3 — The world · milestone 6 of 12 · prev: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · next: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · start: [Import the art](01_import-the-art.md)

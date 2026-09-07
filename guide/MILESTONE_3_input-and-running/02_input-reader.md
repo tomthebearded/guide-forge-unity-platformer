@@ -88,7 +88,7 @@ precision and doubles in size for no benefit.
       (the value only logs when it changes).
 - [ ] Releasing → `HorizontalInput = 0.00`; holding **A** → `HorizontalInput = -1.00`.
 - [ ] With a gamepad connected, a half-pushed left stick prints a value strictly between `0.00` and `1.00`.
-      (No gamepad? Skip this box and check it at the M13 gate instead.)
+      (No gamepad? Skip this box and come back to it whenever you get hold of one.)
 - [ ] The Console shows no red entries; the project compiles.
 
 ## Suggested commit

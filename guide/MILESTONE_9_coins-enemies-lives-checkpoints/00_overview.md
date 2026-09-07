@@ -1,5 +1,5 @@
 # Milestone 9 — Coins, enemies, damage, lives & checkpoints
-> Part 4 — The game · milestone 9 of 13 · prev: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · next: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · start: [Make a coin](01_coin-prefab.md)
+> Part 4 — The game · milestone 9 of 12 · prev: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · next: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · start: [Make a coin](01_coin-prefab.md)
 
 ## Goal
 By the end of this milestone the cavern is a game you can win and lose: coins vanish when you touch them and
@@ -34,4 +34,4 @@ exclusive.
 - Invulnerability frames — taught in [step 04](04_stomp-and-damage.md); recorded in [../foundation/glossary.md](../foundation/glossary.md#i-frames-invulnerability-frames).
 
 ---
-> Part 4 — The game · milestone 9 of 13 · prev: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · next: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · start: [Make a coin](01_coin-prefab.md)
+> Part 4 — The game · milestone 9 of 12 · prev: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · next: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · start: [Make a coin](01_coin-prefab.md)

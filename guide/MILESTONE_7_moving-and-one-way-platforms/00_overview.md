@@ -1,5 +1,5 @@
 # Milestone 7 — Moving & one-way platforms
-> Part 3 — The world · milestone 7 of 13 · prev: [The level as a Tilemap](../MILESTONE_6_tilemap-level/00_overview.md) · next: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · start: [A ledge you can jump up through](01_one-way-platform.md)
+> Part 3 — The world · milestone 7 of 12 · prev: [The level as a Tilemap](../MILESTONE_6_tilemap-level/00_overview.md) · next: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · start: [A ledge you can jump up through](01_one-way-platform.md)
 
 ## Goal
 By the end of this milestone the cavern stops being furniture. A ledge lets you jump up *through* it from
@@ -28,4 +28,4 @@ full length without catching.
 - Why the platform's collider lives on a scale-`1, 1, 1` parent with the stretched sprite on a child — taught in [step 02](02_moving-platform.md).
 
 ---
-> Part 3 — The world · milestone 7 of 13 · prev: [The level as a Tilemap](../MILESTONE_6_tilemap-level/00_overview.md) · next: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · start: [A ledge you can jump up through](01_one-way-platform.md)
+> Part 3 — The world · milestone 7 of 12 · prev: [The level as a Tilemap](../MILESTONE_6_tilemap-level/00_overview.md) · next: [Dash & wall-jump (a movement state machine)](../MILESTONE_8_dash-and-wall-jump/00_overview.md) · start: [A ledge you can jump up through](01_one-way-platform.md)

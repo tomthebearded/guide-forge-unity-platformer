@@ -37,7 +37,7 @@ falling faster than rising.
    set **Gravity Scale** to `0.3` and press Play. The square drifts down like a feather — this is what
    "floaty" means when someone says a platformer feels floaty, and it is almost always this number.
 
-5. Stop, set **Gravity Scale** back to `4`, and save the scene. Every value from here to M13 assumes `4`.
+5. Stop, set **Gravity Scale** back to `4`, and save the scene. Every value in the rest of the guide assumes `4`.
 
 ## Done when (this step)
 - [ ] **Edit > Project Settings > Physics 2D** → **Gravity** reads `0, -9.81`, unchanged.

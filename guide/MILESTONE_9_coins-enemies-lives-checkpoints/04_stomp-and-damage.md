@@ -1,5 +1,9 @@
 # M9 · Step 04 of 06 — Stomp it, or lose a life
 > Nav: [← An enemy that patrols](03_enemy.md) · [Overview](00_overview.md) · [Checkpoints and respawn →](05_checkpoints-and-respawn.md)
+> ⚠️ **Superseded 2026-09-07** — the stomp test compared the player's feet with the enemy's *head* inside a
+> 0.1-unit tolerance, which a falling player crosses in a single physics step, so landing on an enemy hurt
+> you instead of killing it. Don't follow this step as written: the correction that brings it up to date is
+> under *Before you continue — corrections* in [../MILESTONE_11_scenes-menus-hud-persistence/07_verify.md](../MILESTONE_11_scenes-menus-hud-persistence/07_verify.md).
 
 **Before you start:** [step 03](03_enemy.md) finished — enemies patrol their ledges and the player passes
 through them. This step touches **two new files, committed together**: `PlayerHealth.cs` and
@@ -17,9 +21,23 @@ points depends on which collider Unity reports as "this" one, and getting that b
 can only kill by walking into its side. That is exactly the bug the platform carrier in
 [M7 step 03](../MILESTONE_7_moving-and-one-way-platforms/03_carry-the-rider.md) avoided.
 
-**By position and motion** — the player is stomping when its feet are at or above the enemy's head *and* it is
-moving downward. Two facts, both unambiguous, both readable in the Inspector when you are debugging. That is
-the one this guide uses, and it is the same shape as the rider test, deliberately.
+**By position and motion** — the player is stomping when it comes down on the enemy's **upper half** *and* it
+is moving downward. Two facts, both unambiguous, both readable in the Inspector when you are debugging. That
+is the one this guide uses, and it is the same shape as the rider test, deliberately.
+
+The reference point is where this gets decided, and "the enemy's head" is the wrong one. A trigger callback
+runs **after** the physics step that produced the overlap: by the time Unity tells you the two boxes touch,
+the player has already moved into the enemy by as much as `|velocity.y| × 0.02`. Falling is fast here — a drop
+of four units arrives at `22` units per second, which is `0.44` units of sink in one step, and a measured
+contact at `5.41` u/s already sat `0.128` below the head. Against a `0.1` tolerance the test reads false and
+the player takes the hit, and no larger tolerance is available: one big enough to survive a fast landing would
+also call a walk into the enemy's side a stomp.
+
+Measuring against the **centre** has room instead of a margin. The upper half of an enemy `0.8` units tall is
+`0.4` deep, so "came down on its top half" is still true when your code finally looks — for any landing up to
+`20` units per second, which covers every ordinary jump — and it is still false for a player walking into its
+side. Above that speed it becomes very likely rather than certain, and this game accepts that: measured drops
+from one, four and eight units (impacts `10.7`, `22.0` and `31.9` u/s) all stomped.
 
 The other half is **i-frames**. Without them, a single walk into an enemy costs every life you have: the
 overlap is reported every physics step, and fifty steps a second is fifty hits.
@@ -107,9 +125,6 @@ overlap is reported every physics step, and fifty steps a second is fifty hits.
    {
        [SerializeField] private float stompBounceVelocityUnitsPerSecond = 10f;
 
-       // How far below this enemy's head the player's feet may be and still stomp.
-       [SerializeField] private float stompToleranceUnits = 0.1f;
-
        private Collider2D ownCollider;
 
        private void Awake()
@@ -131,10 +146,12 @@ overlap is reported every physics step, and fifty steps a second is fifty hits.
 
            Rigidbody2D playerBody = other.attachedRigidbody;
 
+           // Against the centre, not the head: this callback runs after the physics
+           // step, and a falling player is already well inside the enemy by now.
            bool comingDownOnTop =
                playerBody != null &&
                playerBody.linearVelocity.y < 0f &&
-               other.bounds.min.y >= ownCollider.bounds.max.y - stompToleranceUnits;
+               other.bounds.min.y >= ownCollider.bounds.center.y;
 
            if (comingDownOnTop)
            {
@@ -153,8 +170,7 @@ overlap is reported every physics step, and fifty steps a second is fifty hits.
 
 4. Attach **`EnemyContact`** to the **`Enemy` prefab**, not to the instances: double-click
    `Assets/_Project/Prefabs/Enemy.prefab`, drag the script onto the root object, and leave Prefab Mode with
-   the **`<`** arrow. Leave **Stomp Bounce Velocity Units Per Second** at `10` and **Stomp Tolerance Units**
-   at `0.1`.
+   the **`<`** arrow. Leave **Stomp Bounce Velocity Units Per Second** at `10` — it is the only field.
 
 5. Save the scene and press **Play**, then try all three:
    - **Walk into an enemy from the side** → the Console prints `lives = 2`, and walking into it again
@@ -169,7 +185,9 @@ overlap is reported every physics step, and fifty steps a second is fifty hits.
 ## Done when (this step)
 - [ ] Walking into an enemy → one life lost, printed to the Console, and no further loss for one second.
 - [ ] Standing inside an enemy for more than a second → a second life is lost, once per second, not per frame.
-- [ ] Landing on an enemy from above → the enemy is destroyed and the player bounces upward.
+- [ ] Landing on an enemy from above → the enemy is destroyed and the player bounces upward. Test it from a
+      **full jump**, from as high as you can reach, not by stepping off a ledge beside it: a gentle approach
+      passes even when a fast one does not, and a fast one is what the game is played at.
 - [ ] Rising into an enemy from below → a life lost, **not** a stomp.
 - [ ] Losing the third life prints `run over — lives reset` and the count returns to `3`.
 - [ ] Coins, the platform, the one-way ledge and the whole moveset still behave.
@@ -185,8 +203,11 @@ feat(gameplay): add lives, i-frames and stomp-or-be-hurt enemy contact
   `0`. `TakeDamage` must return early while `IsInvulnerable`.
 - **The player is hurt when landing on the enemy** → the stomp test is inverted, or the player is not actually
   falling at contact: a stomp only counts with `linearVelocity.y < 0`.
-- **The enemy dies when the player walks into its side** → `stompToleranceUnits` is far too large, so the feet
-  count as "above the head" from anywhere. `0.1` against an enemy 0.8 units tall is right.
+- **Landing on an enemy from a jump hurts you, but stepping onto one from a ledge kills it** → the test is
+  measuring against the enemy's *head* with a small tolerance. The callback runs after the physics step, so a
+  fast fall is already deeper than any such tolerance. Compare against `ownCollider.bounds.center.y` instead.
+- **The enemy dies when the player walks into its side** → the comparison is against something lower than the
+  enemy's centre, so the feet count as "on top" from anywhere. `bounds.center.y` is the line.
 - **Nothing happens at all** → `EnemyContact` landed on an instance rather than on the prefab, or the enemy's
   collider is not a trigger.
 - **`Died` never seems to do anything** → correct for now: [step 05](05_checkpoints-and-respawn.md) is the

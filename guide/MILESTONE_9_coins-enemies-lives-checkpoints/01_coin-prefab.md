@@ -53,8 +53,8 @@ is how a "just add a coin" task turns into an hour.
    of the moving platform's path, in the arc of a wall-jump.
 
    Placement is **illustrative** — it is your level. What matters is that at least one coin needs a jump, one
-   needs the moving platform, and one needs the dash, so that the M13 gate can prove all three still work in
-   a build.
+   needs the moving platform, and one needs the dash, so that every later gate has to exercise all three
+   abilities to collect them.
 
 7. Save the scene and commit.
 

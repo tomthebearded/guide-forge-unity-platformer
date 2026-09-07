@@ -1,5 +1,5 @@
 # Milestone 4 — Gravity, jumping & the ground check
-> Part 2 — The character · milestone 4 of 13 · prev: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · next: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · start: [Give gravity some weight](01_tune-gravity.md)
+> Part 2 — The character · milestone 4 of 12 · prev: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · next: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · start: [Give gravity some weight](01_tune-gravity.md)
 
 ## Goal
 By the end of this milestone the player falls at a weight you chose rather than the engine's default, and
@@ -30,4 +30,4 @@ M3's gate passed: the player runs left and right at 7 units per second on both d
 - Latching a press in `Update` and consuming it in `FixedUpdate` — taught in [step 04](04_jump.md); it becomes the jump buffer in [M5](../MILESTONE_5_game-feel/00_overview.md).
 
 ---
-> Part 2 — The character · milestone 4 of 13 · prev: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · next: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · start: [Give gravity some weight](01_tune-gravity.md)
+> Part 2 — The character · milestone 4 of 12 · prev: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · next: [Game feel](../MILESTONE_5_game-feel/00_overview.md) · start: [Give gravity some weight](01_tune-gravity.md)

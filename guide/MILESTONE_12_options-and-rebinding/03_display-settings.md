@@ -10,12 +10,13 @@ list it needs no enumeration of what the monitor supports.
 
 The interesting part is that **it does almost nothing in the Editor**. `Screen.fullScreen` addresses the game
 window, and in the Editor the "game window" is a docked panel that will not go fullscreen on your behalf. The
-toggle will save its value, the value will be read back, and the visible effect arrives only in the built
-game — which is checked at the M13 gate.
+toggle will save its value, the value will be read back, and the visible effect arrives only in a built
+game — which this guide does not make, because it stops at development.
 
 That is worth stating plainly rather than discovering: a gate that says "the screen goes fullscreen" would
 fail here for a correct implementation. So this step's gate reads the **stored value** and the
-**`Screen.fullScreen` property**, both of which are observable now, and M13 checks the window.
+**`Screen.fullScreen` property**, both of which are observable now. The window itself is something you can
+only watch move in a standalone build, which is outside this guide's scope.
 
 ## Do this
 
@@ -82,8 +83,8 @@ fail here for a correct implementation. So this step's gate reads the **stored v
 - [ ] **Edit > Clear All PlayerPrefs** followed by a restart shows the toggle in whatever state the Editor is
       running in, with nothing having changed behind your back.
 - [ ] The Console shows no red entries; the project compiles.
-- [ ] *(The window itself changing is not checked here — it is a build-only effect, checked at the
-      [M13 gate](../MILESTONE_13_build-and-ship/00_overview.md).)*
+- [ ] *(The window itself changing is not checked here, or anywhere in this guide — it is a build-only
+      effect, and the guide stops at development.)*
 
 ## Suggested commit
 ```

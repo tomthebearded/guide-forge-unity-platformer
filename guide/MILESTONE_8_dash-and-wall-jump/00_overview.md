@@ -1,5 +1,5 @@
 # Milestone 8 — Dash & wall-jump (a movement state machine)
-> Part 3 — The world · milestone 8 of 13 · prev: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · next: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · start: [Add the Dash action](01_add-the-dash-action.md)
+> Part 3 — The world · milestone 8 of 12 · prev: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · next: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · start: [Add the Dash action](01_add-the-dash-action.md)
 
 ## Goal
 By the end of this milestone the player has a moveset rather than a move. A dash covers a fixed distance in a
@@ -32,4 +32,4 @@ floor without catching.
 - Why a wall-jump needs a brief control lock — taught in [step 05](05_wall-jump.md).
 
 ---
-> Part 3 — The world · milestone 8 of 13 · prev: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · next: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · start: [Add the Dash action](01_add-the-dash-action.md)
+> Part 3 — The world · milestone 8 of 12 · prev: [Moving & one-way platforms](../MILESTONE_7_moving-and-one-way-platforms/00_overview.md) · next: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · start: [Add the Dash action](01_add-the-dash-action.md)

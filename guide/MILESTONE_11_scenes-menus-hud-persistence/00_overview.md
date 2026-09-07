@@ -1,5 +1,5 @@
 # Milestone 11 — Scenes, menus, HUD & persistence
-> Part 4 — The game · milestone 11 of 13 · prev: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · next: [Options: volume, display & key rebinding](../MILESTONE_12_options-and-rebinding/00_overview.md) · start: [The HUD](01_hud.md)
+> Part 4 — The game · milestone 11 of 12 · prev: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · next: [Options: volume, display & key rebinding](../MILESTONE_12_options-and-rebinding/00_overview.md) · start: [The HUD](01_hud.md)
 
 ## Goal
 By the end of this milestone *Cavern Dash* is a game rather than a level. A title menu leads into Level 01,
@@ -37,4 +37,4 @@ the five sound effects play through the mixer.
 - `PlayerPrefs` for a handful of scalars, and where its limits are — taught in [step 05](05_timer-and-best-time.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d22--build-vs-borrow-persisting-the-best-time-and-the-options).
 
 ---
-> Part 4 — The game · milestone 11 of 13 · prev: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · next: [Options: volume, display & key rebinding](../MILESTONE_12_options-and-rebinding/00_overview.md) · start: [The HUD](01_hud.md)
+> Part 4 — The game · milestone 11 of 12 · prev: [Animation, camera & audio](../MILESTONE_10_animation-camera-audio/00_overview.md) · next: [Options: volume, display & key rebinding](../MILESTONE_12_options-and-rebinding/00_overview.md) · start: [The HUD](01_hud.md)

@@ -11,8 +11,8 @@ Observed in **Play Mode in the Editor**, `Level01` open, with the Game view clic
       reads `7`. (No Info foldout: from Position X `0`, hold **D** for two seconds and read Position X ≈ `14`.)
 - [ ] **The gamepad runs the player, with no gamepad code.** With a pad connected, pushing the left stick
       fully moves the square at the same 7 units per second; pushing it half way moves it visibly slower.
-      *(No gamepad to hand? Leave this box open and close it at the M13 gate, where the built game is tested
-      on both devices.)*
+      *(No gamepad to hand? Leave this box open and close it whenever you get hold of one — every later
+      milestone that touches input assumes both devices work.)*
 - [ ] **The player is a physics body.** Pressing Play from a standstill above the strip → the square falls,
       lands on top of it, and stays there; `Transform` **Position Y** reads between `-3.00` and `-2.98` and
       **Rotation Z** stays `0`.

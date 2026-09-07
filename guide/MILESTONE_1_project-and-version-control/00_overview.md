@@ -1,5 +1,5 @@
 # Milestone 1 — Project, Editor & version control
-> Part 1 — Foundations · milestone 1 of 13 · prev: — · next: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · start: [Install Unity Hub and Unity 6.3 LTS](01_install-unity.md)
+> Part 1 — Foundations · milestone 1 of 12 · prev: — · next: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · start: [Install Unity Hub and Unity 6.3 LTS](01_install-unity.md)
 
 ## Goal
 By the end of this milestone you have a Unity 6.3 LTS project that opens, enters Play Mode without errors,
@@ -32,4 +32,4 @@ and roughly half an hour of unattended time while the Editor downloads.
 - The `Assets/_Project/` layout and the `Level01` scene name — taught in [step 06](06_project-folders.md); recorded in [../foundation/conventions.md](../foundation/conventions.md).
 
 ---
-> Part 1 — Foundations · milestone 1 of 13 · prev: — · next: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · start: [Install Unity Hub and Unity 6.3 LTS](01_install-unity.md)
+> Part 1 — Foundations · milestone 1 of 12 · prev: — · next: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · start: [Install Unity Hub and Unity 6.3 LTS](01_install-unity.md)

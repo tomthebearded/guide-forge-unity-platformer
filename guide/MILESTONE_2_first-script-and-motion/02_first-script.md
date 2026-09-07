@@ -20,7 +20,7 @@ frame. There is no `main` loop you write; `Update` *is* the loop, and every obje
 That immediately raises the question this whole guide is built on. `Update` runs once per frame, and frames do
 not arrive at a fixed rate — a fast machine may render 240 of them a second, a busy one 40. Any code shaped
 `position += speed` therefore moves faster on faster hardware, which is the oldest bug in game programming.
-The fix is **delta time**, and you will multiply by it in almost every step from here to M13.
+The fix is **delta time**, and you will multiply by it in almost every step from here on.
 
 This step's script moves the player at a constant speed with no input at all. That is deliberate: it isolates
 the lifecycle and delta time so you meet one new thing at a time. In M3 the same object gets real input and

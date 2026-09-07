@@ -1,5 +1,5 @@
 # M12 · Verify — Options: volume, display & key rebinding
-> Nav: [← Make rebinds stick](05_persist-rebinds.md) · [Overview](00_overview.md) · [Build & ship →](../MILESTONE_13_build-and-ship/00_overview.md)
+> Nav: [← Make rebinds stick](05_persist-rebinds.md) · [Overview](00_overview.md) · end of the guide
 
 ## Done-when gate (the real test — check every box by hand)
 
@@ -15,8 +15,9 @@ Observed in **Play Mode in the Editor**, starting from the **`Menu`** scene, wit
       why the option scripts live on `OptionsController`.)
 - [ ] **The volumes reach the game**, not just the menu: starting `Level01` keeps them.
 - [ ] **The fullscreen toggle stores its state.** Clicking it prints `fullscreen = True` / `False`; leaving
-      Play Mode and returning shows the same state. *(The window itself changing is a build-only effect,
-      checked at the [M13 gate](../MILESTONE_13_build-and-ship/00_overview.md).)*
+      Play Mode and returning shows the same state. *(The window itself changing is a build-only effect —
+      the Editor's Game view is not a window the toggle can resize, so the stored state is what this box
+      reads.)*
 - [ ] **All five rebind buttons show their current control** when the panel opens.
 - [ ] **A rebind takes effect on the next input.** Rebind `Jump` to **J** → **J** jumps in the level and
       **Space** does not.
@@ -393,10 +394,13 @@ public class ResetBindingsButton : MonoBehaviour
   of the `Move` composite — that apply binding overrides interactively, save them as JSON in `PlayerPrefs`,
   reload them before the first scene, and can all be reset to the asset's defaults. Every gameplay script from
   M3 to M11 was left untouched.
-- **Open / deferred:** the game exists only inside the Unity Editor. Nobody else can play it, the fullscreen
-  toggle has never actually moved a window, and the repository has no README explaining what any of this is.
-- **Next:** **[M13 — Build & ship](../MILESTONE_13_build-and-ship/00_overview.md)** — the executable, tested
-  outside the Editor, and the repository someone else can clone.
+- **Open / deferred:** the game exists only inside the Unity Editor. Packaging it into a standalone
+  executable is deliberately out of this guide's scope — it teaches development, not distribution — so the
+  fullscreen toggle has never actually moved a window, and nobody without Unity can play what you built.
+- **Next:** nothing — this is the last milestone. The game is complete and playable end to end in the Editor.
+  If you want to take it further on your own, Unity's own manual covers packaging it in
+  [Build Profiles](https://docs.unity3d.com/6000.3/Documentation/Manual/create-build-profile.html); the
+  guide stops here.
 
 ---
-> Nav: [← Make rebinds stick](05_persist-rebinds.md) · [Overview](00_overview.md) · [Build & ship →](../MILESTONE_13_build-and-ship/00_overview.md)
+> Nav: [← Make rebinds stick](05_persist-rebinds.md) · [Overview](00_overview.md) · end of the guide

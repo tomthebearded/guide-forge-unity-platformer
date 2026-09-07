@@ -1,5 +1,5 @@
 # Milestone 10 — Animation, camera & audio
-> Part 4 — The game · milestone 10 of 13 · prev: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · next: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · start: [Dress the player](01_dress-the-player.md)
+> Part 4 — The game · milestone 10 of 12 · prev: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · next: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · start: [Dress the player](01_dress-the-player.md)
 
 ## Goal
 By the end of this milestone *Cavern Dash* looks and sounds like a game. The orange square becomes an animated
@@ -36,4 +36,4 @@ respawn you.
 - An `AudioMixer` with exposed parameters, and the decibel-versus-linear trap — taught in [step 06](06_audio-mixer.md); recorded in [../foundation/decision-log.md](../foundation/decision-log.md#d18--build-vs-borrow-volume-control-and-audio-routing).
 
 ---
-> Part 4 — The game · milestone 10 of 13 · prev: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · next: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · start: [Dress the player](01_dress-the-player.md)
+> Part 4 — The game · milestone 10 of 12 · prev: [Coins, enemies, damage, lives & checkpoints](../MILESTONE_9_coins-enemies-lives-checkpoints/00_overview.md) · next: [Scenes, menus, HUD & persistence](../MILESTONE_11_scenes-menus-hud-persistence/00_overview.md) · start: [Dress the player](01_dress-the-player.md)

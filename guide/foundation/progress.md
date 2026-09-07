@@ -19,15 +19,15 @@
 | `[!]` | executed, then **invalidated** by a later change to the guide — the row names the retrofit that repairs it |
 
 ## Current position
-- **Last recorded here:** M10 / 07_verify.md (gate passed 2026-09-07).
-- **⚠️ The ledger is behind reality.** M11 / 01, 02 and 03 were executed on 2026-09-07 — 01 as commit
-  `32459dbf`, 02 as `b44d7b97`, 03 in the working tree — but nobody ticked them, and no skill may tick a step
-  on your behalf. Run `/mark-progress` to record them; until then every maintenance skill will treat M11 as
-  untouched and rewrite it freely.
-- **Before M11 / 04:** apply *Before you continue — corrections* at the top of
-  `MILESTONE_11_scenes-menus-hud-persistence/04_pause.md` — it repairs M11/01 and M10/05, both of which you
-  executed before the 2026-09-07 lifecycle-order fix.
-- **Next up:** M11 / 04_pause.md.
+- **Last executed:** M11 / 07_verify.md — **gate passed 2026-09-07**. M11 is complete: steps 01–06 executed
+  and its Done-when gate observed by hand.
+- **Next up:** M12 / 01_options-panel.md.
+- **Outstanding gates:** two, both re-verifications rather than new work. **M9's** `06_verify.md` has not been
+  re-run since the 2026-09-07 stomp fix (`04_stomp-and-damage.md` is `[!]`, `06_verify.md` is `[~]`), and
+  **M10's** `07_verify.md` has not been re-run since the 2026-09-07 lifecycle-order fix (`07_verify.md` is
+  `[~]`). Both retrofits are applied to the project; what is missing is a person observing the two gates.
+- **Note:** the guide is mid-restructure from 13 milestones to 12 — `MILESTONE_13/` is deleted in the working
+  tree. This ledger still carries its rows; they need reconciling once that change lands.
 
 ## MILESTONE_1 — Project, Editor & version control
 - [x] `01_install-unity.md` — Install Unity Hub and Unity 6.3 LTS — 2026-08-24
@@ -95,31 +95,41 @@
 - [x] `01_coin-prefab.md` — Make a coin — 2026-09-06
 - [x] `02_collect-coins.md` — Collect coins — 2026-09-06
 - [x] `03_enemy.md` — An enemy that patrols — 2026-09-06
-- [x] `04_stomp-and-damage.md` — Stomp it, or lose a life — 2026-09-06
+- [!] `04_stomp-and-damage.md` — Stomp it, or lose a life — 2026-09-06 — **invalidated 2026-09-07** by the
+  stomp fix (the test now measures against the enemy's centre, and `stompToleranceUnits` is deleted);
+  repaired by *Before you continue — corrections* in
+  `MILESTONE_11_scenes-menus-hud-persistence/07_verify.md`
 - [x] `05_checkpoints-and-respawn.md` — Checkpoints and respawn — 2026-09-06
-- [x] `06_verify.md` — milestone gate — passed 2026-09-06
+- [~] `06_verify.md` — milestone gate — passed 2026-09-06 — **invalidated 2026-09-07**: its `EnemyContact`
+  checkpoint and its stomp gate box both changed. Outstanding: re-run the gate after applying the
+  corrections in `MILESTONE_11_scenes-menus-hud-persistence/07_verify.md`, stomping **from a full jump**
 
 ## MILESTONE_10 — Animation, camera & audio
 - [x] `01_dress-the-player.md` — Dress the player — 2026-09-07 (commit `6bec19a`)
 - [x] `02_animate-the-player.md` — Animate the player — 2026-09-07 (commit `fbb7f6a`)
 - [x] `03_cinemachine-camera.md` — The camera follows — 2026-09-07 (commit `3818162`)
 - [x] `04_parallax.md` — A background with depth — 2026-09-07 (commit `db3308d`)
-- [!] `05_sound-effects.md` — Sound effects — 2026-09-07 (commit `b852e3e`) — **invalidated 2026-09-07** by the
-  lifecycle-order fix (`livesLastSeen` moves from `Awake` to `Start`); repaired by *Before you continue —
-  corrections* in `MILESTONE_11_scenes-menus-hud-persistence/04_pause.md`
+- [x] `05_sound-effects.md` — Sound effects — 2026-09-07 (commit `b852e3e`); **retrofit applied 2026-09-07**
+  (`livesLastSeen` moved from `Awake` to `Start` via the *Before you continue — corrections* section in
+  `MILESTONE_11_scenes-menus-hud-persistence/04_pause.md`, commit `3b663dd1`)
 - [x] `06_audio-mixer.md` — The audio mixer — 2026-09-07 (commit `32d9ce8`)
-- [!] `07_verify.md` — milestone gate — passed 2026-09-07 — **invalidated 2026-09-07**: its `PlayerAudio`
-  checkpoint changed with the same fix; re-run the gate after applying the corrections in
-  `MILESTONE_11_scenes-menus-hud-persistence/04_pause.md`
+- [~] `07_verify.md` — milestone gate — first passed 2026-09-07, then **invalidated** the same day when the
+  `PlayerAudio` checkpoint changed. The retrofit is applied to the project (commit `3b663dd1`), but the gate
+  itself has **not been re-observed** — outstanding: re-run it, in particular the box on the hurt sound
+  playing on the *first* hit of a run
 
 ## MILESTONE_11 — Scenes, menus, HUD & persistence
-- [ ] `01_hud.md` — The HUD
-- [ ] `02_more-scenes.md` — More scenes
-- [ ] `03_game-session.md` — Carry the run across scenes
-- [ ] `04_pause.md` — Pause
-- [ ] `05_timer-and-best-time.md` — The timer and the best time
-- [ ] `06_game-over.md` — Game over
-- [ ] `07_verify.md` — milestone gate
+- [x] `01_hud.md` — The HUD — 2026-09-07 (commit `32459dbf`); **retrofit applied 2026-09-07** (the opening
+  `ShowCoins`/`ShowLives` moved from `OnEnable` to `Start` via the corrections section in `04_pause.md`,
+  commit `3b663dd1`, which also straightened the crossed `Stats`/`Health` fields in both level scenes)
+- [x] `02_more-scenes.md` — More scenes — 2026-09-07 (commit `b44d7b97`)
+- [x] `03_game-session.md` — Carry the run across scenes — 2026-09-07 (commit `db7874d5`)
+- [x] `04_pause.md` — Pause — 2026-09-07 (commit `bdc6345a`)
+- [x] `05_timer-and-best-time.md` — The timer and the best time — 2026-09-07 (commit `35516dac`)
+- [x] `06_game-over.md` — Game over — 2026-09-07 (commit `fd43767a`)
+- [x] `07_verify.md` — milestone gate — passed 2026-09-07 (observed by the reader, against the corrected
+  code: both retrofits — the lifecycle-order one in `04_pause.md` and the stomp one in this file — were
+  already applied to the project)
 
 ## MILESTONE_12 — Options: volume, display & key rebinding
 - [ ] `01_options-panel.md` — The options panel
@@ -129,9 +139,3 @@
 - [ ] `05_persist-rebinds.md` — Make rebinds stick
 - [ ] `06_verify.md` — milestone gate
 
-## MILESTONE_13 — Build & ship
-- [ ] `01_player-settings.md` — Player settings
-- [ ] `02_build-it.md` — Build it
-- [ ] `03_test-the-build.md` — Test the build
-- [ ] `04_the-repository.md` — The repository
-- [ ] `05_verify.md` — milestone gate

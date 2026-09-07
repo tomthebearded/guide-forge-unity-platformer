@@ -1,5 +1,9 @@
 # M9 · Verify — Coins, enemies, damage, lives & checkpoints
 > Nav: [← Checkpoints and respawn](05_checkpoints-and-respawn.md) · [Overview](00_overview.md) · [Animation, camera & audio →](../MILESTONE_10_animation-camera-audio/00_overview.md)
+> ⚠️ **Superseded 2026-09-07** — the `EnemyContact` checkpoint below measured the stomp against the enemy's
+> head inside a 0.1-unit tolerance, which a falling player crosses in one physics step. Don't diff your file
+> against the old listing: the correction is under *Before you continue — corrections* in
+> [../MILESTONE_11_scenes-menus-hud-persistence/07_verify.md](../MILESTONE_11_scenes-menus-hud-persistence/07_verify.md).
 
 ## Done-when gate (the real test — check every box by hand)
 
@@ -9,7 +13,9 @@ Observed in **Play Mode in the Editor**, `Level01` open, Console visible.
       placed coin can be collected; the moving platform passing through one does not collect it.
 - [ ] **Enemies patrol.** Each enemy walks its ledge and turns at the edge and at walls, indefinitely,
       without falling off.
-- [ ] **A stomp kills.** Landing on an enemy from above destroys it and bounces the player upward.
+- [ ] **A stomp kills.** Landing on an enemy **from a full jump** — not by stepping off a ledge beside it —
+      destroys it and bounces the player upward. The slow approach passes on a build where the fast one
+      does not, which is the whole reason to test it this way.
 - [ ] **A touch hurts.** Walking into an enemy prints `lives = 2`; the same contact does nothing for the next
       **one second**; standing inside it costs one further life per second, not per frame.
 - [ ] **Rising into an enemy hurts** rather than stomping it.
@@ -233,9 +239,6 @@ public class EnemyContact : MonoBehaviour
 {
     [SerializeField] private float stompBounceVelocityUnitsPerSecond = 10f;
 
-    // How far below this enemy's head the player's feet may be and still stomp.
-    [SerializeField] private float stompToleranceUnits = 0.1f;
-
     private Collider2D ownCollider;
 
     private void Awake()
@@ -257,10 +260,12 @@ public class EnemyContact : MonoBehaviour
 
         Rigidbody2D playerBody = other.attachedRigidbody;
 
+        // Against the centre, not the head: this callback runs after the physics
+        // step, and a falling player is already well inside the enemy by now.
         bool comingDownOnTop =
             playerBody != null &&
             playerBody.linearVelocity.y < 0f &&
-            other.bounds.min.y >= ownCollider.bounds.max.y - stompToleranceUnits;
+            other.bounds.min.y >= ownCollider.bounds.center.y;
 
         if (comingDownOnTop)
         {

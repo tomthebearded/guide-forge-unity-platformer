@@ -75,8 +75,9 @@
 - **Why:** rebinding is the feature the modern Input System exists for, and it closes the loop on the guide's
   three cross-cutting systems at once (input, UI, persistence). CI and automated tests would each add a
   milestone about tooling rather than about the game.
-- **Rules out / trade-off:** builds are made by hand in M13, and every gate in this guide is verified by a
-  person watching the game run — there is no regression suite behind you.
+- **Rules out / trade-off:** every gate in this guide is verified by a person watching the game run — there
+  is no regression suite behind you. (Builds were originally made by hand in an M13; that milestone was
+  removed on 2026-09-07 — see [D33](#d33--the-guide-stops-at-development-no-build-and-ship-milestone).)
 - **Revisit if:** the project grows past what one person can re-verify by hand.
 
 ## D7 — Steps show fragments; verify files hold whole files and whole settings
@@ -237,13 +238,14 @@
 - **Rules out / trade-off:** the usual UI plumbing, which you maintain.
 - **Revisit if:** never, for this project. Swapping it on a guide someone is already following is an amendment, not an edit — `/amend-guide`.
 
-## D26 — Build vs borrow: Producing the executable
-- **Date:** 2026-08-22
-- **Source:** the plan's build-vs-borrow table (posture: **balanced**), options verified 2026-08-22. Lands in **M13**.
-- **Decision:** **borrow Build Profiles** (https://docs.unity3d.com/6000.3/Documentation/Manual/create-build-profile.html).
-- **Why:** it is the platform's own build pipeline.
-- **Rules out / trade-off:** learning a window that Unity 6 renamed, so older tutorials call it something else.
-- **Revisit if:** never, for this project. Swapping it on a guide someone is already following is an amendment, not an edit — `/amend-guide`.
+## D26 — Build vs borrow: Producing the executable — **withdrawn 2026-09-07**
+- **Date:** 2026-08-22 · **withdrawn** 2026-09-07
+- **Source:** the plan's build-vs-borrow table (posture: **balanced**), options verified 2026-08-22. Landed in **M13**.
+- **Decision (withdrawn):** **borrow Build Profiles** (https://docs.unity3d.com/6000.3/Documentation/Manual/create-build-profile.html).
+- **Why it is withdrawn:** the guide no longer produces an executable at all — M13 was removed and the guide
+  stops at development ([D33](#d33--the-guide-stops-at-development-no-build-and-ship-milestone)). The row is
+  kept because the capability was weighed, not because it is still in scope; a reader who wants a build after
+  finishing the guide should use Build Profiles, and Unity's manual is the place for it.
 
 ## D27 — The jump buffer clamps its age at zero, because `Time.time` is two clocks
 - **Date:** 2026-08-23
@@ -271,8 +273,8 @@
 
 ## D30 — The Unity project is a folder in the guide's repository, not a repository of its own
 - **Date:** 2026-08-24
-- **Source:** amendment request — the project must live beside the guide folder. Lands in **M1** and **M13**; it is also what `PLAN.md` §8 already described.
-- **Decision:** one repository holds both. `cavern-dash/` is created as a sibling of `guide/`, M1 never runs `git init`, Unity's `.gitignore` and `.gitattributes` are written **inside `cavern-dash/`**, and the repository's own `README.md`, `LICENSE`, `CREDITS.md` and `docs/screenshot.png` are written at the **root** in M13. Supersedes the M1 steps' earlier assumption of a standalone project repository.
+- **Source:** amendment request — the project must live beside the guide folder. Lands in **M1**; it is also what `PLAN.md` §8 already described.
+- **Decision:** one repository holds both. `cavern-dash/` is created as a sibling of `guide/`, M1 never runs `git init`, Unity's `.gitignore` and `.gitattributes` are written **inside `cavern-dash/`**, and the repository's own `README.md`, `LICENSE`, `CREDITS.md` and `docs/screenshot.png` belong at the **root** (they were written there by M13 until that milestone was removed on 2026-09-07 — [D33](#d33--the-guide-stops-at-development-no-build-and-ship-milestone); the guide no longer authors them). Supersedes the M1 steps' earlier assumption of a standalone project repository.
 - **Why:** two facts settle the placement. A leading slash makes a gitignore pattern *"relative to the directory level of the particular `.gitignore` file itself"* (<https://git-scm.com/docs/gitignore>), so Unity's official list — `/[Ll]ibrary/`, `/[Bb]uilds/` — matches nothing from the repository root and would let `Library/` into history; inside `cavern-dash/` it works unedited, which also keeps it re-checkable against upstream. And `git lfs track` prefixes every pattern with the directory of the `.gitattributes` that declared it (git-lfs `git/gitattr/files.go`), so the gates read `cavern-dash/*.png (cavern-dash/.gitattributes)` — the prefix is the reader's proof the rules are scoped to the project. Beyond Git: the guide and the game it builds are one deliverable, and a visitor landing on the root should meet both.
 - **Rules out / trade-off:** the project cannot be cloned on its own — anyone wanting only the game clones the guide with it. Every Git path in the guide gains a `cavern-dash/` prefix, and `git status --porcelain` needs `-uall` before the first commit, because Git collapses a wholly untracked folder to one line. A reader who does want a standalone game repository runs `git init` inside `cavern-dash/` themselves and reads the M1 gates without the prefix.
 - **Revisit if:** the guide is published separately from the game, or the repository grows a second Unity project.
@@ -292,3 +294,19 @@
 - **Why:** Unity brings a scene up one object at a time — `Awake`, then `OnEnable` — and defines no order **between** objects, nor between two components on one object ([execution order](https://docs.unity3d.com/6000.3/Documentation/Manual/execution-order.html)). `PlayerHealth` fills `LivesRemaining` in its own `Awake`, so a read from another object's `OnEnable` is a coin toss; a headless PlayMode trace caught it losing (`OnEnable frame=11 lives=0`, then `PlayerHealth.Awake frame=11 lives=3`). Because `LivesChanged` only fires on a *change*, the wrong value then stands for the whole run. `Start` runs only once every `Awake` in the scene has, which makes the read deterministic without adding any coordination.
 - **Rules out / trade-off:** chose `Start` over the two alternatives. **Script Execution Order** (Project Settings) would work but pins a global ordering the reader must remember and cannot see from the code — a project-wide setting to fix a two-line problem. **Having `PlayerHealth` raise `LivesChanged` from its own `Awake`** would push the value instead of pulling it, but a subscriber that has not run its `OnEnable` yet misses the event, so it trades one ordering bug for another. The cost of `Start` is one extra hook and the discipline of remembering which of the three a read belongs in.
 - **Revisit if:** a component needs the value *before* the first frame (nothing does today: both readers only draw), or the project adopts a scene-loading scheme where `Start` no longer follows every `Awake` — additive loads, for instance, run their own `Awake`/`Start` pass per scene.
+
+## D33 — The guide stops at development: no build-and-ship milestone
+- **Date:** 2026-09-07
+- **Source:** scope change requested by the author — the guide must cover development only. Removes **M13**; touches **M1**, **M3**, **M9**, **M11** and **M12**.
+- **Decision:** the guide's last milestone is **M12**. `MILESTONE_13_build-and-ship/` (player settings, the build, testing the build, the repository, and its gate) is deleted, and no step packages an executable, writes the repository's `README.md`/`LICENSE`/`CREDITS.md`, or observes anything outside the Unity Editor. The finished state of the guide is a complete game playable end to end in Play Mode.
+- **Why:** the subject being taught is how a 2D platformer is built — physics, feel, level, moveset, game loop, options. Producing a build teaches Unity's build window, and writing the repository's front door teaches neither; both are one-off distribution chores that belong to whoever publishes the project, not to a reader learning the engine. Removing them also removes the guide's only gates that could not be observed where the reader is already working.
+- **Rules out / trade-off:** every gate is now an **Editor** gate, so three things the old M13 gate settled go unchecked by the guide: the fullscreen toggle never actually moves a window (M12/03 says so plainly), the game is never proven to run without the Editor (missing scenes in the build list, a `PlayerPrefs` store in a different place, a window that will not close), and the two gamepad boxes that a reader without a pad could defer to the build now have no later gate to fall to — they close whenever a pad is to hand. [D26](#d26--build-vs-borrow-producing-the-executable--withdrawn-2026-09-07) is withdrawn with the milestone.
+- **Revisit if:** the guide is extended to distribution — then it is an `/amend-guide` adding a milestone after M12, not a restoration of the deleted files, because the removed steps assumed a repository the guide no longer authors.
+
+## D33 — A stomp is decided against the enemy's centre, not its head
+- **Date:** 2026-09-07
+- **Source:** field report (reader: "si è rotta l'eliminazione dei nemici dall'alto"), fixed via `/report-issue`. Lands in **M9**.
+- **Decision:** `EnemyContact` treats an overlap as a stomp when the player is moving downward **and** its feet are at or above `ownCollider.bounds.center.y`. The `stompToleranceUnits` field is deleted; there is nothing left to tune.
+- **Why:** a 2D trigger callback runs *after* the physics step that produced the overlap, so the geometry your code reads is already stale by as much as `|velocity.y| × 0.02`. Measured headless in this project: a contact at `5.41` u/s read `feet=-0.178 head=-0.050 tol=0.1 -> stomp=False` — `0.128` below the head — and the player took the damage; free fall reaches `23.4` u/s over six units and `31.9` over eight, which is `0.47` and `0.64` of sink per step. No tolerance can fix that: one wide enough for a fast landing would also accept a walk into the enemy's flank. The enemy's centre sits `0.4` below its head (it is `0.8` tall), which is room rather than margin — the test cannot miss while the sink stays under `0.4`, i.e. up to a `20` u/s landing, and above that it degrades to *likely* instead of *certain* rather than failing outright. Measured after the fix: drops from one, four and eight units (impacts `10.7`, `22.0`, `31.9` u/s) all stomped, a synthetic one-step-deep contact stomps in both levels, and a side contact still costs a life.
+- **Rules out / trade-off:** chose the centre over the two alternatives, and the measurements say what that costs. **Reconstructing the pre-step position** — `other.bounds.min.y + |velocity.y| * Time.fixedDeltaTime >= ownCollider.bounds.max.y`, "the feet were above the head before this step" — is exact at every speed and still one line; it was rejected only because it asks the reader to reason about a frame that has already happened, in the first hour of the guide. **Scaling the tolerance with speed** is the same arithmetic wearing a magic number. The centre's two costs are now known: the upper half is a generous target (brushing the top corner while descending counts), and a landing faster than `20` u/s — a fall of roughly six units or more, straight down onto a head — is likely but not guaranteed to register.
+- **Revisit if:** a level puts an enemy under a long drop and players report the odd missed stomp — the pre-step reconstruction above is the upgrade, and it is a two-line change. Also revisit if enemies become much taller than they are wide (the upper half stops reading as "landed on it"), or if one must be stompable only on a small head area.

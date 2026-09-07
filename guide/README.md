@@ -9,12 +9,16 @@
 
 ## Objective
 
-You will build **Cavern Dash**, a single-player 2D pixel platformer, and finish holding a **desktop
-executable** you can double-click. Launch it and you get a title menu; press Play and Level 01 loads; you run,
-jump, dash and wall-jump through a tilemap cavern, ride a moving platform, hop up through a one-way ledge,
-stomp an enemy, take a hit and respawn at a checkpoint, and collect every coin on your way to the exit. Level
-02 follows, then a win screen showing this run's time and your best time. Quit the game, launch it again, and
-the best time — along with your volume settings and any key you rebound — is still there.
+You will build **Cavern Dash**, a single-player 2D pixel platformer, and finish holding a **complete game you
+can play end to end in the Unity Editor**. Press Play on the title menu and Level 01 loads; you run, jump,
+dash and wall-jump through a tilemap cavern, ride a moving platform, hop up through a one-way ledge, stomp an
+enemy, take a hit and respawn at a checkpoint, and collect every coin on your way to the exit. Level 02
+follows, then a win screen showing this run's time and your best time. Leave Play Mode, come back, and the
+best time — along with your volume settings and any key you rebound — is still there.
+
+**The guide covers development only.** It stops at a finished, playable game: it does not package a
+standalone executable, and every gate is observed in the Editor. See
+[foundation/decision-log.md](foundation/decision-log.md#d33--the-guide-stops-at-development-no-build-and-ship-milestone).
 
 ## Stack (summary)
 
@@ -31,6 +35,14 @@ Kenney's **CC0** packs — full verified table + check date: **[foundation/stack
 
 ## Updates
 
+- 2026-09-07 — fixed: landing on an enemy from a jump hurt the player instead of killing it, because the
+  stomp was decided against the enemy's head inside a tolerance smaller than one physics step of falling;
+  it now measures against the centre (M9/04; swept M9/06; retrofit in M11/07). See
+  [D33](foundation/decision-log.md#d33--a-stomp-is-decided-against-the-enemys-centre-not-its-head).
+- 2026-09-07 — scope reduced: **the build-and-ship milestone (M13) was removed**; the guide is 12 milestones
+  and covers development only, ending at M12. Every forward reference to the M13 gate was re-homed (M1/01,
+  M3/02, M3/06, M9/01, M11/05, M12/03) and M12's handoff now closes the guide. See
+  [D33](foundation/decision-log.md#d33--the-guide-stops-at-development-no-build-and-ship-milestone).
 - 2026-09-07 — fixed: the HUD showed `Lives: 0` from the first frame, because `HudView` read the starting
   lives in `OnEnable`, which Unity may run before `PlayerHealth.Awake`; opening reads now happen in `Start`
   (M11/01; swept M10/05, M10/07, M11/07; retrofit in M11/04). See

@@ -1,5 +1,5 @@
 # Milestone 2 — First script & frame-rate-independent motion
-> Part 1 — Foundations · milestone 2 of 13 · prev: [Project, Editor & version control](../MILESTONE_1_project-and-version-control/00_overview.md) · next: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · start: [Add the player sprite](01_player-sprite.md)
+> Part 1 — Foundations · milestone 2 of 12 · prev: [Project, Editor & version control](../MILESTONE_1_project-and-version-control/00_overview.md) · next: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · start: [Add the player sprite](01_player-sprite.md)
 
 ## Goal
 By the end of this milestone a white square glides across the Game view at a speed you set in the Inspector,
@@ -29,4 +29,4 @@ silent.
 - Play Mode discards what you change while it runs — taught in [step 03](03_tune-in-inspector.md).
 
 ---
-> Part 1 — Foundations · milestone 2 of 13 · prev: [Project, Editor & version control](../MILESTONE_1_project-and-version-control/00_overview.md) · next: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · start: [Add the player sprite](01_player-sprite.md)
+> Part 1 — Foundations · milestone 2 of 12 · prev: [Project, Editor & version control](../MILESTONE_1_project-and-version-control/00_overview.md) · next: [Input & running (keyboard and gamepad)](../MILESTONE_3_input-and-running/00_overview.md) · start: [Add the player sprite](01_player-sprite.md)

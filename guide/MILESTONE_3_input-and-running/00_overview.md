@@ -1,5 +1,5 @@
 # Milestone 3 — Input & running (keyboard and gamepad)
-> Part 2 — The character · milestone 3 of 13 · prev: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · next: [Gravity, jumping & the ground check](../MILESTONE_4_gravity-and-jumping/00_overview.md) · start: [Meet the Input System](01_meet-the-input-system.md)
+> Part 2 — The character · milestone 3 of 12 · prev: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · next: [Gravity, jumping & the ground check](../MILESTONE_4_gravity-and-jumping/00_overview.md) · start: [Meet the Input System](01_meet-the-input-system.md)
 
 ## Goal
 By the end of this milestone the square obeys you. Holding **A**/**D** or the arrow keys runs it left and
@@ -31,4 +31,4 @@ off.
 - One component, one responsibility: `PlayerInputReader` answers *what is being asked for*, `PlayerMotor` decides *what happens* — taught in [steps 02](02_input-reader.md) and [05](05_move-with-velocity.md).
 
 ---
-> Part 2 — The character · milestone 3 of 13 · prev: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · next: [Gravity, jumping & the ground check](../MILESTONE_4_gravity-and-jumping/00_overview.md) · start: [Meet the Input System](01_meet-the-input-system.md)
+> Part 2 — The character · milestone 3 of 12 · prev: [First script & frame-rate-independent motion](../MILESTONE_2_first-script-and-motion/00_overview.md) · next: [Gravity, jumping & the ground check](../MILESTONE_4_gravity-and-jumping/00_overview.md) · start: [Meet the Input System](01_meet-the-input-system.md)

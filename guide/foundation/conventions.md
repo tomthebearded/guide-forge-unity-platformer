@@ -73,7 +73,9 @@ action that sets them, not under a heading of their own.
   ignore list uses anchored patterns (`/[Ll]ibrary/`, `/[Bb]uilds/`), and a leading slash resolves against the
   folder holding the file — at the root they would match nothing and let `Library/` into history.
 - **The repository's own documents live at the root**: `README.md`, `LICENSE`, `CREDITS.md`,
-  `docs/screenshot.png`, plus a root `.gitignore` carrying nothing but `.DS_Store`. Authored in M13.
+  `docs/screenshot.png`, plus a root `.gitignore` carrying nothing but `.DS_Store`. The guide does **not**
+  author them — it stops at development ([D33](decision-log.md#d33--the-guide-stops-at-development-no-build-and-ship-milestone));
+  they belong to whoever publishes the repository.
 - **Every terminal command in the guide runs from `cavern-dash/`**, and a step that quotes Git output says so.
   Git renders paths two different ways from that one place, and a gate must quote the right one:
   - **From the repository root** — `cavern-dash/Assets/…`: `git status --porcelain` (which ignores

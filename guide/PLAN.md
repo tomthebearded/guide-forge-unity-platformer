@@ -5,7 +5,7 @@
 > except this file.
 >
 > **Status: awaiting approval.** On approval → `/scaffold-guide` stamps the skeleton, then `/draft-milestone`
-> drafts the whole guide (M1→M13 in one pass).
+> drafts the whole guide (M1→M12 in one pass).
 >
 > **Lineage.** This guide is the Unity counterpart of
 > [`guide-forge-web-platformer`](https://github.com/tomthebearded/guide-forge-web-platformer) (*Shape Jumper*,
@@ -82,7 +82,7 @@ because the reader cannot search for a thing they cannot name.
 |---|---|---|
 | Moving platforms + one-way platforms | The two elements that make a level read as a real platformer; they teach the two classic problems (carrying a rider, `PlatformEffector2D`) | **M7** |
 | Dash + wall-jump | Turns the moveset into something expressive and forces an honest movement **state machine** — the best C#-teaching moment in the guide | **M8** |
-| Explicit gamepad support | Chosen over a passing mention: one step maps and *tests* every action on keyboard and gamepad, which is the whole point of the Input System | **M3**, re-checked at **M13** |
+| Explicit gamepad support | Chosen over a passing mention: one step maps and *tests* every action on keyboard and gamepad, which is the whole point of the Input System | **M3**, re-checked at **M12** (rebinding) |
 | **Options screen: volume, display settings, and full key/button rebinding** | Requested as core scope, not as a "later". It closes the loop on all three of the guide's cross-cutting systems at once — Input System, UI, and persistence — and interactive rebinding is the single feature the modern Input System exists for | **M12** |
 
 ### Scope boundaries (out of scope — deliberately)
@@ -95,8 +95,10 @@ because the reader cannot search for a thing they cannot name.
 - **No procedural level generation** — levels are hand-painted content.
 - **No localization** and no accessibility settings beyond the options screen's own controls.
 - **No store publishing** (Steam/itch pages, achievements, cloud saves).
-- **No CI pipeline** — no GitHub Actions, no automated build or release workflow. Builds are made from the
-  Editor, by hand, in M13.
+- **No build, packaging or distribution.** The guide stops at development: it never produces a standalone
+  executable, never authors the repository's own README/licence/credits, and never observes anything outside
+  the Editor. Nor is there a CI pipeline — no GitHub Actions, no automated build or release workflow.
+  ([D33](foundation/decision-log.md#d33--the-guide-stops-at-development-no-build-and-ship-milestone).)
 - **No automated tests** — no Unity Test Framework, no Play Mode or Edit Mode test assemblies. Every gate in
   this guide is verified by a person observing the running game.
 - **No Unity Version Control** — the guide teaches Git, because the deliverable is a GitHub repository.
@@ -296,7 +298,6 @@ they are as load-bearing as the C# and cannot be diffed from a code block.
 | **M10** | Animation, camera & audio | It reads and sounds like a game | M9 | Idle/run/jump/fall animations switch on the Animator parameters; the Cinemachine camera follows with look-ahead and never shows outside the level bounds; jump, coin, hit and land each play a distinct sound through the mixer |
 | **M11** | Scenes, menus, HUD & persistence | A complete game loop, not a single scene | M10 | Menu → Level01 → Level02 → Win runs end to end; Esc pauses (`Time.timeScale` 0) and resumes; the HUD shows coins, lives and a running timer; the Win screen shows this run's time and the best time, and the best time **survives quitting and relaunching** |
 | **M12** | Options: volume, display & key rebinding | The player can change how the game sounds, looks and controls — and it sticks | M11 | Each of the three volume sliders changes what is audible and the value **survives a relaunch**; the fullscreen toggle applies immediately; **rebinding `Jump` to another key takes effect on the next jump**, the same screen rebinds the **gamepad** button, both survive a relaunch, and **Reset to defaults** restores every original binding |
-| **M13** | Build & ship | A real executable, and a repository someone else can use | M12 | A standalone build produced from **`File > Build Profiles`** launches by double-click **outside the Editor** and plays the full loop — including the options screen and a rebind — with gamepad; the repository has a README, a licence, the CC0 credit file, and no `Library/` in its history |
 
 **Reality-check gate: M5.** It is placed exactly where the game first becomes *fun* rather than merely correct.
 The reader is told to stop, play for five minutes, and decide whether to continue — before committing to seven
@@ -314,13 +315,12 @@ more milestones.
   best time.
 - **M12** — (a) the options panel and the volume sliders · (b) display settings · (c) interactive rebinding ·
   (d) persisting and resetting the overrides.
-- **M13** — (a) player settings and the build · (b) testing the build · (c) the repository, README and release.
 
-**Estimated size:** 13 milestones, ~78 steps, 13 verify gates — two more rungs than the 10–11 sketched during
-the interview. The first is M2: keeping the first script separate from M3 (input and physics) makes the first
-C# a rung of its own rather than a footnote to a physics milestone. The second is M12, which was added when
-the options screen and rebinding moved into core scope; it sits after M11 because rebinding needs a menu to
-live in and a persistence pattern to reuse, and before M13 because the build is the last thing that happens.
+**Estimated size:** 12 milestones, ~72 steps, 12 verify gates — one more rung than the 10–11 sketched during
+the interview. It is M2: keeping the first script separate from M3 (input and physics) makes the first C# a
+rung of its own rather than a footnote to a physics milestone. M12 was added when the options screen and
+rebinding moved into core scope; it sits after M11 because rebinding needs a menu to live in and a
+persistence pattern to reuse, and it is where the guide ends.
 
 ---
 
@@ -350,7 +350,6 @@ everything else. Every row's option was verified in Phase 0.5.
 | Interactive key/button rebinding | M12 | **`PerformInteractiveRebinding`** (https://docs.unity3d.com/Packages/com.unity.inputsystem@latest/api/UnityEngine.InputSystem.InputActionRebindingExtensions.html) | A rebinding operation with its own lifecycle to learn (cancel key, excluded controls, disposal) | Polling every device for "the next thing pressed" — which is exactly the code the package already got right, including the mouse-delta exclusions | **borrow** | |
 | Persisting rebinds across launches | M12 | **`SaveBindingOverridesAsJson` / `LoadBindingOverridesFromJson`** + `PlayerPrefs` | Nothing meaningful — it is two calls | Serializing an override layer by hand, which will silently diverge from the asset | **borrow** | |
 | The options UI itself (sliders, the rebind button's three states, "listening…") | M12 | *(none — this is ordinary UI)* | — | Wiring UI to systems: a slider that both reads current state and writes it, and a button that changes meaning while an operation is running | **build** | |
-| Producing the executable | M13 | **Build Profiles** (https://docs.unity3d.com/6000.3/Documentation/Manual/create-build-profile.html) | — | — | **borrow** | |
 
 Rows that did **not** clear the bar and are therefore just code in a step: the coin counter, the patrolling
 enemy's turn-at-edge check, the parallax offset, the timer format.
@@ -467,9 +466,10 @@ no earlier step established gets its own step; it is never buried in a preamble.
 - **Where a gate names a set, it sweeps the set** (rule 6.6): "every animation transition fires" enumerates
   idle→run→jump→fall→dash; "both devices work" is tested on keyboard **and** gamepad; "the level plays" means
   every coin in the level is reachable, checked one by one at the M12 gate.
-- **The M13 gate runs in the built player, not the Editor** — the last milestone's whole point is that a build
-  behaves differently (missing scenes, missing input, a window that will not close, and rebinds written to a
-  `PlayerPrefs` store that lives somewhere else than the Editor's).
+- **Every gate runs in the Editor** — the guide stops at development, so nothing is ever observed in a built
+  player. Where a behaviour is genuinely build-only (the fullscreen toggle moving a real window), the gate
+  reads the mechanism it *can* see — the stored value and `Screen.fullScreen` — and says outright that the
+  window is not checked.
 - **Consistency check before shipping:** every command and code block uses the pinned versions; every
   load-bearing name is spelled identically wherever it recurs.
 - **Reconcile-before-follow:** if the guide is followed against a Unity version that has drifted, **reality
@@ -483,7 +483,7 @@ no earlier step established gets its own step; it is never buried in a preamble.
 
 ```
 guide-forge-unity-platformer/
-├── README.md                      # repo front door: what this is, how to run the game, how to follow the guide
+├── README.md                      # repo front door — not authored by the guide (D33)
 ├── LICENSE                        # MIT (the guide + code); Kenney assets are CC0, credited separately
 ├── CREDITS.md                     # the CC0 asset packs used, with links
 ├── .gitignore                     # repo-level only (.DS_Store); Unity's list lives in cavern-dash/
@@ -512,9 +512,8 @@ guide-forge-unity-platformer/
 │   ├── MILESTONE_9_coins-enemies-lives-checkpoints/
 │   ├── MILESTONE_10_animation-camera-audio/
 │   ├── MILESTONE_11_scenes-menus-hud-persistence/
-│   ├── MILESTONE_12_options-and-rebinding/
-│   └── MILESTONE_13_build-and-ship/
-└── cavern-dash/                   # the finished Unity project — the end state of M13
+│   └── MILESTONE_12_options-and-rebinding/
+└── cavern-dash/                   # the finished Unity project — the end state of M12
     ├── .gitignore                 # Unity's official list — anchored patterns, so it must sit here
     ├── .gitattributes             # Git LFS rules, scoped to the project's binaries
     ├── Assets/_Project/{Scripts,Scenes,Prefabs,Art,Audio,Animation,Settings}
@@ -530,7 +529,7 @@ guide-forge-unity-platformer/
 Once this plan is approved:
 
 1. **`/scaffold-guide`** stamps the skeleton above and pre-fills the seven foundation docs from this plan.
-2. **`/draft-milestone`** drafts the **whole** guide — M1 → M13 — in one pass, honoring the ladder, the
+2. **`/draft-milestone`** drafts the **whole** guide — M1 → M12 — in one pass, honoring the ladder, the
    audience matrix, the conventions and the pedagogy contract.
 3. **`/audit-guide`** QAs the result against the GuideForge contract before anything ships.
 4. The reader then builds *Cavern Dash* against the finished guide, verifying each Done-when gate as they go,

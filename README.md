@@ -21,8 +21,9 @@ and C#. You run, jump, dash and wall-jump through a tilemap cavern, ride a movin
 one-way ledge, stomp an enemy, take a hit and respawn at a checkpoint, and collect coins on the way to the
 exit; Level 02 follows, then a win screen with this run's time and your best. The physics is a Dynamic
 `Rigidbody2D` steered by velocity, the camera is Cinemachine 3.1, input goes through the Input System 1.19
-(keyboard **and** gamepad, rebindable), and every asset is Kenney **CC0**. The finish line is a
-double-clickable **desktop executable** whose best time, volume settings and rebound keys survive a relaunch.
+(keyboard **and** gamepad, rebindable), and every asset is Kenney **CC0**. The guide covers **development
+only** — it finishes at a complete game playable end to end in the Unity Editor, whose best time, volume
+settings and rebound keys survive leaving Play Mode; it does not package a standalone build.
 
 ---
 
@@ -30,15 +31,15 @@ double-clickable **desktop executable** whose best time, volume settings and reb
 
 | Path | What it is |
 |------|------------|
-| **[`guide/`](guide/)** | The guide itself — the actual artifact this repo is an example of. 13 milestones, 64 atomic teaching steps and 13 verify gates, plus the GuideForge foundation docs (`stack`, `status`, `progress`, `glossary`, `conventions`, `decision-log`, `audience`) and a feedback log. Start at [`guide/README.md`](guide/README.md). |
-| **[`cavern-dash/`](cavern-dash/)** | The Unity project as actually built by following the guide. **It is mid-guide, not finished** — the frontier is M11 (see [`guide/foundation/progress.md`](guide/foundation/progress.md)), so the run timer, the options menu, key rebinding and the packaged build aren't in it yet. |
+| **[`guide/`](guide/)** | The guide itself — the actual artifact this repo is an example of. 12 milestones, 60 atomic teaching steps and 12 verify gates, plus the GuideForge foundation docs (`stack`, `status`, `progress`, `glossary`, `conventions`, `decision-log`, `audience`) and a feedback log. Start at [`guide/README.md`](guide/README.md). |
+| **[`cavern-dash/`](cavern-dash/)** | The Unity project as actually built by following the guide. **It is mid-guide, not finished** — the frontier is M11 (see [`guide/foundation/progress.md`](guide/foundation/progress.md)), so the options menu and key rebinding aren't in it yet. |
 | [`guide/PLAN.md`](guide/PLAN.md) | The stage-1 plan the whole guide was drafted from (audience model, milestone ladder, scope boundaries). |
 
 ---
 
 ## Play it
 
-There is no build yet — M13 is where the guide makes one — so you play it in the Editor.
+The guide covers development only and never packages a build, so you play it in the Editor.
 
 1. Clone this repository. The Kenney art and audio are committed
    ([`cavern-dash/Assets/ThirdParty/`](cavern-dash/Assets/ThirdParty/)), so there is nothing to download.
@@ -61,11 +62,10 @@ Stomp an enemy from above to kill it; touch one from the side and you lose one o
 of invulnerability. Falling off the level costs a life too. Checkpoints arm as you pass them, and the exit
 carries the run into the next level.
 
-> **It's mid-guide, and it shows.** Milestone 11 is the frontier: the HUD, the four scenes and the run that
-> survives a scene load are in; pause is the step being executed right now, and the timer, the best time, the
-> game-over screen, the options panel, key rebinding and the packaged build are drafted but not built. What
-> is actually on disk is stated by [`guide/foundation/progress.md`](guide/foundation/progress.md) — not by
-> this page.
+> **It's mid-guide, and it shows.** Milestone 11 is the frontier: the HUD, the four scenes, the run that
+> survives a scene load, pause, the timer, the best time and the game-over screen are in; the options panel
+> and key rebinding are drafted but not built. What is actually on disk is stated by
+> [`guide/foundation/progress.md`](guide/foundation/progress.md) — not by this page.
 
 ---
 
@@ -92,8 +92,8 @@ physics concept is defined on first use.
 > **Verification status:** M1–M9 were executed and their Done-when gates passed by hand in the Editor. M10 is
 > ⏳ — it passed, then went back for re-verification on 2026-09-07 when a *lifecycle-order* defect was found
 > in its audio step (an opening read from `OnEnable` that Unity may run before the `Awake` filling the value
-> in). M11 steps 01–03 are executed but not yet ticked in the ledger; M11/04 opens with a *Before you
-> continue — corrections* section carrying the repair for that defect. M12–M13 are drafted but not run. Two
+> in). M11 steps 01–06 are executed and ticked; its gate has not been run. M11/04 opens with a *Before you
+> continue — corrections* section carrying the repair for that defect. M12 is drafted but not run. Two
 > defects are still open: `.gitattributes` was never created, so the binaries are **not** actually
 > LFS-tracked despite M1/05 being ticked, and a handful of gate numbers (jump apex, dash distance, frame
 > times) are derived from the physics rather than measured in a session. See
@@ -103,7 +103,6 @@ physics concept is defined on first use.
 
 ## Licence
 
-The Kenney art and audio under [`cavern-dash/Assets/ThirdParty/`](cavern-dash/Assets/ThirdParty/) are **CC0**
-(public domain) — free to reuse, attribution not required. The code is meant to be MIT, but the `LICENSE`
-file is written by the guide itself, in
-[M13 step 04](guide/MILESTONE_13_build-and-ship/04_the-repository.md), which hasn't been executed yet.
+The guide and the code are **MIT** — see [`LICENSE`](LICENSE). The Kenney art and audio under
+[`cavern-dash/Assets/ThirdParty/`](cavern-dash/Assets/ThirdParty/) are **CC0** (public domain), free to reuse
+with attribution not required.
